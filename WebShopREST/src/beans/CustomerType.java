@@ -1,15 +1,28 @@
 package beans;
 
+import enums.CustomerTypes;
+
 public class CustomerType {
-    private String typeName;
+    private CustomerTypes typeName;
     private double discount;
     private int requiredPoints;
+    
+    public CustomerType() {
+		super();
+	}
 
-    public String getTypeName() {
+	public CustomerType(CustomerTypes typeName, double discount, int requiredPoints) {
+		super();
+		this.typeName = typeName;
+		this.discount = discount;
+		this.requiredPoints = requiredPoints;
+	}
+
+	public CustomerTypes getTypeName() {
         return typeName;
     }
 
-    public void setTypeName(String typeName) {
+    public void setTypeName(CustomerTypes typeName) {
         this.typeName = typeName;
     }
 
