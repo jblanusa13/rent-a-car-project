@@ -1,0 +1,4 @@
+Registracija - neregistrovan korisnik se registruje na aplikaciju popunjavajući polja:
+korisničko ime, lozinka (potrebno je uneti dva puta), ime, prezime, pol i datum rođenja i
+nakon toga postaje Kupac. Administratori se programski učitavaju iz tekstualnog fajla i
+ne mogu se naknadno dodati. 
