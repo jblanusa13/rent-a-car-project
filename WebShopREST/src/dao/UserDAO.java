@@ -45,6 +45,7 @@ public class UserDAO {
 		}
 
 	}
+	
 	public User getUserById(String id) {
         for (User user : users) {
             if (user.getId().equals(id)) {

@@ -1,12 +1,10 @@
-Vue.component("user-profile", {
-  data: function () {
-    return {
-		userId:null,
-		user:null
-    }
-  },
-  template: `
-    <div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+	<div>
 		<h2>Profile</h2>
 		<form>
 			<table>
@@ -47,18 +45,7 @@ Vue.component("user-profile", {
             		<td><input type="text" name="carObject"></td>
           		</tr>
 			</table>
-			<button type="submit" v-on:click="editUser">Update user info</button>
 		</form>
-    </div>
-  `,
-  mounted() {
-	  this.userId =this.$route.params.id
-	  console.log(this.userId)
-  },
-  methods: {
-    editUser: function () {
-      event.preventDefault();
-    }
-  }
-  
-});
+	</div>
+</body>
+</html>

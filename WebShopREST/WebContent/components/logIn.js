@@ -80,14 +80,14 @@ Vue.component("logIn", {
 		  axios.post('rest/logIn/', this.userCredentials)
         	.then(
 			response => {this.user=response.data;
-			router.push({ path: `/userProfile/${this.user.id}` });
+			router.push(`/userProfile/:${this.user.id}`);
 		});
 		
 	  }
     },
     registerUser: function() {
       event.preventDefault();
-      router.push("/register");
+      router.push(`/register`);
     },
   }
 });
