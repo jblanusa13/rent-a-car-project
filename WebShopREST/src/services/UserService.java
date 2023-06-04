@@ -94,4 +94,26 @@ public class UserService {
         }
 	}
 	
+	@GET
+	@Path("/profile/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User getUserById(@PathParam("id") String id) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+        User user = dao.getById(id);
+        if (user != null) {
+            return user;
+        } else {
+        	System.out.println("An error occurred while finding the user");
+            return null;
+        }
+    }
+	
+	@GET
+	@Path("/birthDate/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getUserBirthDate(@PathParam("id") String id) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+		return dao.getBirthDate(id);
+	}
+	
 }

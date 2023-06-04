@@ -1,5 +1,7 @@
 package beans;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import enums.UserRole;
@@ -14,10 +16,10 @@ public class User {
     private String name;
     private String surname;
     private String gender;
-    private Date birthDate;
+    private LocalDate birthDate;
     private UserRole role;
     //private List<Rental> rentals;
-    //private ShoppingCartObject shoppingCart;
+    private ShoppingCart shoppingCart;
     private RentACarObject rentACar;
     private int collectedPoints;
     private CustomerType customerType;
@@ -25,8 +27,10 @@ public class User {
 	public User() {
 		super();
 	}
-	public User(String id, String username, String password, String name, String surname, String gender, Date birthDate,
-			UserRole role, RentACarObject rentACar, int collectedPoints, CustomerType customerType) {
+	
+	public User(String id, String username, String password, String name, String surname, String gender,
+			LocalDate birthDate, UserRole role, ShoppingCart shoppingCart, RentACarObject rentACar, int collectedPoints,
+			CustomerType customerType) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -36,10 +40,12 @@ public class User {
 		this.gender = gender;
 		this.birthDate = birthDate;
 		this.role = role;
+		this.shoppingCart = shoppingCart;
 		this.rentACar = rentACar;
 		this.collectedPoints = collectedPoints;
 		this.customerType = customerType;
 	}
+
 	public String getId() {
 		return id;
 	}
@@ -76,10 +82,10 @@ public class User {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public Date getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 	public UserRole getRole() {
@@ -106,6 +112,13 @@ public class User {
 	public void setCustomerType(CustomerType customerType) {
 		this.customerType = customerType;
 	}
-    
+
+	public ShoppingCart getShoppingCart() {
+		return shoppingCart;
+	}
+
+	public void setShoppingCart(ShoppingCart shoppingCart) {
+		this.shoppingCart = shoppingCart;
+	}
 }
 
