@@ -22,15 +22,16 @@ import enums.CustomerTypes;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.io.FileWriter;
 
 
 
 public class UserDAO {
 	private ArrayList<User> users = new ArrayList<>();
+	private String path=null;
 	
-	
-	public UserDAO() {
+	public UserDAO(String contextPath) {
 		
 		User user1 = new User("1", "user1", "password1", "John", "Doe", "Male", LocalDate.of(1999, 6, 12), UserRole.Manager, new ShoppingCart(), new RentACarObject(), 100, new CustomerType(CustomerTypes.Bronze,0.0,10));
         User user2 = new User("2", "user2", "password2", "Jane", "Smith", "Female", LocalDate.of(1987, 2, 14), UserRole.Customer, new ShoppingCart(), new RentACarObject(), 150, new CustomerType(CustomerTypes.Bronze,0.0,10));
@@ -47,17 +48,31 @@ public class UserDAO {
         users.add(user5);
         users.add(user6);
         users.add(user7);
+        path=contextPath;
 	}
 
-	public void writeToFile(User user) {
+	public void writeToFile() {
 		Gson gs = new Gson(); 
-    	String jsonString = gs.toJson(user);
-    	try (FileWriter writer = new FileWriter("data/users.json")) {
+    	String jsonString = gs.toJson(users);
+    	try (FileWriter writer = new FileWriter(path+"data/users.json")) {
             writer.write(jsonString);
             System.out.println("JSON file created successfully.");
         } catch (IOException e) {
             e.printStackTrace();
         }
+	}
+	
+	public User loadFromFile() {
+	    Gson gson = new Gson();
+	    User user = null;
+	    
+	    try (FileReader reader = new FileReader(path + "data/users.json")) {
+	        user = gson.fromJson(reader, User.class);
+	        System.out.println("JSON file loaded successfully.");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return user;
 	}
 	
 	public User getUserById(String id) {
@@ -85,15 +100,15 @@ public class UserDAO {
         System.out.println("nije nasao usera");
         return null;
     }
-	public void registerUser(UserRegistration userReg) {
+	public boolean registerUser(UserRegistration userReg) {
 		System.out.println("Korisnik treba da se registruje");
 		User user = new User();
 		Integer maxId = -1;
 		for (User f : users) {
-			int idNum =Integer.parseInt(f.getId());
-			if (idNum > maxId) {
-				maxId = idNum;
-			}
+		    int idNum = Integer.parseInt(f.getId());
+		    if (idNum > maxId) {
+		        maxId = idNum;
+		    }
 		}
 		maxId++;
 		user.setId(maxId.toString());
@@ -107,9 +122,19 @@ public class UserDAO {
 		user.setRole(UserRole.Customer);
 		user.setRentACar(null);
 		user.setSurname(userReg.getSurname());
-		
-		users.add(user);
-		System.out.println("Korisnik registrovan");
+
+		boolean userExists = users.stream()
+		        .anyMatch(u -> u.getUsername().equals(user.getUsername()) && u.getPassword().equals(user.getPassword()));
+
+		if (userExists) {
+		    System.out.println("Postoji vec korisnik sa ovim podacima");
+		} else {
+		    users.add(user);
+		    System.out.println("Korisnik registrovan");
+			//writeToFile();
+		}
+		return userExists;
+
 	}
 
 	public UserRegistration getUserRegistrationById(String id) {
@@ -136,7 +161,7 @@ public class UserDAO {
 	}
 	
 	public String getBirthDate(String id) {
-		User user = getById(id);
+		User user = getUserById(id);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
 		String birthDateString = user.getBirthDate().format(formatter);
 		return birthDateString;
@@ -144,13 +169,3 @@ public class UserDAO {
 	
 }
 
-/*// Declaration
- * 
- * YourObject objToSerialize = new YourObject();
- * 
- * // Serialization 
- * String serializedObj = gs.toJson(objToSerialize);
- * 
- * // Deserialization 
- * YourObject objAfterDerserialize = gs.fromJson(serializedObj, YourObject.class);
- */

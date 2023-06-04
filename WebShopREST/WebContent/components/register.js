@@ -134,7 +134,9 @@ Vue.component("register", {
      axios.post('rest/logIn/register', this.userRegistration)
   		.then(response => {
    		router.push(`/`);
-  		});
+  		}).catch(error => {
+        this.errortext = 'User with this data already exist';
+    });
       
   },
  	goToLoginPage: function () {

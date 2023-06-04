@@ -67,9 +67,6 @@ Vue.component("user-update", {
   methods: {
     updateUser() {
 		console.log("User updating");
-		console.log("User updating");
-		console.log("User updating");
-		console.log("User updating");
 
 		if (!this.updatedUser.username) {
 		  document.getElementsByName("username")[0].style.background = "red";
@@ -125,18 +122,14 @@ Vue.component("user-update", {
 		  this.errortext = '';
 		}
 
-console.log("User updating");
-  axios.put(`rest/logIn/update/${this.userId}`, this.updatedUser)
-    .then(response => {
-      console.log("User updated successfully");
-      router.push(`/userProfile/${this.userId}`);
-    })
-    .catch(error => {
-      this.errortext = "An error occurred while updating user data";
-    });
-},
-    goToUserProfile() {
-      router.push(`/userProfile/${this.user.id}`);
-    }
+		console.log("User updating");
+		  axios.put(`rest/logIn/update/${this.userId}`, this.updatedUser)
+		    .then(response => {
+		      router.push(`/userProfile/${this.userId}`);
+		    });
+		},
+	    goToUserProfile() {
+	      router.push(`/userProfile/${this.user.id}`);
+	    }
   }
 });
