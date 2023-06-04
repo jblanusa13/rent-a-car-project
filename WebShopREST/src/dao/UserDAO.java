@@ -1,8 +1,6 @@
 package dao;
 
-// import com.google.gson.Gson;
-
-
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,6 +8,9 @@ import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.StringTokenizer;
+
+import javax.ws.rs.core.Response;
+
 import java.util.Date;
 import beans.CustomerType;
 import beans.RentACarObject;
@@ -17,6 +18,12 @@ import beans.User;
 import beans.UserRegistration;
 import enums.UserRole;
 import enums.CustomerTypes;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.FileWriter;
+
+
+
 public class UserDAO {
 	private ArrayList<User> users = new ArrayList<>();
 	
@@ -38,13 +45,21 @@ public class UserDAO {
         users.add(user5);
         users.add(user6);
         users.add(user7);
-
-
-		for (User user : users) {
-		    System.out.println(user);
-		}
+        
 
 	}
+	
+	public void writeToFile(User user) {
+		Gson gs = new Gson(); 
+    	String jsonString = gs.toJson(user);
+    	try (FileWriter writer = new FileWriter("data/users.json")) {
+            writer.write(jsonString);
+            System.out.println("JSON file created successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
 	public User getUserById(String id) {
         for (User user : users) {
             if (user.getId().equals(id)) {
@@ -70,14 +85,61 @@ public class UserDAO {
         System.out.println("nije nasao usera");
         return null;
     }
-	public void registerUser(UserRegistration user) {
+	public void registerUser(UserRegistration userReg) {
 		System.out.println("Korisnik treba da se registruje");
+		User user = new User();
+		Integer maxId = -1;
+		for (User f : users) {
+			int idNum =Integer.parseInt(f.getId());
+			if (idNum > maxId) {
+				maxId = idNum;
+			}
+		}
+		maxId++;
+		user.setId(maxId.toString());
+		user.setBirthDate(userReg.getBirthDate());
+		user.setCollectedPoints(0);
+		user.setCustomerType(null);
+		user.setGender(userReg.getGender());
+		user.setName(userReg.getName());
+		user.setPassword(userReg.getPassword());
+		user.setUsername(userReg.getUsername());
+		user.setRole(UserRole.Customer);
+		user.setRentACar(null);
+		user.setSurname(userReg.getSurname());
+		
+		users.add(user);
+		System.out.println("Korisnik registrovan");
 	}
+
+	public UserRegistration getUserRegistrationById(String id) {
+		User user= getUserById(id);
+		UserRegistration ur=new UserRegistration(user.getUsername(), user.getPassword(), user.getName(), user.getSurname(), user.getGender(), user.getBirthDate());
+		
+		return ur;
+	}
+
+	public Boolean updateUser(String id, UserRegistration updatedUser) {
+		User user = getUserById(id);
+        if (user != null) {
+        	System.out.println("Korisnik naden koji  se updejtuje");
+            user.setUsername(updatedUser.getUsername());
+            user.setPassword(updatedUser.getPassword());
+            user.setName(updatedUser.getName());
+            user.setSurname(updatedUser.getSurname());
+            user.setGender(updatedUser.getGender());
+            user.setBirthDate(updatedUser.getBirthDate());
+            return true;
+        }
+        return false;
+		
+	}
+	
 	
 }
 
 /*// Declaration
- * Gson gs = new Gson(); 
+ * 
  * YourObject objToSerialize = new YourObject();
  * 
  * // Serialization 

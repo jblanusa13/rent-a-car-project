@@ -77,11 +77,15 @@ Vue.component("logIn", {
 	  }
 	  if(this.isUsernameValid&&this.isPasswordValid)
 	  {
-		  axios.post('rest/logIn/', this.userCredentials)
-        	.then(
-			response => {this.user=response.data;
-			router.push({ path: `/userProfile/${this.user.id}` });
-		});
+		 axios.post('rest/logIn/', this.userCredentials)
+    .then(response => {
+        this.user = response.data; 
+        router.push({ path: `/userProfile/${this.user.id}` });
+    })
+    .catch(error => {
+        console.error('An error occurred:', error);
+        this.errortext = 'User does not exist';
+    });
 		
 	  }
     },
