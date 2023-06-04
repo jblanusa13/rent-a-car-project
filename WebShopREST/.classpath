@@ -35,5 +35,6 @@
 			<attribute name="javadoc_location" value="http://junit.org/junit5/docs/current/api/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Tatjana/Desktop/web_projekat/gson-2.10.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

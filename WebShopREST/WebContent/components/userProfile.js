@@ -58,6 +58,7 @@ Vue.component("user-profile", {
   methods: {
     editUser: function () {
       event.preventDefault();
+      router.push({ path: `/userProfileUpdate/${this.userId}` });
     }
   }
   

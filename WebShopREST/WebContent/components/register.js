@@ -131,7 +131,7 @@ Vue.component("register", {
     
       console.log("Yay! All fields are filled!");
       console.log(this.userRegistration)
-     axios.post('rest/register/', this.userRegistration)
+     axios.post('rest/logIn/register', this.userRegistration)
   		.then(response => {
    		router.push(`/`);
   		});
