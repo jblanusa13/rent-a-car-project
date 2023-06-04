@@ -30,7 +30,8 @@ public class UserService {
 	@PostConstruct
 	public void init() {
 		if (ctx.getAttribute("UserDAO") == null) {
-			ctx.setAttribute("UserDAO", new UserDAO());
+			String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("UserDAO", new UserDAO(contextPath));
 		}
 	}
 	
@@ -55,7 +56,7 @@ public class UserService {
 	@GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public UserRegistration getUserById(@PathParam("id") String id) {
+    public UserRegistration getUserRegById(@PathParam("id") String id) {
 		System.out.println("Trazi korisnika po id");
 		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
         UserRegistration user = dao.getUserRegistrationById(id);
@@ -74,32 +75,31 @@ public class UserService {
 	public Response registerUser(UserRegistration userRegistration) {
 		System.out.println("Registrovanje korisnika u login servisu");
 		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
-		dao.registerUser(userRegistration);
-		return Response.ok().build();
+		boolean b=dao.registerUser(userRegistration);
+		if(b) {
+			return Response.ok().build();
+		}else {
+			return Response.status(Response.Status.NOT_FOUND).build();
+        }
+		
 	}
 	
 	@PUT
     @Path("/update/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(@PathParam("id") String id, UserRegistration updatedUser) {
         UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
         System.out.println("Korisnik se updejtuje");
-        Boolean b=dao.updateUser(id,updatedUser);
-        if (b) {
-        	System.out.println("Korisnik updejtovan");
-            return Response.ok().build();
-        } else {
-        	System.out.println("Korisnik NIJE updejtovan");
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+        dao.updateUser(id,updatedUser);
+        return Response.ok().build();
 	}
 	
 	@GET
 	@Path("/profile/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public User getUserById(@PathParam("id") String id) {
-		UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
-        User user = dao.getById(id);
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+        User user = dao.getUserById(id);
         if (user != null) {
             return user;
         } else {
@@ -112,8 +112,9 @@ public class UserService {
 	@Path("/birthDate/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getUserBirthDate(@PathParam("id") String id) {
-		UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
 		return dao.getBirthDate(id);
 	}
+	
 	
 }
