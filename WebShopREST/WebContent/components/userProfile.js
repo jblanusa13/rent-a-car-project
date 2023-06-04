@@ -6,14 +6,15 @@ Vue.component("user-profile", {
   },
   template: `
     <div>
-      {{ title }}
+      <p>You're logged in! :)</p>
       <form>
-        <button type="submit" v-on:click="editUser"></button>
+        <button type="submit" v-on:click="editUser">Update user info</button>
       </form>
     </div>
   `,
   mounted() {
-	 this.userId = this.$route.params.id;
+	  this.userId =this.$route.params.id
+	  console.log(this.userId)
   },
   methods: {
     editUser: function () {

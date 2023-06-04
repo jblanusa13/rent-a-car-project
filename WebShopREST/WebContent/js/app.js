@@ -6,7 +6,7 @@ const router = new VueRouter({
 	  routes: [
 		{ path: '/', name: 'home', component: LogIn},
 		{ path: '/register', component: Register},
-		{ path: '/userProfile', component: UserProfile},
+		{ path: '/userProfile/:id', component: UserProfile},
 	  ]
 });
 

@@ -2,14 +2,13 @@ package services;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import beans.User;
 import beans.UserCredentials;
@@ -22,32 +21,41 @@ public class LogInService {
 	ServletContext ctx;
 
 	public LogInService() {
-		super();
 	}
 	
 	@PostConstruct
 	public void init() {
-		if (ctx.getAttribute("userDAO") == null) {
-			ctx.setAttribute("userDAO", new UserDAO());
+		if (ctx.getAttribute("UserDAO") == null) {
+			ctx.setAttribute("UserDAO", new UserDAO());
 		}
 	}
 	
 	@POST
-	@Path("/authenticate")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response authenticateUser(UserCredentials credentials) {
+	public User authenticateUser(UserCredentials credentials) {
+		System.out.println(" Coaodchuhhusxj");
+		System.out.println(credentials);
 		String username = credentials.getUsername();
 		String password = credentials.getPassword();
+		System.out.println(username);
+		System.out.println(password);
+		UserDAO dao = (UserDAO)ctx.getAttribute("UserDAO");
+		return dao.getUser(username, password);	
 		
-		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
-		
-		User user = dao.getUser(username, password);
-		
-		if (user != null) {
-			return Response.ok().entity(user).build();
-		} else {
-			return Response.status(Response.Status.UNAUTHORIZED).build();
-		}
 	}
+	
+	@GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User getUserById(@PathParam("id") String id) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+        User user = dao.getUserById(id);
+        if (user != null) {
+            return user;
+        } else {
+        	System.out.println("An error occurred while finding the user");
+            return null;
+        }
+    }
 }

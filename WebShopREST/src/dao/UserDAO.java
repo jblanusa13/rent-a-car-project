@@ -59,11 +59,14 @@ public class UserDAO {
 	
 
 	public User getUser(String username, String password) {
+		System.out.println("Trazi usera");
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+            	System.out.println("nasao usera");
                 return user;
             }
         }
+        System.out.println("nije nasao usera");
         return null;
     }
 	

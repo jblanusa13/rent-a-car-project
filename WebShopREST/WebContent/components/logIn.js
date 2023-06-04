@@ -1,6 +1,8 @@
 Vue.component("logIn", {
   data: function() {
     return {
+	  user:{id:' ',username:null, password: null, name: null, surname:null, gender: null, birthDate:null,
+			UserRole: null, rentACar:null, collectedPoints:null, customerType:null},
       userCredentials: {
         username: null,
         password: null
@@ -53,7 +55,7 @@ Vue.component("logIn", {
       {
 		  document.getElementsByName("username")[0].style.background = "red";
 		  this.isUsernameValid=false;
-		  this.errortext='sva polja forme su obavezna'
+		  this.errortext='All fields are required'
 	  }
 	  else
 	  {
@@ -65,7 +67,7 @@ Vue.component("logIn", {
       {
 		  document.getElementsByName("password")[0].style.background = "red";
 		  this.isPasswordValid=false;
-		  this.errortext='sva polja forme su obavezna'
+		  this.errortext='All fields are required'
 	  }
 	  else
 	  {
@@ -75,15 +77,12 @@ Vue.component("logIn", {
 	  }
 	  if(this.isUsernameValid&&this.isPasswordValid)
 	  {
-		  axios.post("rest/logIn/", this.userCredentials)
-  		.then(response => {
-    		if (response.status === 200) {
-     			 const user = response.data;
-     			 router.push({path: `/userProfile/${user.id}`});
-    		} else {
-      			 errortext='Neuspesno logovanje'
-    		}
-  		});
+		  axios.post('rest/logIn/', this.userCredentials)
+        	.then(
+			response => {this.user=response.data;
+			router.push({ path: `/userProfile/${this.user.id}` });
+		});
+		
 	  }
     },
     registerUser: function() {
