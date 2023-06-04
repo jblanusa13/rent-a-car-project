@@ -14,6 +14,7 @@ import java.util.Date;
 import beans.CustomerType;
 import beans.RentACarObject;
 import beans.User;
+import beans.UserRegistration;
 import enums.UserRole;
 import enums.CustomerTypes;
 public class UserDAO {
@@ -69,6 +70,9 @@ public class UserDAO {
         System.out.println("nije nasao usera");
         return null;
     }
+	public void registerUser(UserRegistration user) {
+		System.out.println("Korisnik treba da se registruje");
+	}
 	
 }
 

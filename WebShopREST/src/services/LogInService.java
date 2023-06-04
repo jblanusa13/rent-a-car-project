@@ -34,15 +34,12 @@ public class LogInService {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public User authenticateUser(UserCredentials credentials) {
-		System.out.println(" Coaodchuhhusxj");
-		System.out.println(credentials);
 		String username = credentials.getUsername();
 		String password = credentials.getPassword();
 		System.out.println(username);
 		System.out.println(password);
 		UserDAO dao = (UserDAO)ctx.getAttribute("UserDAO");
 		return dao.getUser(username, password);	
-		
 	}
 	
 	@GET
@@ -58,4 +55,5 @@ public class LogInService {
             return null;
         }
     }
+	
 }
