@@ -40,13 +40,13 @@ public class LogInService {
 		String username = credentials.getUsername();
 		String password = credentials.getPassword();
 		
-		User user = UserDAO.getUser(username, password);
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		
+		User user = dao.getUser(username, password);
 		
 		if (user != null) {
-			// User authentication successful
 			return Response.ok().entity(user).build();
 		} else {
-			// User authentication failed
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
 	}
