@@ -77,7 +77,7 @@ Vue.component("logIn", {
 	  }
 	  if(this.isUsernameValid&&this.isPasswordValid)
 	  {
-		 axios.post('rest/logIn/', this.userCredentials)
+		 axios.post('rest/user/login/', this.userCredentials)
     .then(response => {
         this.user = response.data; 
         router.push({ path: `/userProfile/${this.user.id}` });

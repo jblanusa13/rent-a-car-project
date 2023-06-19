@@ -9,7 +9,9 @@ Vue.component("register", {
       lastName: '',
       gender: '',
       dateOfBirth: '',
-      errortext:''
+      errortext:'',
+      user:{username:null, password: null, name: null, surname:null, gender: null, birthDate:null},
+      
     }
   },
   template: `
@@ -131,16 +133,27 @@ Vue.component("register", {
     
       console.log("Yay! All fields are filled!");
       console.log(this.userRegistration)
-     axios.post('rest/logIn/register', this.userRegistration)
+     axios.post('rest/user/register', this.userRegistration)
   		.then(response => {
-   		router.push(`/`);
-  		}).catch(error => {
-        this.errortext = 'User with this data already exist';
-    });
+    this.user = response.data;
+    console.log(`User id: ${this.user.id}`)
+    if(this.user.id==null){
+		this.errortext = 'This username is already in use. Try another one.';
+		console.log(' user not found')
+		return;
+	}
+	else{
+		console.log('user found ')
+		router.push(`/logIn`);
+		return;
+	}
+     
+  } );
       
   },
  	goToLoginPage: function () {
-      router.push('/');
+	  event.preventDefault();
+      router.push(`/`);
     }
 }
 

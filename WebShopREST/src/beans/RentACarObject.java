@@ -1,30 +1,33 @@
 package beans;
 
+import java.util.ArrayList;
+
 import enums.RentACarStatus;
 
 public class RentACarObject {
 	private String id;
 	private String name;
-	private String availableCars;
+	private ArrayList<Vehicle> availableCars;
 	//radno vreme
 	private RentACarStatus status;
 	private Location location;
 	//logo
-	private int ocena;
+	private float rate;
 	
-	public RentACarObject() {}
+	public RentACarObject() {
+		super();
+	}
 	
-	public RentACarObject(String id, String name, String availableCars, RentACarStatus status, Location location,
-			int ocena) {
+	public RentACarObject(String id, String name, ArrayList<Vehicle> availableCars, RentACarStatus status,
+			Location location, float rate) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.availableCars = availableCars;
 		this.status = status;
 		this.location = location;
-		this.ocena = ocena;
+		this.rate = rate;
 	}
-
 	public String getId() {
 		return id;
 	}
@@ -41,13 +44,17 @@ public class RentACarObject {
 		this.name = name;
 	}
 
-	public String getAvailableCars() {
+	public ArrayList<Vehicle> getAvailableCars() {
 		return availableCars;
 	}
 
-	public void setAvailableCars(String availableCars) {
+
+
+	public void setAvailableCars(ArrayList<Vehicle> availableCars) {
 		this.availableCars = availableCars;
 	}
+
+
 
 	public RentACarStatus getStatus() {
 		return status;
@@ -65,11 +72,12 @@ public class RentACarObject {
 		this.location = location;
 	}
 
-	public int getOcena() {
-		return ocena;
+	public float getRate() {
+		return rate;
 	}
 
-	public void setOcena(int ocena) {
-		this.ocena = ocena;
+	public void setRate(float rate) {
+		this.rate = rate;
 	}
+
 }

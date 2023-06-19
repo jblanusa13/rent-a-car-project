@@ -1,13 +1,6 @@
 package beans;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
 import enums.UserRole;
-
-import java.util.Date;
-import java.util.List;
 
 public class User {
 	private String id;
@@ -16,7 +9,7 @@ public class User {
     private String name;
     private String surname;
     private String gender;
-    private LocalDate birthDate;
+    private String birthDate;
     private UserRole role;
     //private List<Rental> rentals;
     private ShoppingCart shoppingCart;
@@ -29,7 +22,7 @@ public class User {
 	}
 	
 	public User(String id, String username, String password, String name, String surname, String gender,
-			LocalDate birthDate, UserRole role, ShoppingCart shoppingCart, RentACarObject rentACar, int collectedPoints,
+			String birthDate, UserRole role, ShoppingCart shoppingCart, RentACarObject rentACar, int collectedPoints,
 			CustomerType customerType) {
 		super();
 		this.id = id;
@@ -82,10 +75,10 @@ public class User {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public LocalDate getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 	public UserRole getRole() {
@@ -121,4 +114,3 @@ public class User {
 		this.shoppingCart = shoppingCart;
 	}
 }
-

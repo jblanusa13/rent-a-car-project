@@ -1,10 +1,5 @@
 package beans;
 
-import java.time.LocalDate;
-import java.util.Date;
-
-import enums.UserRole;
-
 public class UserRegistration {
 
     private String username;
@@ -12,7 +7,7 @@ public class UserRegistration {
     private String name;
     private String surname;
     private String gender;
-    private LocalDate birthDate;
+    private String birthDate;
     
     
 	public UserRegistration() {
@@ -21,7 +16,7 @@ public class UserRegistration {
 
 
 	public UserRegistration(String username, String password, String name, String surname, String gender,
-			LocalDate birthDate) {
+			String birthDate) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -82,12 +77,12 @@ public class UserRegistration {
 	}
 
 
-	public LocalDate getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 
 
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
     
