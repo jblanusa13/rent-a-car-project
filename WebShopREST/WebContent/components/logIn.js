@@ -2,7 +2,7 @@ Vue.component("logIn", {
   data: function() {
     return {
 	  user:{id:' ',username:null, password: null, name: null, surname:null, gender: null, birthDate:null,
-			UserRole: null, rentACar:null, collectedPoints:null, customerType:null},
+			role: null,shoppingCart:null, rentACar:null, collectedPoints:null, customerType:null},
       userCredentials: {
         username: null,
         password: null
@@ -80,7 +80,18 @@ Vue.component("logIn", {
 		 axios.post('rest/user/login/', this.userCredentials)
     .then(response => {
         this.user = response.data; 
-        router.push({ path: `/userProfile/${this.user.id}` });
+        console.log('Uloga korisnika:')
+        console.log("Uloga korisnika:"+this.user.role)
+        if (this.user.role === 'Administrator') {
+          router.push({ path: `/adminProfile/${this.user.id}` });
+        } else if (this.user.role === 'Customer') {
+          router.push({ path: `/customerProfile/${this.user.id}` });
+        } else if (this.user.role === 'Manager') {
+          router.push({ path: `/managerProfile/${this.user.id}` });
+        } else {
+          this.errortext = 'Invalid user role';
+        }
+        
     })
     .catch(error => {
         console.error('An error occurred:', error);

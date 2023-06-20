@@ -153,7 +153,7 @@ Vue.component("register", {
   },
  	goToLoginPage: function () {
 	  event.preventDefault();
-      router.push(`/`);
+      router.push(`/logIn`);
     }
 }
 
