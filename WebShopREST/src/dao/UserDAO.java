@@ -36,14 +36,11 @@ public class UserDAO {
 	public UserDAO(String contextPath) {
 		
 		path=contextPath;
-		
 		loadFromFile();
 		System.out.println("SVI USERI:");
 		for(User u: users) {
 			System.out.println(u.getId());
 		}
-		
-		
 	}
 
 	public void writeToFile() {
@@ -116,7 +113,6 @@ public class UserDAO {
 			    }
 			}
 			maxId++;
-			ShoppingCart sc=new ShoppingCart("1", objects, maxId.toString(), 0);
 			user.setId(maxId.toString());
 			user.setBirthDate(userReg.getBirthDate());
 			user.setCollectedPoints(0);
@@ -126,10 +122,8 @@ public class UserDAO {
 			user.setPassword(userReg.getPassword());
 			user.setUsername(userReg.getUsername());
 			user.setRole(UserRole.Customer);
-			RentACarObject object1 = new RentACarObject("1", "Kod Milana", new ArrayList<Vehicle>(), RentACarStatus.Open, new Location("1", "22", "23", "Super"), 5);
-			object1.setAvailableCars(cars);
-			user.setRentACar(object1);
-			user.setShoppingCart(sc);
+			user.setRentACar(new RentACarObject());
+			user.setShoppingCart(new ShoppingCart());
 			user.setSurname(userReg.getSurname());
 		    users.add(user);
 		    System.out.println("Korisnik registrovan");
@@ -156,6 +150,7 @@ public class UserDAO {
             user.setSurname(updatedUser.getSurname());
             user.setGender(updatedUser.getGender());
             user.setBirthDate(updatedUser.getBirthDate());
+            writeToFile();
             return true;
         }
         return false;
@@ -163,7 +158,7 @@ public class UserDAO {
 	}
 	
 	public String getBirthDate(String id) {
-		User user = getUserById(id);
+		User user = getUserById(id); 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String birthDateString = user.getBirthDate().formatted(formatter);
 		return birthDateString;

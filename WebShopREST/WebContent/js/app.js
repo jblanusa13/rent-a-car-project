@@ -10,6 +10,8 @@ const CustomerProfile = { template: '<customer-profile></customer-profile>' }
 const UserProfileUpdate = { template: '<user-update></user-update>' }
 const RentACar = { template: '<rentACarr></rentACarr>' }
 const RentACarLoggedIn = { template: '<rentACarloggedIn></rentACarloggedIn>' }
+const ManagerRentalObjects={ template: '<managerRentalObjects></managerRentalObjects>' }
+
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -23,7 +25,8 @@ const router = new VueRouter({
 		{ path: '/userProfileUpdate/:id', name: 'home4', component: UserProfileUpdate},
 		{ path: '/loggedInAdmin/:id', name: 'home5a', component: LoggedInAdmin},
 		{ path: '/loggedInManager/:id', name: 'home5b', component: LoggedInManager},
-		{ path: '/loggedInCustomer/:id', name: 'home5c', component: LoggedInCustomer}
+		{ path: '/loggedInCustomer/:id', name: 'home5c', component: LoggedInCustomer},
+		{ path: '/managerRentalObjects/:id', name: 'home6', component: ManagerRentalObjects}
 	  ]
 });
 

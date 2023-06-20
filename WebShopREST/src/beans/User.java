@@ -1,5 +1,7 @@
 package beans;
 
+import java.util.ArrayList;
+
 import enums.UserRole;
 
 public class User {
@@ -11,7 +13,7 @@ public class User {
     private String gender;
     private String birthDate;
     private UserRole role;
-    //private List<Rental> rentals;
+    private ArrayList<RentingOrder> orders;
     private ShoppingCart shoppingCart;
     private RentACarObject rentACar;
     private int collectedPoints;
@@ -22,7 +24,7 @@ public class User {
 	}
 	
 	public User(String id, String username, String password, String name, String surname, String gender,
-			String birthDate, UserRole role, ShoppingCart shoppingCart, RentACarObject rentACar, int collectedPoints,
+			String birthDate, UserRole role,ArrayList<RentingOrder> orders, ShoppingCart shoppingCart, RentACarObject rentACar, int collectedPoints,
 			CustomerType customerType) {
 		super();
 		this.id = id;
@@ -33,10 +35,19 @@ public class User {
 		this.gender = gender;
 		this.birthDate = birthDate;
 		this.role = role;
+		this.orders=orders;
 		this.shoppingCart = shoppingCart;
 		this.rentACar = rentACar;
 		this.collectedPoints = collectedPoints;
 		this.customerType = customerType;
+	}
+
+	public ArrayList<RentingOrder> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(ArrayList<RentingOrder> orders) {
+		this.orders = orders;
 	}
 
 	public String getId() {

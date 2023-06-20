@@ -163,7 +163,16 @@ Vue.component("user-update", {
   		axios.put(`rest/user/update/${this.userId}`, this.updatedUser)
     		.then(response => {
      		 console.log("User updated successfully");
-      		router.push(`/userProfile/${this.userId}`);
+      		console.log("Uloga korisnika:"+this.user.role)
+	        if (this.user.role === 'Administrator') {
+	          router.push({ path: `/adminProfile/${this.user.id}` });
+	        } else if (this.user.role === 'Customer') {
+	          router.push({ path: `/customerProfile/${this.user.id}` });
+	        } else if (this.user.role === 'Manager') {
+	          router.push({ path: `/managerProfile/${this.user.id}` });
+	        } else {
+	          this.errortext = 'Invalid user role';
+	        }
     	})
     	.catch(error => {
      		 this.errortext = "An error occurred while updating user data";
@@ -171,7 +180,16 @@ Vue.component("user-update", {
     		});
 	},
     goToUserProfile() {
-      router.push(`/userProfile/${this.userId}`);
+		console.log("Uloga korisnika:"+this.user.role)
+        if (this.user.role === 'Administrator') {
+          router.push({ path: `/adminProfile/${this.user.id}` });
+        } else if (this.user.role === 'Customer') {
+          router.push({ path: `/customerProfile/${this.user.id}` });
+        } else if (this.user.role === 'Manager') {
+          router.push({ path: `/managerProfile/${this.user.id}` });
+        } else {
+          this.errortext = 'Invalid user role';
+        }
     }
   }
 });

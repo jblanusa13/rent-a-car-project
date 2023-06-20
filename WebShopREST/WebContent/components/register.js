@@ -127,8 +127,17 @@ Vue.component("register", {
       this.errortext = 'All fields are required';
       return;
     } else {
-      document.getElementsByName("dateOfBirth")[0].style.background = "white";
-      this.errortext=''
+      var today = new Date();
+	  var selectedDate = new Date(this.userRegistration.birthDate);
+	  
+	  if (selectedDate >= today) {
+	    document.getElementsByName("dateOfBirth")[0].style.background = "red";
+	    this.errortext = 'Birth date must be in the past';
+	    return;
+	  } else {
+	    document.getElementsByName("dateOfBirth")[0].style.background = "white";
+	    this.errortext = '';
+	  }
     }
     
       console.log("Yay! All fields are filled!");
@@ -139,6 +148,7 @@ Vue.component("register", {
     console.log(`User id: ${this.user.id}`)
     if(this.user.id==null){
 		this.errortext = 'This username is already in use. Try another one.';
+        document.getElementsByName("username")[0].style.background = "red";
 		console.log(' user not found')
 		return;
 	}

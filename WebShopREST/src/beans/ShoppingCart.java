@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class ShoppingCart {
 	private String id;
-	private ArrayList<RentACarObject> cars;
+	private ArrayList<Vehicle> cars;
 	private String userId;
 	private int price;
 	
@@ -12,7 +12,7 @@ public class ShoppingCart {
 		super();
 	}
 
-	public ShoppingCart(String id, ArrayList<RentACarObject> cars, String userId, int price) {
+	public ShoppingCart(String id, ArrayList<Vehicle> cars, String userId, int price) {
 		super();
 		this.id = id;
 		this.cars = cars;
@@ -28,11 +28,11 @@ public class ShoppingCart {
 		this.id = id;
 	}
 
-	public ArrayList<RentACarObject> getCars() {
+	public ArrayList<Vehicle> getCars() {
 		return cars;
 	}
 
-	public void setCars(ArrayList<RentACarObject> cars) {
+	public void setCars(ArrayList<Vehicle> cars) {
 		this.cars = cars;
 	}
 
