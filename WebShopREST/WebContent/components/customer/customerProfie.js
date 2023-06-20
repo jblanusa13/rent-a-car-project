@@ -78,7 +78,7 @@ Vue.component("customer-profile", {
 					<tr>
 						<td>Cars in cart:</td>
             			<td v-if="user.shoppingCart.cars">
-							<ul data-role"listview" data-view="list" v-for="c in user.shoppingCart.cars">
+							<ul data-role="listview" data-view="list" v-for="c in user.shoppingCart.cars">
 								<li>{{c}}</li>
 							</ul>
 						</td>
