@@ -116,5 +116,20 @@ public class UserService {
 		}
 		
 	}
+	@GET
+	@Path("/managerObject/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMnagerObjectId(@PathParam("id") String id) {
+		System.out.println("TRAZI ID OBJEKTA");
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+        String o = dao.getMnagerObjectId(id);
+        if (o != null) {
+        	System.out.println("ID JE:"+o);
+            return o;
+        } else {
+        	System.out.println("An error occurred while finding the manager rentacar object id");
+            return "1";
+        }
+    }
 	
 }

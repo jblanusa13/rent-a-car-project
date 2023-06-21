@@ -43,6 +43,31 @@ public class UserDAO {
 		}
 	}
 
+	private void addrentacar() {
+		RentACarObject object1 = new RentACarObject("1", "Kod Milana", new ArrayList<Vehicle>(), RentACarStatus.Open, new Location("1", "22", "23", "Super"), 5);
+
+		Vehicle vehicle1 = new Vehicle("1", "Honda", "ne znam sad", 10000, VehicleType.Car, "1", StickType.Automatic, FuelType.Diesel, 15, 5, 5, "lepa kola", "images/vehicles/1.jpg", CarStatus.Available);
+		Vehicle vehicle2 = new Vehicle("2", "Golfic", "ne znam sad", 2002, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 11, 5, 4, "lepa kola", "images/vehicles/2.jpg", CarStatus.Available);
+		Vehicle vehicle3 = new Vehicle("3", "Audi", "ne znam sad", 12000, VehicleType.Car, "1", StickType.Manual, FuelType.Diesel, 12, 4, 5, "lepa kola", "images/vehicles/3.jpg", CarStatus.Available);
+		Vehicle vehicle4 = new Vehicle("4", "BrzaKola", "ne znam sad", 20000, VehicleType.Van, "1", StickType.Automatic, FuelType.Diesel, 13, 4, 5, "lepa kola", "images/vehicles/4.jpg", CarStatus.Available);
+		Vehicle vehicle5 = new Vehicle("5", "Tojota", "ne znam sad", 50000, VehicleType.MobileHome, "1", StickType.Manual, FuelType.Diesel, 15, 5, 16, "lepa kola", "images/vehicles/5.jpg", CarStatus.Available);
+		
+		ArrayList<Vehicle> cars = new ArrayList<Vehicle>();
+		cars.add(vehicle1);
+		cars.add(vehicle2);
+		cars.add(vehicle3);
+		cars.add(vehicle4);
+		cars.add(vehicle5);
+		object1.setAvailableCars(cars);
+		
+		User u=new User();
+		u=getUserById("3");
+		u.setRentACar(object1);
+		updateManagerRentACar(u);
+		
+		
+	}
+
 	public void writeToFile() {
 		Gson gs = new GsonBuilder().setPrettyPrinting().create(); 
     	String jsonString = gs.toJson(users);
@@ -156,12 +181,30 @@ public class UserDAO {
         return false;
 		
 	}
+	public void updateManagerRentACar(User updatedUser) {
+		User user = getUserById(updatedUser.getId());
+        if (user != null) {
+        	System.out.println("Korisnik naden koji  se updejtuje");
+            user.setRentACar(updatedUser.getRentACar());
+            writeToFile();
+            return;
+        }	
+        System.out.println("Nije updejtovan korisnik");
+	}
 	
 	public String getBirthDate(String id) {
 		User user = getUserById(id); 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String birthDateString = user.getBirthDate().formatted(formatter);
 		return birthDateString;
+	}
+
+	public String getMnagerObjectId(String id) {
+		User user= getUserById(id);
+		if(user!=null) {
+			return user.getRentACar().getId();
+		}
+		return null;
 	}
 	
 }

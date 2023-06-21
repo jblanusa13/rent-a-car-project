@@ -14,11 +14,15 @@ public class RentingOrder {
 	private User customer;
 	private RentingOrderStatus orderStatus;
 	private int price;
+	private String managerComment;
+	private String customerComment;
 	public RentingOrder() {
 		super();
 	}
+	
 	public RentingOrder(String id, String identificator, RentACarObject rentingObject, ArrayList<Vehicle> vehicles,
-			String date, String time, int duration, User customer, RentingOrderStatus orderStatus,int price) {
+			String date, String time, int duration, User customer, RentingOrderStatus orderStatus, int price,
+			String managerComment, String customerComment) {
 		super();
 		this.id = id;
 		this.identificator = identificator;
@@ -29,8 +33,27 @@ public class RentingOrder {
 		this.duration = duration;
 		this.customer = customer;
 		this.orderStatus = orderStatus;
-		this.price=price;
+		this.price = price;
+		this.managerComment = managerComment;
+		this.customerComment = customerComment;
 	}
+
+	public String getManagerComment() {
+		return managerComment;
+	}
+
+	public void setManagerComment(String managerComment) {
+		this.managerComment = managerComment;
+	}
+
+	public String getCustomerComment() {
+		return customerComment;
+	}
+
+	public void setCustomerComment(String customerComment) {
+		this.customerComment = customerComment;
+	}
+
 	public String getId() {
 		return id;
 	}
