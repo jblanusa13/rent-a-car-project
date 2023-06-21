@@ -22,7 +22,8 @@ public class RentACarObjectService {
 	@PostConstruct
 	public void init() {
 		if (ctx.getAttribute("ObjectDAO") == null) {
-			ctx.setAttribute("ObjectDAO", new RentACarObjectDAO());
+			String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("ObjectDAO", new RentACarObjectDAO(contextPath));
 		}
 	}
 	
@@ -32,5 +33,13 @@ public class RentACarObjectService {
 	public ArrayList<RentACarObject> getAllObjects(){
 		RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
 		return dao.findAll();
+	}
+	
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public RentACarObject getObjectById(@PathParam("id") String id){
+		RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+		return dao.getById(id);
 	}
 }
