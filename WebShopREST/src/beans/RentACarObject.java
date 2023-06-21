@@ -8,7 +8,8 @@ public class RentACarObject {
 	private String id;
 	private String name;
 	private ArrayList<Vehicle> availableCars;
-	//radno vreme
+	private String openingTime;
+	private String closingTime;
 	private RentACarStatus status;
 	private Location location;
 	private String imageURL;
@@ -17,19 +18,37 @@ public class RentACarObject {
 	public RentACarObject() {
 		super();
 	}
-	
-	public RentACarObject(String id, String name, ArrayList<Vehicle> availableCars, RentACarStatus status,
-			Location location, String imageURL, float rate) {
+
+	public RentACarObject(String id, String name, ArrayList<Vehicle> availableCars, String openingTime,
+			String closingTime, RentACarStatus status, Location location, String imageURL, float rate) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.availableCars = availableCars;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
 		this.status = status;
 		this.location = location;
 		this.imageURL = imageURL;
 		this.rate = rate;
 	}
+	
 
+	public String getOpeningTime() {
+		return openingTime;
+	}
+
+	public void setOpeningTime(String openingTime) {
+		this.openingTime = openingTime;
+	}
+
+	public String getClosingTime() {
+		return closingTime;
+	}
+
+	public void setClosingTime(String closingTime) {
+		this.closingTime = closingTime;
+	}
 
 	public String getId() {
 		return id;
