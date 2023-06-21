@@ -11,6 +11,7 @@ const UserProfileUpdate = { template: '<user-update></user-update>' }
 const RentACar = { template: '<rentACarr></rentACarr>' }
 const RentACarLoggedIn = { template: '<rentACarloggedIn></rentACarloggedIn>' }
 const ManagerRentalObjects={ template: '<managerRentalObjects></managerRentalObjects>' }
+const RentACarObject={ template: '<rentACarObject></rentACarObject>' }
 
 
 const router = new VueRouter({
@@ -26,7 +27,8 @@ const router = new VueRouter({
 		{ path: '/loggedInAdmin/:id', name: 'home5a', component: LoggedInAdmin},
 		{ path: '/loggedInManager/:id', name: 'home5b', component: LoggedInManager},
 		{ path: '/loggedInCustomer/:id', name: 'home5c', component: LoggedInCustomer},
-		{ path: '/managerRentalObjects/:id', name: 'home6', component: ManagerRentalObjects}
+		{ path: '/managerRentalObjects/:id', name: 'home6', component: ManagerRentalObjects},
+		{ path: '/object/:id', name: 'home7', component: RentACarObject}
 	  ]
 });
 

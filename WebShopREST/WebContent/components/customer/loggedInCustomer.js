@@ -22,13 +22,15 @@ Vue.component("logInCustomer", {
 			<td>{{o.location.longitude}}</td>
 			<td>{{o.location.address}}</td>
 			<td>{{o.rate}}</td>
+			<td><button type="submit" v-on:click="showObject(o.id)">Show</button></td>
 		</tr>
 	</table><br><br>
-	
+
 	<div>
 		<button type="submit" v-on:click="profile">Profile</button>
 		<button type="submit" v-on:click="logOut">Log out</button>
 	</div>
+	
 </div>
   `,
   mounted() {
@@ -49,6 +51,10 @@ Vue.component("logInCustomer", {
 	logOut: function () {
       	event.preventDefault();
 		router.push(`/`);
+    },
+	showObject: function (id) {
+      	event.preventDefault();
+		router.push(`/object/`+id);
     }
   }
 });

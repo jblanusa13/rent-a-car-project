@@ -11,7 +11,7 @@ public class RentACarObject {
 	//radno vreme
 	private RentACarStatus status;
 	private Location location;
-	//logo
+	private String imageURL;
 	private float rate;
 	
 	public RentACarObject() {
@@ -19,15 +19,18 @@ public class RentACarObject {
 	}
 	
 	public RentACarObject(String id, String name, ArrayList<Vehicle> availableCars, RentACarStatus status,
-			Location location, float rate) {
+			Location location, String imageURL, float rate) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.availableCars = availableCars;
 		this.status = status;
 		this.location = location;
+		this.imageURL = imageURL;
 		this.rate = rate;
 	}
+
+
 	public String getId() {
 		return id;
 	}
@@ -78,6 +81,16 @@ public class RentACarObject {
 
 	public void setRate(float rate) {
 		this.rate = rate;
+	}
+
+
+	public String getImageURL() {
+		return imageURL;
+	}
+
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 }
