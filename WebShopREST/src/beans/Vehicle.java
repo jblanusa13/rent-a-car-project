@@ -18,7 +18,7 @@ public class Vehicle {
 	private int doorNumber;
 	private int peopleNumber;
 	private String description;
-	//slika
+	private String imageURL;
 	private CarStatus carStatus;
 	
 	public Vehicle() {
@@ -27,7 +27,7 @@ public class Vehicle {
 	
 	public Vehicle(String id, String brand, String model, float price, VehicleType type, String objectId,
 			StickType stickType, FuelType fuelType, float consumption, int doorNumber, int peopleNumber,
-			String description, CarStatus carStatus) {
+			String description,String image, CarStatus carStatus) {
 		super();
 		this.id = id;
 		this.brand = brand;
@@ -41,7 +41,16 @@ public class Vehicle {
 		this.doorNumber = doorNumber;
 		this.peopleNumber = peopleNumber;
 		this.description = description;
+		this.imageURL=image;
 		this.carStatus = carStatus;
+	}
+
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 	public String getId() {
