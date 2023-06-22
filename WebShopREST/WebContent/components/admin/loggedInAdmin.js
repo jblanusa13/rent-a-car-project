@@ -27,6 +27,7 @@ Vue.component("logInAdmin", {
 	
 	<div>
 		<button type="submit" v-on:click="profile">Profile</button>
+		<button type="submit" v-on:click="addNew">Add new object</button>
 		<button type="submit" v-on:click="logOut">Log out</button>
 	</div>
 </div>
@@ -45,6 +46,10 @@ Vue.component("logInAdmin", {
 	profile: function () {
       	event.preventDefault();
 		router.push(`/adminProfile/${this.userId}`);
+    },
+	addNew: function () {
+      	event.preventDefault();
+		router.push(`/addNew`);
     },
 	logOut: function () {
       	event.preventDefault();

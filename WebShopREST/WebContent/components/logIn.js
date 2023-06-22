@@ -83,11 +83,11 @@ Vue.component("logIn", {
         console.log('Uloga korisnika:')
         console.log("Uloga korisnika:"+this.user.role)
         if (this.user.role === 'Administrator') {
-          router.push({ path: `/adminProfile/${this.user.id}` });
+          router.push({ path: `/loggedInAdmin/${this.user.id}` });
         } else if (this.user.role === 'Customer') {
-          router.push({ path: `/customerProfile/${this.user.id}` });
+          router.push({ path: `/loggedInCustomer/${this.user.id}` });
         } else if (this.user.role === 'Manager') {
-          router.push({ path: `/managerProfile/${this.user.id}` });
+          router.push({ path: `/loggedInManager/${this.user.id}` });
         } else {
           this.errortext = 'Invalid user role';
         }

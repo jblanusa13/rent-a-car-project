@@ -44,19 +44,15 @@ Vue.component("customer-profile", {
 		
 		<form>
 			<table>
-				<tr v-if="user.role == 'Manager'">
-           			<td>Rent a car object:</td>
-           			<td><input type="text" name="carObject" disabled></td>
-       			</tr>
-				<tr v-else-if="user.role == 'Customer'">
-            			<td>Collected points:</td>
-            			<td><input type="text" name="points" v-model="user.collectedPoints" disabled></td>
+				<tr>
+            		<td>Collected points:</td>
+            		<td><input type="text" name="points" v-model="user.collectedPoints" disabled></td>
           		</tr>
 			</table>
 		</form>
 		
 		<form>
-			<div v-if="user.role == 'Customer'">
+			<div>
 				<table>
 					<tr>
 						<td>Customer type:</td>
@@ -72,7 +68,7 @@ Vue.component("customer-profile", {
 					</tr>
 				</table>
 			</div>
-			<div v-if="user.role == 'Customer'">
+			<div>
 				<h3>Shopping cart</h3>
 				<table>
 					<tr>
