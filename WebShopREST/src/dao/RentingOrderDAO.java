@@ -1,6 +1,7 @@
 package dao;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 import beans.CustomerType;
 import beans.Location;
 import beans.RentACarObject;
+import beans.RentingFilter;
 import beans.RentingOrder;
 import beans.ShoppingCart;
 import beans.User;
@@ -60,9 +62,9 @@ public class RentingOrderDAO {
 		
 		
 		// Create seven instances of RentingOrder
-		RentingOrder order1 = new RentingOrder("1", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle1)), "2023-06-22", "10:00", 3, user1, RentingOrderStatus.Processing, 300,"","");
-		RentingOrder order2 = new RentingOrder("2", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle2)), "2023-06-22", "11:00", 2, user1, RentingOrderStatus.Processing, 400,"","");
-		RentingOrder order3 = new RentingOrder("3", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle3)), "2023-06-23", "09:00", 1, user1, RentingOrderStatus.Approved, 200,"","");
+		RentingOrder order1 = new RentingOrder("1", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle1)), "2023-06-23", "10:00", 3, user1, RentingOrderStatus.Processing, 300,"","");
+		RentingOrder order2 = new RentingOrder("2", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle2)), "2023-06-23", "11:00", 2, user1, RentingOrderStatus.Processing, 400,"","");
+		RentingOrder order3 = new RentingOrder("3", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle3)), "2023-06-24", "09:00", 1, user1, RentingOrderStatus.Approved, 200,"","");
 		RentingOrder order4 = new RentingOrder("4", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle4)), "2023-06-23", "10:00", 5, user1, RentingOrderStatus.Taken, 600,"","");
 		RentingOrder order5 = new RentingOrder("5", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle5)), "2023-06-24", "13:00", 2, user1, RentingOrderStatus.Returned, 500,"","");
 		RentingOrder order6 = new RentingOrder("6", generateRandomId(), object1, cars , "2023-06-26", "15:00", 4, user1, RentingOrderStatus.Rejected, 800,"","");
@@ -74,7 +76,7 @@ public class RentingOrderDAO {
 		orders.add(order5);
 		orders.add(order6);
 		
-		writeToFile();
+		writeToFile();/**/
 		//loadFromFile();
 		System.out.println("SVI USERI:");
 		for(RentingOrder u: orders) {
@@ -124,8 +126,7 @@ public class RentingOrderDAO {
 		managerOrders = new ArrayList<>();
 		if(managerObject!=null) {
 			for (RentingOrder order : orders) {
-				System.out.println("Order id:"+order.getId()+", Order renting object id:"+ order.getRentingObject().getId()+",manager object id:"+ managerObject);
-	            if (order.getRentingObject().getId().equals(managerObject)) {
+				if (order.getRentingObject().getId().equals(managerObject)) {
 	                managerOrders.add(order);
 	            }
 	        }
@@ -194,53 +195,87 @@ public class RentingOrderDAO {
 		
 	}
 	
-	public void changeOrderStatusToApproved(RentingOrder order) {
-		order.setOrderStatus(RentingOrderStatus.Approved);
-		update(order);
+	public Boolean changeOrderStatusToApproved(String orderId) {
+		RentingOrder order= getOrderById(orderId);
+		if(order!=null) {
+			order.setOrderStatus(RentingOrderStatus.Approved);
+			update(order);
+			return true;
+		}
+		return false;
 	}
 
-	public void changeOrderStatusToTaken(RentingOrder order) {
-		order.setOrderStatus(RentingOrderStatus.Taken);
-		update(order);
+	public Boolean changeOrderStatusToTaken(String orderId) {
+		RentingOrder order= getOrderById(orderId);
+		if(order!=null) {
+			order.setOrderStatus(RentingOrderStatus.Taken);
+			update(order);
+			return true;
+		}
+		return false;
+		
 	}
 	
-	public void changeOrderStatusToReturned(RentingOrder order) {
-		order.setOrderStatus(RentingOrderStatus.Returned);
-		update(order);
+	public Boolean changeOrderStatusToReturned(String orderId) {
+		RentingOrder order= getOrderById(orderId);
+		if(order!=null) {
+			order.setOrderStatus(RentingOrderStatus.Returned);
+			update(order);
+			return true;
+		}
+		return false;
 	}
 	
-	public void changeOrderStatusToRejected(RentingOrder order) {
-		order.setOrderStatus(RentingOrderStatus.Rejected);
-		update(order);
+	public Boolean changeOrderStatusToRejected(String orderId,String comment) {
+		RentingOrder order= getOrderById(orderId);
+		if(order!=null) {
+			order.setOrderStatus(RentingOrderStatus.Rejected);
+			order.setManagerComment(comment);
+			update(order);
+			return true;
+		}
+		return false;
 	}
 	
-	public void changeOrderStatusToCancelled(RentingOrder order) {
-		order.setOrderStatus(RentingOrderStatus.Cancelled);
-		update(order);
+	public Boolean changeOrderStatusToCancelled(String orderId) {
+		RentingOrder order= getOrderById(orderId);
+		if(order!=null) {
+			order.setOrderStatus(RentingOrderStatus.Cancelled);
+			update(order);
+			return true;
+		}
+		return false;
 	}
 	
-    public ArrayList<RentingOrder> searchOrders(String rentingObjectName, int minPrice, int maxPrice, String fromDate, String toDate) {
+    public ArrayList<RentingOrder> searchManagerOrders(RentingFilter filter,String id) {
         ArrayList<RentingOrder> filteredOrders = new ArrayList<>();
-        LocalDate parsedfromDate = LocalDate.parse(fromDate, dateFormatter);
-        LocalDate parsedtoDate = LocalDate.parse(toDate, dateFormatter);
-        
-        for (RentingOrder order : orders) {
-            if (rentingObjectName != null && !order.getRentingObject().getName().equals(rentingObjectName)) {
+        ArrayList<RentingOrder> userOrders = new ArrayList<>();
+        userOrders=findAllManagersOrders(id);
+        for (RentingOrder order : userOrders) {
+            if (filter.getObjectName() != null && !filter.getObjectName().equals("") && !order.getRentingObject().getName().equals(filter.getObjectName())) {
                 continue;
             }
-            if (minPrice > 0 && order.getPrice() < minPrice) {
+            if (filter.getMinPrice() > 0 && order.getPrice() < filter.getMinPrice()) {
                 continue;
             }
-            if (maxPrice > 0 && order.getPrice() > maxPrice) {
+            if (filter.getMaxPrice() > 0 && order.getPrice() > filter.getMaxPrice()) {
                 continue;
             }
             LocalDate orderStartDate= LocalDate.parse(order.getDate(),dateFormatter);
             LocalDate orderEndDate= orderStartDate.plusDays(order.getDuration());
-            if (fromDate != null && orderStartDate.isBefore(parsedfromDate)) {
-                continue;
+            if (filter.getStartDate() != null) {
+                LocalDate parsedfromDate = LocalDate.parse(filter.getStartDate(), dateFormatter);
+            	if(orderStartDate.isBefore(parsedfromDate)) {
+
+                    continue;
+            	}
             }
-            if (toDate != null && orderEndDate.isAfter(parsedtoDate)) {
-                continue;
+            if (filter.getEndDate() != null) {
+                LocalDate parsedtoDate = LocalDate.parse(filter.getEndDate(), dateFormatter);
+                if(orderEndDate.isAfter(parsedtoDate)) {
+                	continue;
+                }
+                
             }
 
             filteredOrders.add(order);
@@ -249,7 +284,8 @@ public class RentingOrderDAO {
         return filteredOrders;
     }
     // Sort orders by object name
-    public ArrayList<RentingOrder> sortOrdersByName(boolean descending,ArrayList<RentingOrder> list) {
+    public ArrayList<RentingOrder> sortManagerOrdersByName(boolean descending,String objectId) {
+    	ArrayList<RentingOrder> list=findAllManagersOrders(objectId);
         Comparator<RentingOrder> comparator = Comparator.comparing(order -> order.getRentingObject().getName());
         if (descending) {
             comparator = comparator.reversed();
@@ -259,7 +295,8 @@ public class RentingOrderDAO {
     }
 
     // Sort orders by price
-    public ArrayList<RentingOrder> sortOrdersByPrice(boolean descending,ArrayList<RentingOrder> list) {
+    public ArrayList<RentingOrder> sortManagerOrdersByPrice(boolean descending,String objectId) {
+    	ArrayList<RentingOrder> list=findAllManagersOrders(objectId);
         Comparator<RentingOrder> comparator = Comparator.comparingInt(RentingOrder::getPrice);
         if (descending) {
             comparator = comparator.reversed();
@@ -269,7 +306,8 @@ public class RentingOrderDAO {
     }
 
     // Sort orders by date
-    public ArrayList<RentingOrder> sortOrdersByDate(boolean descending,ArrayList<RentingOrder> list) {
+    public ArrayList<RentingOrder> sortManagerOrdersByDate(boolean descending, String objectId) {
+    	ArrayList<RentingOrder> list=findAllManagersOrders(objectId);
         Comparator<RentingOrder> comparator = Comparator.comparing(RentingOrder::getDate);
         if (descending) {
             comparator = comparator.reversed();
@@ -277,4 +315,45 @@ public class RentingOrderDAO {
         Collections.sort(list, comparator);
         return list;
     }
+
+	public Boolean checkStatusToTakenEnabled(String orderId) {
+		RentingOrder order= getOrderById(orderId);
+		if(order!=null) {
+			LocalDate currentDate = LocalDate.now();
+	        LocalTime currentTime = LocalTime.now();
+			LocalDate parsedDate = LocalDate.parse(order.getDate(), dateFormatter);
+			LocalTime parsedTime = LocalTime.parse(order.getTime(), timeFormatter);
+
+	        if (parsedDate.isEqual(currentDate) && parsedTime.isBefore(currentTime)) {
+	            return true;
+	        }
+
+	        LocalDate endDate = parsedDate.plusDays(order.getDuration());
+	        if (currentDate.isAfter(parsedDate) && currentDate.isBefore(endDate)) {
+	            return true;
+	        }
+
+	        return false;
+		}
+		return false;
+	}
+
+	public Boolean checkStatusToReturnEnabled(String id) {
+		RentingOrder order= getOrderById(id);
+		if(order!=null) {
+			LocalDate currentDate = LocalDate.now();
+	        LocalTime currentTime = LocalTime.now();
+			LocalDate parsedDate = LocalDate.parse(order.getDate(), dateFormatter);
+			LocalTime parsedTime = LocalTime.parse(order.getTime(), timeFormatter);
+
+	        LocalDate endDate = parsedDate.plusDays(order.getDuration());
+	        if (currentDate.isAfter(parsedDate) && currentDate.isBefore(endDate)) {
+	            return true;
+	        }
+
+	        //return false;
+	        //moze da vrati bilo kada ali ako je posle end date-a verovatno ce biti oznacen kao los ili tako nesto
+		}
+		return false;
+	}
 }
