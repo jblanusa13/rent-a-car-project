@@ -12,6 +12,7 @@ const RentACar = { template: '<rentACarr></rentACarr>' }
 const RentACarLoggedIn = { template: '<rentACarloggedIn></rentACarloggedIn>' }
 const ManagerRentalObjects={ template: '<managerRentalObjects></managerRentalObjects>' }
 const RentACarObject={ template: '<rentACarObject></rentACarObject>' }
+const AddNewRentACar={ template: '<addNewObject></addNewObject>' }
 
 
 const router = new VueRouter({
@@ -28,7 +29,8 @@ const router = new VueRouter({
 		{ path: '/loggedInManager/:id', name: 'home5b', component: LoggedInManager},
 		{ path: '/loggedInCustomer/:id', name: 'home5c', component: LoggedInCustomer},
 		{ path: '/managerRentalObjects/:id', name: 'home6', component: ManagerRentalObjects},
-		{ path: '/object/:id', name: 'home7', component: RentACarObject}
+		{ path: '/object/:id', name: 'home7', component: RentACarObject},
+		{ path: '/addNew', name: 'home8', component: AddNewRentACar}
 	  ]
 });
 

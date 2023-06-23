@@ -1,5 +1,7 @@
 package services;
 
+import java.util.ArrayList;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
@@ -113,8 +115,7 @@ public class UserService {
 		else {
 			System.out.println("Korisnik NIJE registrovan");
             return null;
-		}
-		
+		}	
 	}
 	@GET
 	@Path("/managerObject/{id}")
@@ -132,4 +133,12 @@ public class UserService {
         }
     }
 	
+	
+	@GET
+	@Path("/managers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<User> getAvailableManagers() {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		return dao.getAvailableManagers();
+    }
 }

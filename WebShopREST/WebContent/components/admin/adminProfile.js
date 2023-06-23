@@ -41,58 +41,6 @@ Vue.component("admin-profile", {
 		</form>
 		
 		<br><br>
-		
-		<form>
-			<table>
-				<tr v-if="user.role == 'Manager'">
-           			<td>Rent a car object:</td>
-           			<td><input type="text" name="carObject" disabled></td>
-       			</tr>
-				<tr v-else-if="user.role == 'Customer'">
-            			<td>Collected points:</td>
-            			<td><input type="text" name="points" v-model="user.collectedPoints" disabled></td>
-          		</tr>
-			</table>
-		</form>
-		
-		<form>
-			<div v-if="user.role == 'Customer'">
-				<table>
-					<tr>
-						<td>Customer type:</td>
-           				<td><input type="text" name="type" v-model="user.customerType.typeName" disabled></td>
-					</tr>
-					<tr>
-						<td>Discount:</td>
-            			<td><input type="text" name="discount" v-model="user.customerType.discount" disabled></td>
-					</tr>
-					<tr>
-						<td>Required points:</td>
-           				<td><input type="text" name="points" v-model="user.customerType.requiredPoints" disabled></td>
-					</tr>
-				</table>
-			</div>
-			<div v-if="user.role == 'Customer'">
-				<h3>Shopping cart</h3>
-				<table>
-					<tr>
-						<td>Cars in cart:</td>
-            			<td v-if="user.shoppingCart.cars">
-							<ul data-role="listview" data-view="list" v-for="c in user.shoppingCart.cars">
-								<li>{{c}}</li>
-							</ul>
-						</td>
-						<td v-else>
-							Shopping cart is empty!
-						</td>
-					</tr>
-					<tr>
-						<td>Price:</td>
-            			<td><input type="text" name="price" v-model="user.shoppingCart.price" disabled></td>
-					</tr>
-				</table>
-			</div>
-		</form>
 		<button type="submit" v-on:click="goBack">Home page</button>
     </div>
   `,

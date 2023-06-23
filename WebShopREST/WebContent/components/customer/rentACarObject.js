@@ -8,6 +8,7 @@ Vue.component("rentACarObject", {
   template: `
 <div>
 	<h3>{{object.name}}</h3>
+	<img src="{{object.imageURL}}" alt="Object Image" style="width: 100%; height: auto;">
 	<table>
 		<tr>
 			<td>Working time:</td>
@@ -38,10 +39,6 @@ Vue.component("rentACarObject", {
 			</table>
 		</tr>
 	</table><br><br>
-
-	<div>
-		<button type="submit" v-on:click="ShowAll">Show all</button>
-	</div>
 	
 	<div>
 	<h4>Available vehicles</h4>
@@ -60,6 +57,7 @@ Vue.component("rentACarObject", {
 			<th>Status</th>
 		</tr>
 		<tr v-for="v in object.availableCars" >
+			<td><img src="${v.imageURL}" alt="Vehicle Image" style="width: 100%; height: auto;"></td>
 			<td>{{v.brand}}</td>
 			<td>{{v.model}}</td>
 			<td>{{v.price}}</td>
@@ -74,6 +72,10 @@ Vue.component("rentACarObject", {
 			<td><button type="submit" v-on:click="AddToCart(v.id)" v-if="v.carStatus == 'Available'">Add to cart</button></td>
 		</tr>
 	</table><br><br>
+	
+	<div>
+		<button type="submit" v-on:click="ShowAll">Show all objects</button>
+	</div>
 	</div>
 </div>
   `,
@@ -86,7 +88,7 @@ Vue.component("rentACarObject", {
 		.catch(error => console.log(error))
   },
   methods: {
-	showAll: function(){
+	ShowAll: function(){
 		
 	},
 	AddToCart: function(id){

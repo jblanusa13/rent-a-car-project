@@ -207,5 +207,19 @@ public class UserDAO {
 		return null;
 	}
 	
+	public ArrayList<User> getAvailableManagers(){
+		ArrayList<User> managers = new ArrayList<User>();
+		for(User user : users) {
+			if(user.getRole().equals(UserRole.Manager) && user.getRentACar().equals(null)) {
+				managers.add(user);
+			}
+		}
+		
+		if(managers.isEmpty()) {
+			return null;
+		}
+		return managers;
+	}
+	
 }
 
