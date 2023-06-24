@@ -11,6 +11,7 @@ const UserProfileUpdate = { template: '<user-update></user-update>' }
 const RentACar = { template: '<rentACarr></rentACarr>' }
 const RentACarLoggedIn = { template: '<rentACarloggedIn></rentACarloggedIn>' }
 const ManagerRentalObjects={ template: '<managerRentalObjects></managerRentalObjects>' }
+const CustomerRentalObjects={ template: '<customerRentalObjects></customerRentalObjects>' }
 const RentACarObject={ template: '<rentACarObject></rentACarObject>' }
 const AddNewRentACar={ template: '<addNewObject></addNewObject>' }
 
@@ -30,7 +31,8 @@ const router = new VueRouter({
 		{ path: '/loggedInCustomer/:id', name: 'home5c', component: LoggedInCustomer},
 		{ path: '/managerRentalObjects/:id', name: 'home6', component: ManagerRentalObjects},
 		{ path: '/object/:id', name: 'home7', component: RentACarObject},
-		{ path: '/addNew', name: 'home8', component: AddNewRentACar}
+		{ path: '/addNew', name: 'home8', component: AddNewRentACar},
+		{ path: '/customerRentalObjects/:id', name: 'home9', component: CustomerRentalObjects},
 	  ]
 });
 

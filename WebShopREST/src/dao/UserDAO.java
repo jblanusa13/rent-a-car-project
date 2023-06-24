@@ -36,7 +36,41 @@ public class UserDAO {
 	public UserDAO(String contextPath) {
 		
 		path=contextPath;
-		loadFromFile();
+		User user1 = new User("1", "user1", "password1", "John", "Doe", "Male", "2002-01-14",
+                UserRole.Administrator , new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 100, new CustomerType());
+        users.add(user1);
+
+        User user2 = new User("2", "user2", "password2", "Jane", "Smith", "Female", "1995-05-22",
+        		UserRole.Administrator, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 50, new CustomerType());
+        users.add(user2);
+
+        User user3 = new User("3", "user3", "password3", "Mike", "Johnson", "Male", "1988-12-10",
+        		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 75, new CustomerType());
+        users.add(user3);
+        User user4 = new User("4", "user4", "password4", "Emily", "Anderson", "Female", "1990-07-18",
+        		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 60, new CustomerType());
+        users.add(user4);
+
+        User user5 = new User("5", "user5", "password5", "Michael", "Brown", "Male", "1985-03-28",
+        		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 90, new CustomerType());
+        users.add(user5);
+
+        User user6 = new User("6", "user6", "password6", "Sophia", "Taylor", "Female", "1998-09-06",
+        		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 40, new CustomerType(CustomerTypes.Bronze, 0, 0));
+        users.add(user6);
+
+        User user7 = new User("7", "user7", "password7", "Daniel", "Wilson", "Male", "1976-11-25",
+        		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0));
+        users.add(user7);
+        writeToFile();
+		//loadFromFile();
 		System.out.println("SVI USERI:");
 		for(User u: users) {
 			System.out.println(u.getId());
@@ -108,7 +142,7 @@ public class UserDAO {
 	}
 	
 
-	public User getUser(String username, String password) {
+	public User getRegisteringUser(String username, String password) {
 		System.out.println("Trazi usera");
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
@@ -165,7 +199,7 @@ public class UserDAO {
 		return ur;
 	}
 
-	public Boolean updateUser(String id, UserRegistration updatedUser) {
+	public Boolean updateUserForm(String id, UserRegistration updatedUser) {
 		User user = getUserById(id);
         if (user != null) {
         	System.out.println("Korisnik naden koji  se updejtuje");
@@ -221,5 +255,23 @@ public class UserDAO {
 		return managers;
 	}
 	
+	public boolean userPointsChange(String id,int numberOfPoints,boolean lost) {
+		User user = getUserById(id);
+        if (user != null) {
+        	int newPoints=0;
+        	System.out.println("Korisnik naden koji  se updejtuje");
+        	if(lost) {
+        		newPoints=user.getCollectedPoints()-numberOfPoints;
+        	}
+        	else {
+        		newPoints=user.getCollectedPoints()+numberOfPoints;
+        	}
+            user.setCollectedPoints(newPoints);
+            writeToFile();
+            return true;
+        }	
+        System.out.println("Nije updejtovan korisnik");
+        return false;
+	}
 }
 

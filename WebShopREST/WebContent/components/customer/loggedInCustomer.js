@@ -28,6 +28,7 @@ Vue.component("logInCustomer", {
 
 	<div>
 		<button type="submit" v-on:click="profile">Profile</button>
+		<button type="submit" v-on:click="showAllRentingOrders">All my renting orders</button>
 		<button type="submit" v-on:click="logOut">Log out</button>
 	</div>
 	
@@ -55,6 +56,10 @@ Vue.component("logInCustomer", {
 	showObject: function (id) {
       	event.preventDefault();
 		router.push(`/object/`+id);
+    },
+    showAllRentingOrders: function () {
+      	event.preventDefault();
+		router.push(`/customerRentalObjects/${this.userId}`);
     }
   }
 });

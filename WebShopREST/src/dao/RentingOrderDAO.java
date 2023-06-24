@@ -136,6 +136,7 @@ public class RentingOrderDAO {
 		return null;
 	}
 	public ArrayList<RentingOrder> findAllCustomersOrders(String customerId) {
+		customerOrders = new ArrayList<>();
 		for (RentingOrder order : orders) {
             if (order.getCustomer().getId().equals(customerId)) {
             	customerOrders.add(order);
@@ -247,42 +248,7 @@ public class RentingOrderDAO {
 		return false;
 	}
 	
-    public ArrayList<RentingOrder> searchManagerOrders(RentingFilter filter,String id) {
-        ArrayList<RentingOrder> filteredOrders = new ArrayList<>();
-        ArrayList<RentingOrder> userOrders = new ArrayList<>();
-        userOrders=findAllManagersOrders(id);
-        for (RentingOrder order : userOrders) {
-            if (filter.getObjectName() != null && !filter.getObjectName().equals("") && !order.getRentingObject().getName().equals(filter.getObjectName())) {
-                continue;
-            }
-            if (filter.getMinPrice() > 0 && order.getPrice() < filter.getMinPrice()) {
-                continue;
-            }
-            if (filter.getMaxPrice() > 0 && order.getPrice() > filter.getMaxPrice()) {
-                continue;
-            }
-            LocalDate orderStartDate= LocalDate.parse(order.getDate(),dateFormatter);
-            LocalDate orderEndDate= orderStartDate.plusDays(order.getDuration());
-            if (filter.getStartDate() != null) {
-                LocalDate parsedfromDate = LocalDate.parse(filter.getStartDate(), dateFormatter);
-            	if(orderStartDate.isBefore(parsedfromDate)) {
 
-                    continue;
-            	}
-            }
-            if (filter.getEndDate() != null) {
-                LocalDate parsedtoDate = LocalDate.parse(filter.getEndDate(), dateFormatter);
-                if(orderEndDate.isAfter(parsedtoDate)) {
-                	continue;
-                }
-                
-            }
-
-            filteredOrders.add(order);
-        }
-
-        return filteredOrders;
-    }
     // Sort orders by object name
     public ArrayList<RentingOrder> sortManagerOrdersByName(boolean descending,String objectId) {
     	ArrayList<RentingOrder> list=findAllManagersOrders(objectId);
@@ -294,7 +260,7 @@ public class RentingOrderDAO {
         return list;
     }
 
-    // Sort orders by price
+    // Sort orders by price manager orders
     public ArrayList<RentingOrder> sortManagerOrdersByPrice(boolean descending,String objectId) {
     	ArrayList<RentingOrder> list=findAllManagersOrders(objectId);
         Comparator<RentingOrder> comparator = Comparator.comparingInt(RentingOrder::getPrice);
@@ -305,7 +271,7 @@ public class RentingOrderDAO {
         return list;
     }
 
-    // Sort orders by date
+    // Sort orders by date manager orders
     public ArrayList<RentingOrder> sortManagerOrdersByDate(boolean descending, String objectId) {
     	ArrayList<RentingOrder> list=findAllManagersOrders(objectId);
         Comparator<RentingOrder> comparator = Comparator.comparing(RentingOrder::getDate);
@@ -315,7 +281,40 @@ public class RentingOrderDAO {
         Collections.sort(list, comparator);
         return list;
     }
-
+    
+    // Sort orders by price customer orders
+    public ArrayList<RentingOrder> sortCustomerOrdersByPrice(boolean descending, String customerId) {
+        ArrayList<RentingOrder> list = findAllCustomersOrders(customerId);
+        Comparator<RentingOrder> comparator = Comparator.comparingInt(RentingOrder::getPrice);
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(list, comparator);
+        return list;
+    }
+    
+	// Sort orders by date customer orders
+    public ArrayList<RentingOrder> sortCustomerOrdersByDate(boolean descending, String customerId) {
+        ArrayList<RentingOrder> list = findAllCustomersOrders(customerId);
+        Comparator<RentingOrder> comparator = Comparator.comparing(RentingOrder::getDate);
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(list, comparator);
+        return list;
+    }
+    
+	// Sort orders by rental object name customer orders
+    public ArrayList<RentingOrder> sortCustomerOrdersByName(boolean descending, String customerId) {
+        ArrayList<RentingOrder> list = findAllCustomersOrders(customerId);
+        Comparator<RentingOrder> comparator = Comparator.comparing(o -> o.getRentingObject().getName());
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(list, comparator);
+        return list;
+    }
+    
 	public Boolean checkStatusToTakenEnabled(String orderId) {
 		RentingOrder order= getOrderById(orderId);
 		if(order!=null) {

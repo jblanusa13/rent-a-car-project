@@ -10,6 +10,7 @@ import javax.ws.rs.core.*;
 import beans.User;
 import beans.UserCredentials;
 import beans.UserRegistration;
+import dao.RentingOrderDAO;
 import dao.UserDAO;
 
 @Path("/user")
@@ -34,7 +35,7 @@ public class UserService {
     public Response updateUser(@PathParam("id") String id, UserRegistration updatedUser) {
         UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
         System.out.println("Korisnik se updejtuje");
-        Boolean b=dao.updateUser(id,updatedUser);
+        Boolean b=dao.updateUserForm(id,updatedUser);
         if (b) {
         	System.out.println("Korisnik updejtovan");
             return Response.ok().build();
@@ -75,7 +76,7 @@ public class UserService {
 	    String password = credentials.getPassword();
 	    
 	    UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
-	    User user = dao.getUser(username, password);
+	    User user = dao.getRegisteringUser(username, password);
 	    
 	    if (user != null) {
 	        return Response.ok().entity(user).build();
@@ -140,5 +141,40 @@ public class UserService {
 	public ArrayList<User> getAvailableManagers() {
 		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
 		return dao.getAvailableManagers();
+    }
+	
+	@PUT
+	@Path("/customerPointsLoss/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response customerPointsLoss(@PathParam("id") String id,int points) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		System.out.println("Service recived id of user:"+id);
+		System.out.println("New number of points to be added: -"+points);
+		Boolean b= dao.userPointsChange(id, points, true);
+        if (b) {
+        	System.out.println("Porudzbina updejtovana: oduzeti bodovi");
+            return Response.ok().build();
+        } else {
+        	System.out.println("Porudzbina NIJE updejtovana: oduzeti bodovi");
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+	
+	@PUT
+	@Path("/customerPointsGain/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response customerPointsGain(@PathParam("id") String id,int points) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		System.out.println("Service recived id of user:"+id);
+		System.out.println("New number of points to be added:"+points);
+		Boolean b= dao.userPointsChange(id, points, false);
+        if (b) {
+        	System.out.println("Porudzbina updejtovana: dodati bodovi");
+            return Response.ok().build();
+        } else {
+        	System.out.println("Porudzbina NIJE updejtovana: rejected");
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }

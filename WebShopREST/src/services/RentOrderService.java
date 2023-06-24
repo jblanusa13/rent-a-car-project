@@ -116,25 +116,6 @@ public class RentOrderService {
         }
     }
 	
-	@POST
-	@Path("/managerFilteredOrders")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public ArrayList<RentingOrder> getManagerFilteredOrders(RentingFilter filter) {
-		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
-		System.out.println("FILTERING IN SERVICE");
-		System.out.println("Service recived id :"+filter.getUserId());
-		System.out.println("Filter parameters : start date: "+ filter.getStartDate()+", end date: "+ filter.getEndDate()+", min price: "+filter.getMinPrice()+", max price: "+filter.getMaxPrice());
-		ArrayList<RentingOrder> managerOrders= dao.searchManagerOrders(filter,filter.getUserId());
-        if (managerOrders.size()!=0) {
-            return  managerOrders;
-        } else {
-        	System.out.println("This manager orders :"+managerOrders.size());
-        	System.out.println("This manager doesnt have any renting orders :( ");
-            return null;
-        }
-    }
-	
 	@GET
 	@Path("/managerOrdersPriceSortingDescending/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -204,8 +185,99 @@ public class RentOrderService {
         }
     }
 	
+	@PUT
+	@Path("/customerOrderCancellation/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response customerOrderCancellation(@PathParam("id") String id) {
+		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+		System.out.println("Service recived id of order:"+id);
+		Boolean b= dao.changeOrderStatusToCancelled(id);
+        if (b) {
+        	System.out.println("Porudzbina updejtovana: cancelled");
+            return Response.ok().build();
+        } else {
+        	System.out.println("Porudzbina NIJE updejtovana: cancelled");
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
 	
+	@GET
+	@Path("/customerOrdersObjectNameSortingAscending/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<RentingOrder> sortCustomerOrdersByObjectNameAscending(@PathParam("id") String id) {
+	    RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+	    System.out.println("Sorting customer orders by object name (ascending)");
+	    ArrayList<RentingOrder> sortedOrders = dao.sortCustomerOrdersByName(true, id);
+	    if (sortedOrders.isEmpty()) {
+	        System.out.println("The sorted customer orders (object name ascending) is empty.");
+	    }
+	    return sortedOrders;
+	}
+
+	@GET
+	@Path("/customerOrdersObjectNameSortingDescending/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<RentingOrder> sortCustomerOrdersByObjectNameDescending(@PathParam("id") String id) {
+	    RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+	    System.out.println("Sorting customer orders by object name (descending)");
+	    ArrayList<RentingOrder> sortedOrders = dao.sortCustomerOrdersByName(false, id);
+	    if (sortedOrders.isEmpty()) {
+	        System.out.println("The sorted customer orders (object name descending) is empty.");
+	    }
+	    return sortedOrders;
+	}
 	
-	
+	@GET
+	@Path("/customerOrdersPriceSortingDescending/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<RentingOrder> sortCustomerOrdersByPriceDescending(@PathParam("id") String id) {
+	    RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+	    System.out.println("Sorting customer orders by price (descending)");
+	    ArrayList<RentingOrder> sortedOrders = dao.sortCustomerOrdersByPrice(true, id);
+	    if (sortedOrders.isEmpty()) {
+	        System.out.println("The sorted customer orders (price descending) is empty.");
+	    }
+	    return sortedOrders;
+	}
+
+	@GET
+	@Path("/customerOrdersPriceSortingAscending/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<RentingOrder> sortCustomerOrdersByPriceAscending(@PathParam("id") String id) {
+	    RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+	    System.out.println("Sorting customer orders by price (ascending)");
+	    ArrayList<RentingOrder> sortedOrders = dao.sortCustomerOrdersByPrice(false, id);
+	    if (sortedOrders.isEmpty()) {
+	        System.out.println("The sorted customer orders (price ascending) is empty.");
+	    }
+	    return sortedOrders;
+	}
+
+	@GET
+	@Path("/customerOrdersDateSortingDescending/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<RentingOrder> sortCustomerOrdersByDateDescending(@PathParam("id") String id) {
+	    RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+	    System.out.println("Sorting customer orders by date (descending)");
+	    ArrayList<RentingOrder> sortedOrders = dao.sortCustomerOrdersByDate(true, id);
+	    if (sortedOrders.isEmpty()) {
+	        System.out.println("The sorted customer orders (date descending) is empty.");
+	    }
+	    return sortedOrders;
+	}
+
+	@GET
+	@Path("/customerOrdersDateSortingAscending/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<RentingOrder> sortCustomerOrdersByDateAscending(@PathParam("id") String id) {
+	    RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+	    System.out.println("Sorting customer orders by date (ascending)");
+	    ArrayList<RentingOrder> sortedOrders = dao.sortCustomerOrdersByDate(false, id);
+	    if (sortedOrders.isEmpty()) {
+	        System.out.println("The sorted customer orders (date ascending) is empty.");
+	    }
+	    return sortedOrders;
+	}
+
 	
 }
