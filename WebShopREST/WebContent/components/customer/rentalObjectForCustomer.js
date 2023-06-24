@@ -1,4 +1,4 @@
-Vue.component("rentACarObject", {
+Vue.component("objectForCustomer", {
   data: function () {
     return {
 		objectId:null,
@@ -44,6 +44,7 @@ Vue.component("rentACarObject", {
 	<h4>Available vehicles</h4>
 	<table border="1">
 		<tr>
+			<th>Picture</th>
 			<th>Brand</th>
 			<th>Model</th>
 			<th>Price</th>
@@ -57,7 +58,7 @@ Vue.component("rentACarObject", {
 			<th>Status</th>
 		</tr>
 		<tr v-for="v in object.availableCars" >
-			<td><img src="${v.imageURL}" alt="Vehicle Image" style="width: 100%; height: auto;"></td>
+			<td><img src="{{v.imageURL}}" alt="Vehicle Image" style="width: 100%; height: auto;"></td>		
 			<td>{{v.brand}}</td>
 			<td>{{v.model}}</td>
 			<td>{{v.price}}</td>

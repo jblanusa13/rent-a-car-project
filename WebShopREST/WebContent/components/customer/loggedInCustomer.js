@@ -55,7 +55,7 @@ Vue.component("logInCustomer", {
     },
 	showObject: function (id) {
       	event.preventDefault();
-		router.push(`/object/`+id);
+		router.push(`/rentalObjectForCustomer/`+id);
     },
     showAllRentingOrders: function () {
       	event.preventDefault();
