@@ -5,8 +5,6 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
-import beans.RentingFilter;
 import beans.RentingOrder;
 import dao.RentingOrderDAO;
 
@@ -23,6 +21,22 @@ public class RentOrderService {
 			ctx.setAttribute("RentingOrderDAO", new RentingOrderDAO(contextPath));
 		}
 	}
+	
+	@GET
+	@Path("/allOrders")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<RentingOrder> getAllOrders() {
+		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+		System.out.println("FindingAllOrders");
+		ArrayList<RentingOrder> orders= dao.findAllRentable();
+        if (orders.size()!=0) {
+            return  orders;
+        } else {
+        	System.out.println("All orders :"+orders.size());
+        	System.out.println(" any renting orders :( ");
+            return null;
+        }
+    }
 	
 	@GET
 	@Path("/managerOrders/{id}")

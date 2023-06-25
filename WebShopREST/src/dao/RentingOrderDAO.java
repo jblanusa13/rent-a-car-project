@@ -1,7 +1,6 @@
 package dao;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +19,6 @@ import com.google.gson.reflect.TypeToken;
 import beans.CustomerType;
 import beans.Location;
 import beans.RentACarObject;
-import beans.RentingFilter;
 import beans.RentingOrder;
 import beans.ShoppingCart;
 import beans.User;
@@ -122,6 +120,22 @@ public class RentingOrderDAO {
 	public ArrayList<RentingOrder> findAll() {
 		return orders;
 	}
+	
+	public ArrayList<RentingOrder> findAllRentable() {
+	    ArrayList<RentingOrder> filteredOrders = new ArrayList<>();
+
+	    for (RentingOrder order : orders) {
+	        RentingOrderStatus orderStatus = order.getOrderStatus();
+	        if (orderStatus == RentingOrderStatus.Processing
+	                || orderStatus == RentingOrderStatus.Approved
+	                || orderStatus == RentingOrderStatus.Taken) {
+	            filteredOrders.add(order);
+	        }
+	    }
+
+	    return filteredOrders;
+	}
+	
 	public ArrayList<RentingOrder> findAllManagersOrders(String managerObject) {
 		managerOrders = new ArrayList<>();
 		if(managerObject!=null) {
