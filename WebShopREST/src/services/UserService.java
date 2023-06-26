@@ -10,7 +10,6 @@ import javax.ws.rs.core.*;
 import beans.User;
 import beans.UserCredentials;
 import beans.UserRegistration;
-import dao.RentingOrderDAO;
 import dao.UserDAO;
 
 @Path("/user")
@@ -118,6 +117,7 @@ public class UserService {
             return null;
 		}	
 	}
+	
 	@GET
 	@Path("/managerObject/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

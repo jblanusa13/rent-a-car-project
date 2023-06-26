@@ -54,8 +54,9 @@ Vue.component("logInCustomer", {
 		router.push(`/`);
     },
 	showObject: function (id) {
+		const combinedParam = id+"_"+this.userId;
       	event.preventDefault();
-		router.push(`/rentalObjectForCustomer/`+id);
+	    router.push(`/rentalObjectForCustomer/${combinedParam}`);
     },
     showAllRentingOrders: function () {
       	event.preventDefault();

@@ -139,24 +139,22 @@ Vue.component("register", {
 	    this.errortext = '';
 	  }
     }
-    
-      console.log("Yay! All fields are filled!");
-      console.log(this.userRegistration)
-     axios.post('rest/user/register', this.userRegistration)
+
+      axios.post('rest/user/register', this.userRegistration)
   		.then(response => {
-    this.user = response.data;
-    console.log(`User id: ${this.user.id}`)
-    if(this.user.id==null){
-		this.errortext = 'This username is already in use. Try another one.';
-        document.getElementsByName("username")[0].style.background = "red";
-		console.log(' user not found')
-		return;
-	}
-	else{
-		console.log('user found ')
-		router.push(`/logIn`);
-		return;
-	}
+		    this.user = response.data;
+		    console.log(`User id: ${this.user.id}`)
+		    if(this.user.id==null){
+				this.errortext = 'This username is already in use. Try another one.';
+		        document.getElementsByName("username")[0].style.background = "red";
+				console.log(' user not found')
+				return;
+			}
+			else{
+				console.log('user found ')
+				router.push(`/logIn`);
+				return;
+			}
      
   } );
       

@@ -7,12 +7,14 @@ Vue.component("objectForCustomer", {
       startDate: null,
       endDate: null,
       errorText: "",
+      errorTextsc: "",
       cars:null,
       allCars:null,
       orders:null,
       vehicle:null,
-      counter:0,
-      shoppingCart:null
+      shoppingCart:null,
+      empty:null,
+      addingCar:null
     };
   },
   template: `
@@ -98,14 +100,45 @@ Vue.component("objectForCustomer", {
           </tr>
         </table>
         <br><br>
-        <div>
+        <div>        
+         <label v-if="empty !== 'no'" style="color: red;">{{ errorTextsc }}</label><br><br>
+          <button type="submit" v-on:click="ShowShoppingCart">Show shoppig cart and make reservation</button><br><br>
           <button type="submit" v-on:click="ShowAll">Show all objects</button>
         </div>
       </div>
     </div>
   `,
   mounted() {
-    this.objectId = this.$route.params.id;
+    const combinedParam = this.$route.params.id;
+    console.log(combinedParam); 
+    const [objectId, userId] = combinedParam.split('_');
+    this.objectId = objectId;
+    this.userId = userId;
+    console.log(this.objectId); 
+    console.log(this.userId);
+    //finding the customer
+    axios
+      .get("rest/user/profile/" + this.userId)
+      .then((response) => {
+        this.user = response.data;
+        console.log(this.user);
+        console.log("Making new shoppingCart");
+
+		axios.post('rest/shoppingCarts/newCart', this.user)
+	  		.then(response => {
+			    this.shoppingCart = response.data;
+			    console.log(`Shopping cart id: ${this.shoppingCart.id}`)
+			    if(this.shoppingCart===null){
+					console.log('Shopping cart making failed');
+					return;
+				}
+				else{
+					console.log('New shopping cart created'+ this.shoppingCart.id );
+				}		     
+	    });
+      })
+      .catch((error) => console.log(error));
+    //finding the renting object
 	axios
 	  .get("rest/objects/" + this.objectId)
 	  .then((response) => {
@@ -113,12 +146,14 @@ Vue.component("objectForCustomer", {
 	    this.allCars= this.object.availableCars;
 	  })
 	  .catch((error) => console.log(error));
+	//finding all orders
 	axios
 	   .get("rest/rentingOrders/allOrders")
 	   .then((response) => {
 	 	   this.orders = response.data;
 	    })
 	    .catch((error) => console.log(error));
+	
 	      
   },
   methods: {
@@ -126,14 +161,36 @@ Vue.component("objectForCustomer", {
 		
 	},
     AddToCart: function (v) {
-		console.log("Adding to the cart.")
-		if(counter===0){
-			counter++;
-			console.log("Making new shoppingCart");
-			//zove se shoppingCartServis da se napravi nova korpa
-		}
-		v.carStatus = 'Added to the cart';
-		//zove se shopingcart koji kao parametar prima vozilo
+		//treba da UPDEJTIJEM USERA da mu je ovo korpa DA ali to tek kad odem na pregled korpe jel?
+		this.empty='no';
+
+		console.log("OVDE JE BITAN SHOPPINGCART"+this.shoppingCart.id);
+		var param=v.id+"_"+this.objectId
+		console.log(v)
+		axios
+		   .get("rest/objects/findCar/"+param)
+		   .then((response) => {
+		 	   this.addingCar = response.data;
+		 	   console.log(this.shoppingCart.id);
+		 	   this.addingCar.rentingObjectId =  this.shoppingCart.id;
+		 	   console.log(this.addingCar);
+		
+				var b=null;
+				axios.post('rest/shoppingCarts/addVehicle', this.addingCar)
+			  		.then(response => {
+						  b=response.data;
+						  console.log(b)
+						  if(b){
+							  console.log(`Added to the cart`)
+						  }	     
+			    });
+			    
+			    v.carStatus = 'Added to the cart';
+		 	   
+		 	   
+		    })
+		    .catch((error) => console.log(error));
+		
 		
 	},
     searchVehicles: function () {
@@ -250,7 +307,15 @@ Vue.component("objectForCustomer", {
 		  else{
 			  this.vehicle.carStatus='Available';
 		  }
+		  this.addingCar=this.vehicle;
 		  this.allCars.push(this.vehicle);
+		}
+           
+    },
+    ShowShoppingCart:function () {
+		if(this.empty!=='no')
+		{
+			this.errortext="At least one vehicle must be in the cart."
 		}
            
     }

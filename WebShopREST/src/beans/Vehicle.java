@@ -20,14 +20,15 @@ public class Vehicle {
 	private String description;
 	private String imageURL;
 	private CarStatus carStatus;
+	private String rentingObjectId;
 	
 	public Vehicle() {
 		super();
 	}
-	
+
 	public Vehicle(String id, String brand, String model, float price, VehicleType type, String objectId,
 			StickType stickType, FuelType fuelType, float consumption, int doorNumber, int peopleNumber,
-			String description,String image, CarStatus carStatus) {
+			String description, String imageURL, CarStatus carStatus, String rentingObjectId) {
 		super();
 		this.id = id;
 		this.brand = brand;
@@ -41,9 +42,12 @@ public class Vehicle {
 		this.doorNumber = doorNumber;
 		this.peopleNumber = peopleNumber;
 		this.description = description;
-		this.imageURL=image;
+		this.imageURL = imageURL;
 		this.carStatus = carStatus;
+		this.rentingObjectId = rentingObjectId;
 	}
+
+
 
 	public String getImageURL() {
 		return imageURL;
@@ -156,4 +160,13 @@ public class Vehicle {
 	public void setCarStatus(CarStatus carStatus) {
 		this.carStatus = carStatus;
 	}
+
+	public String getRentingObjectId() {
+		return rentingObjectId;
+	}
+
+	public void setRentingObjectId(String rentingObjectId) {
+		this.rentingObjectId = rentingObjectId;
+	}
+	
 }

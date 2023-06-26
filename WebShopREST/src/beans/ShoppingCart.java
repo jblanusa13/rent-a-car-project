@@ -5,18 +5,18 @@ import java.util.ArrayList;
 public class ShoppingCart {
 	private String id;
 	private ArrayList<Vehicle> cars;
-	private String userId;
+	private String customerId;
 	private int price;
 	
 	public ShoppingCart() {
 		super();
 	}
 
-	public ShoppingCart(String id, ArrayList<Vehicle> cars, String userId, int price) {
+	public ShoppingCart(String id, ArrayList<Vehicle> cars, String user, int price) {
 		super();
 		this.id = id;
 		this.cars = cars;
-		this.userId = userId;
+		this.customerId = user;
 		this.price = price;
 	}
 
@@ -36,12 +36,12 @@ public class ShoppingCart {
 		this.cars = cars;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getCustomer() {
+		return customerId;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setCustomer(String customer) {
+		this.customerId = customer;
 	}
 
 	public int getPrice() {
