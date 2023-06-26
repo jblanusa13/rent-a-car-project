@@ -2,6 +2,8 @@ Vue.component("objectForCustomer", {
   data: function () {
     return {
       objectId: null,
+      userId:null,
+      user:null,
       object: null,
       searched: null,
       startDate: null,
@@ -13,8 +15,9 @@ Vue.component("objectForCustomer", {
       orders:null,
       vehicle:null,
       shoppingCart:null,
-      empty:null,
-      addingCar:null
+      empty:"yes",
+      addingCar:null,
+      userShoppingCart:null,
     };
   },
   template: `
@@ -64,6 +67,10 @@ Vue.component("objectForCustomer", {
         <label v-if="searched !== 'yes'" style="color: red;">{{ errorText }}</label>
       </div>
       <div v-if="searched === 'yes'">
+        <div v-if="empty === 'yes'">
+        	<br><label>The shopping cart is empty. Add the vehicles you wish to order.</label><br>
+        </div>
+        
         <h4>Available vehicles</h4>
         <table border="1">
           <tr>
@@ -101,8 +108,8 @@ Vue.component("objectForCustomer", {
         </table>
         <br><br>
         <div>        
-         <label v-if="empty !== 'no'" style="color: red;">{{ errorTextsc }}</label><br><br>
-          <button type="submit" v-on:click="ShowShoppingCart">Show shoppig cart and make reservation</button><br><br>
+         <label v-if="empty === 'yes'" style="color: red;">{{ errorTextsc }}</label><br><br>
+          <button  v-on:click="ShowShoppingCart">Show shoppig cart and make reservation</button><br><br>
           <button type="submit" v-on:click="ShowAll">Show all objects</button>
         </div>
       </div>
@@ -153,6 +160,10 @@ Vue.component("objectForCustomer", {
 	 	   this.orders = response.data;
 	    })
 	    .catch((error) => console.log(error));
+	    
+	
+      this.textForCustomer= 'The shopping cart is empty. Add the vehicles you wish to order.';
+      console.log(this.textForCustomer);
 	
 	      
   },
@@ -163,7 +174,9 @@ Vue.component("objectForCustomer", {
     AddToCart: function (v) {
 		//treba da UPDEJTIJEM USERA da mu je ovo korpa DA ali to tek kad odem na pregled korpe jel?
 		this.empty='no';
-
+		
+      	this.textForCustomer= '';
+      	console.log(this.textForCustomer);
 		console.log("OVDE JE BITAN SHOPPINGCART"+this.shoppingCart.id);
 		var param=v.id+"_"+this.objectId
 		console.log(v)
@@ -172,7 +185,7 @@ Vue.component("objectForCustomer", {
 		   .then((response) => {
 		 	   this.addingCar = response.data;
 		 	   console.log(this.shoppingCart.id);
-		 	   this.addingCar.rentingObjectId =  this.shoppingCart.id;
+		 	   this.addingCar.shoppingCartId =  this.shoppingCart.id;
 		 	   console.log(this.addingCar);
 		
 				var b=null;
@@ -184,7 +197,6 @@ Vue.component("objectForCustomer", {
 							  console.log(`Added to the cart`)
 						  }	     
 			    });
-			    
 			    v.carStatus = 'Added to the cart';
 		 	   
 		 	   
@@ -200,17 +212,24 @@ Vue.component("objectForCustomer", {
         return;
       }
 
-	  const today = new Date();
-	
-	  const selectedStartDate = new Date(this.startDate);
-	  const selectedEndDate = new Date(this.endDate);
-	
-	  if (selectedStartDate < today || selectedEndDate < today) {
-	    this.errorText = "Selected dates cannot be before today";
-	    return;
-	  }
+	    const today = new Date();
+
+		const selectedStartDate = new Date(this.startDate);
+		const selectedEndDate = new Date(this.endDate);
+		
+		today.setHours(0, 0, 0, 0);
+		
+		if (selectedStartDate < today || selectedEndDate < today) {
+		  this.errorText = "Selected dates cannot be before today";
+		  return;
+		}
+		
+		if (selectedEndDate < selectedStartDate) {
+		  this.errorText = "End date cannot be before start date";
+		  return;
+		}
+		
       this.searched = "yes";
-      
       //in orders to have only those who are in that time period 
       console.log("Searching for orders in that timespan");
       axios
@@ -313,11 +332,39 @@ Vue.component("objectForCustomer", {
            
     },
     ShowShoppingCart:function () {
+		console.log("Provera da li treba prikazati labelu "+ this.empty);
 		if(this.empty!=='no')
 		{
-			this.errortext="At least one vehicle must be in the cart."
+			this.errorTextsc="At least one vehicle must be in the cart."
+			return;
 		}
-           
+		//treba da mi se postavi korpa kao korpa usera i da otvorim novu stranicu 
+		
+		//treba da dobavim taj shoppingCart i da ga prosledim
+		
+		console.log("Looking for cart with id:"+this.shoppingCart.id)
+		axios.get('rest/shoppingCarts/getCustomerShoppingCart/'+ this.shoppingCart.id)
+	  		.then(response => {
+			    this.userShoppingCart = response.data;
+			    if(this.shoppingCart===null){
+					console.log('Shopping cart making fetching failed');
+					return;
+				}
+				else{
+					console.log('User shopping cart found'+ this.userShoppingCart.id );
+					axios
+			        	.post(`rest/user/addShoppingCart/${this.userId}`, this.userShoppingCart)
+			    		.then(response => {
+			     		 console.log("User updated successfully. Added cart");
+			     		 router.push({ path: `/customerShoppingCart/${this.userId}` });
+			    	})
+			    	.catch(error => {
+			     		 this.errortext = "An error occurred while updating user data";
+						 console.log(error);
+			    	});
+					
+				}		     
+	    });
     }
   }
 });

@@ -240,5 +240,17 @@ public class UserDAO {
         System.out.println("Nije updejtovan korisnik");
         return false;
 	}
+
+	public Boolean updateUserShoppingCart(String id, ShoppingCart cart) {
+		User user = getUserById(id);
+        if (user != null) {
+        	System.out.println("Korisnik naden koji  se updejtuje. dodata korpa");
+        	user.setShoppingCart(cart);
+            writeToFile();
+            return true;
+        }	
+        System.out.println("Nije dodata korpa useru");
+        return false;
+	}
 }
 

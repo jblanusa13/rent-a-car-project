@@ -66,7 +66,7 @@ public class ShoppingCartService {
 	public Boolean addVehicle(Vehicle ov) {
 		ShoppingCartDAO dao = (ShoppingCartDAO) ctx.getAttribute("ShoppingCartDAO");
 		System.out.println("parametri: vozilo:"+ov.getId()+"ShoppingCart:"+ ov.getObjectId());
-		Boolean b=dao.addToCart(ov,ov.getRentingObjectId());			
+		Boolean b=dao.addToCart(ov,ov.getShoppingCartId());			
 		if(b)
 		{
 			System.out.println("Vozilo uspesno dodato");
@@ -75,5 +75,21 @@ public class ShoppingCartService {
 		System.out.println("Vozilo NIJE uspesno dodato");
 		return false;
 		
+	}
+	
+	@GET
+	@Path("/getCustomerShoppingCart/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ShoppingCart getCustomerShoppingCart(@PathParam("id") String id) {
+		ShoppingCartDAO dao = (ShoppingCartDAO) ctx.getAttribute("ShoppingCartDAO");
+	    System.out.println("Finding shoppingCart id:"+id);
+	    ShoppingCart cart = dao.findCustomerCart(id);
+	    if (cart!=null) {
+	        return cart;
+	    } else {
+	        System.out.println("No carts found for this customer.");
+	        return null;
+	    }
 	}
 }

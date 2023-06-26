@@ -92,10 +92,21 @@ public class ShoppingCartDAO {
 		if(c!=null) {
 			System.out.println("Dodavanje vozila u korpu.Nadena korpa.");
 			c.getCars().add(v);
+			c.setPrice(c.getPrice()+(int)v.getPrice());
+			writeToFile();
 			return true;
 		}
 		System.out.println("Nije nadena korpa."+ id);
 		return false;
+	}
+	public ShoppingCart findCustomerCart(String id) {
+		ShoppingCart c=getById(id);
+		if(c!=null) {
+			System.out.println("Trazenje korpe za usera.");
+			return c;
+		}
+		System.out.println("Nije nadena korpa."+ id);
+		return null;
 	}
     
 }

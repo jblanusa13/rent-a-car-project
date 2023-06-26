@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import beans.ShoppingCart;
 import beans.User;
 import beans.UserCredentials;
 import beans.UserRegistration;
@@ -143,7 +144,23 @@ public class UserService {
 		return dao.getAvailableManagers();
     }
 	
-	@PUT
+	@POST
+    @Path("/addShoppingCart/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateUserShoppingCart(@PathParam("id") String id, ShoppingCart cart) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+        System.out.println("Korisnik se updejtuje");
+        Boolean b=dao.updateUserShoppingCart(id,cart);
+        if (b) {
+        	System.out.println("Korisnik updejtovan, dodata korpa");
+            return Response.ok().build();
+        } else {
+        	System.out.println("Korisnik NIJE updejtovan, nema korpe");
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+	}
+	/*@PUT
 	@Path("/customerPointsLoss/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response customerPointsLoss(@PathParam("id") String id,int points) {
@@ -176,5 +193,5 @@ public class UserService {
         	System.out.println("Porudzbina NIJE updejtovana: rejected");
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-    }
+    }*/
 }
