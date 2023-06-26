@@ -22,23 +22,25 @@ Vue.component("objectForCustomer", {
   },
   template: `
     <div>
-      <h3>{{ object.name }}</h3>
-      <img :src="object.imageURL" alt="Object Image" style="width: 100%; height: auto;">
-      <table>
+      <h1 style="display: flex; flex-direction: column; align-items: center;">{{ object.name }}</h1>
+      <div style="display: flex; justify-content: center; align-items: center;">
+		  <img :src="object.imageURL" style="width: 75%; height: auto;">
+	  </div>
+	  <div><br><br>
+      <table style="margin-left: 50px;">
         <tr>
-          <td>Working time:</td>
+          <td><strong>Working time:</strong></td>
           <td></td>
         </tr>
         <tr>
-          <td>Status: </td>
+          <td><strong>Status: </strong></td>
           <td></td>
         </tr>
-      </table><br>
-  
+      </table>
+  		<label style="margin-left: 50px;"><strong> Location:</strong></label>
       <table>
-        <tr>
-          <td>Location: </td>
-          <table>
+        <tr>          
+          <table style="margin-left: 60px;">
             <tr>
               <td>Longitude: </td>
               <td><input type="text" name="longitude" v-model="object.location.longitude" disabled></td>
@@ -53,26 +55,33 @@ Vue.component("objectForCustomer", {
             </tr>
           </table>
         </tr>
-      </table><br><br>
-      <div>
-        <form>
-          <label for="startdate">Start date:</label>
-          <input type="date" id="startdate" v-model="startDate" name="startdate">
-  
-          <label for="enddate">End date:</label>
-          <input type="date" id="enddate" v-model="endDate" name="enddate"><br><br>
-  
-          <button type="submit" v-on:click.prevent="searchVehicles">Search</button>
-        </form><br><br>
-        <label v-if="searched !== 'yes'" style="color: red;">{{ errorText }}</label>
-      </div>
+      </table><br><br></div>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+		  <form style="display: flex; flex-direction: row; align-items: center;">
+		    <label for="startdate">Start date: </label>
+		    <input style="margin-left: 5px;" type="date" id="startdate" v-model="startDate" name="startdate">
+		
+		    <label for="enddate" style="margin-left: 20px;">End date:</label>
+		    <input style="margin-left: 5px;" type="date" id="enddate" v-model="endDate" name="enddate">
+		  </form>
+		
+		  <br>
+		
+		  <div style="display: flex; justify-content: center;">
+		    <button type="submit" v-on:click.prevent="searchVehicles">Search</button>
+		  </div>
+		
+		  <br>
+		
+		  <label v-if="searched !== 'yes'" style="color: red;">{{ errorText }}</label>
+		</div>
       <div v-if="searched === 'yes'">
         <div v-if="empty === 'yes'">
-        	<br><label>The shopping cart is empty. Add the vehicles you wish to order.</label><br>
+        	<br><label style="margin-left: 50px;">The shopping cart is empty. Add the vehicles you wish to order.</label><br>
         </div>
         
-        <h4>Available vehicles</h4>
-        <table border="1">
+        <h4 style="margin-left: 50px;">Available vehicles</h4>
+        <table border='1' style=" margin: 0 auto; width: 85%;">
           <tr>
             <th>Picture</th>
             <th>Brand</th>
@@ -107,9 +116,14 @@ Vue.component("objectForCustomer", {
           </tr>
         </table>
         <br><br>
-        <div>        
+        <div style="display: flex; justify-content: center; align-items: center;">        
          <label v-if="empty === 'yes'" style="color: red;">{{ errorTextsc }}</label><br><br>
-          <button  v-on:click="ShowShoppingCart">Show shoppig cart and make reservation</button><br><br>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">        
+          <button  v-on:click="ShowShoppingCart"><strong>Show shoppig cart and make reservation</strong></button><br><br>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">        
+          <br><br>
           <button type="submit" v-on:click="ShowAll">Show all objects</button>
         </div>
       </div>
@@ -356,7 +370,8 @@ Vue.component("objectForCustomer", {
 			        	.post(`rest/user/addShoppingCart/${this.userId}`, this.userShoppingCart)
 			    		.then(response => {
 			     		 console.log("User updated successfully. Added cart");
-			     		 router.push({ path: `/customerShoppingCart/${this.userId}` });
+			     		 const combinedParam = this.objectId+"_"+this.userId+"_"+this.startDate+"_"+this.endDate;
+			     		 router.push({ path: `/customerShoppingCart/${combinedParam}` });
 			    	})
 			    	.catch(error => {
 			     		 this.errortext = "An error occurred while updating user data";

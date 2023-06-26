@@ -49,7 +49,7 @@ public class ShoppingCartService {
 		ShoppingCartDAO dao = (ShoppingCartDAO) ctx.getAttribute("ShoppingCartDAO");
 		ShoppingCart cart=dao.addNewCart(customer);
 		if(cart!=null) {
-			System.out.println("Korpa "+ cart.getId()+ cart.getPrice()+cart.getCustomer());
+			System.out.println("Korpa "+ cart.getId()+ cart.getPrice()+cart.getCustomerId());
 			System.out.println("Korpa je napravljena");
 			return cart;
 		}
@@ -89,6 +89,59 @@ public class ShoppingCartService {
 	        return cart;
 	    } else {
 	        System.out.println("No carts found for this customer.");
+	        return null;
+	    }
+	}
+	
+	@GET
+	@Path("/getShoppingCartVehicles/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<Vehicle> getShoppingCartVehicles(@PathParam("id") String id) {
+		ShoppingCartDAO dao = (ShoppingCartDAO) ctx.getAttribute("ShoppingCartDAO");
+	    System.out.println("Finding shoppingCart vehicles from customer with id:"+id);
+	    ShoppingCart cart = dao.findCustomerCart(id);
+	    if (cart.getCars()!=null) {
+	        return cart.getCars();
+	    } else {
+	        System.out.println("No vehicles found for this customer with this id.");
+	        return null;
+	    }
+	}
+	
+	@GET
+	@Path("/getShoppingCartPrice/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public int getShoppingCartPrice(@PathParam("id") String id) {
+		ShoppingCartDAO dao = (ShoppingCartDAO) ctx.getAttribute("ShoppingCartDAO");
+	    System.out.println("Finding shoppingCart vehicles from customer with id:"+id);
+	    ShoppingCart cart = dao.findCustomerCart(id);
+	    return cart.getPrice();
+	}
+	
+	@GET
+	@Path("/removeVehicleFromShoppingCart/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ShoppingCart removeVehicleFromShoppingCart(@PathParam("id") String id) {
+		String[] idParts = id.split("_");
+	    if (idParts.length != 2) {
+	    	System.out.println("nesto nije dobro");
+	        return null;
+	    }
+	    
+	    String carId = idParts[0];
+	    String idShoppingCart = idParts[1];
+		System.out.println("id vozila:"+carId+"Id korpe"+idShoppingCart);
+		ShoppingCartDAO dao = (ShoppingCartDAO) ctx.getAttribute("ShoppingCartDAO");
+	    System.out.println("Finding shoppingCart vehicles from customer with id:"+id);
+	    ShoppingCart b= dao.removeVehicleById(carId,idShoppingCart);
+	    if (b!=null) {
+	    	System.out.println("Removed Vehicle");
+	        return b;
+	    } else {
+	        System.out.println("No remove Vehicle.");
 	        return null;
 	    }
 	}

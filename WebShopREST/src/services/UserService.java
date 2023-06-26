@@ -11,6 +11,7 @@ import beans.ShoppingCart;
 import beans.User;
 import beans.UserCredentials;
 import beans.UserRegistration;
+import dao.ShoppingCartDAO;
 import dao.UserDAO;
 
 @Path("/user")
@@ -159,6 +160,23 @@ public class UserService {
         	System.out.println("Korisnik NIJE updejtovan, nema korpe");
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+	}
+	
+
+	@GET
+	@Path("/getShoppingCart/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ShoppingCart getShoppingCart(@PathParam("id") String id) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Finding shoppingCart from customer with id:"+id);
+	    ShoppingCart cart = dao.findCart(id);
+	    if (cart!=null) {
+	        return cart;
+	    } else {
+	        System.out.println("No carts found for this customer with this id.");
+	        return null;
+	    }
 	}
 	/*@PUT
 	@Path("/customerPointsLoss/{id}")

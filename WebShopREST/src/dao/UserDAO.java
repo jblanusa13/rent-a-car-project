@@ -252,5 +252,15 @@ public class UserDAO {
         System.out.println("Nije dodata korpa useru");
         return false;
 	}
+
+	public ShoppingCart findCart(String id) {
+		User user = getUserById(id);
+        if (user != null) {
+        	System.out.println("Nadena korpa");
+            return user.getShoppingCart();
+        }	
+        System.out.println("Nije nadena korpa");
+        return null;
+	}
 }
 

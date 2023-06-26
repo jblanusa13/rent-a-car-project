@@ -6,7 +6,11 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import beans.RentingOrder;
+import beans.RentingOrderCreation;
+import beans.User;
+import beans.UserRegistration;
 import dao.RentingOrderDAO;
+import dao.UserDAO;
 
 @Path("/rentingOrders")
 
@@ -293,5 +297,22 @@ public class RentOrderService {
 	    return sortedOrders;
 	}
 
+	@POST
+	@Path("/createOrder")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Boolean registerUser(RentingOrderCreation c) {
+		System.out.println("Registrovanje korisnika u register servisu");
+		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+		RentingOrder o = dao.createOrder(c);
+		if(o!=null) {
+			System.out.println("NARUDZBINA JESTE registrovana");
+			return true;
+		}
+		else {
+			System.out.println("NARUDZBINA NIJE registrovanA");
+            return null;
+		}	
+	}
 	
 }

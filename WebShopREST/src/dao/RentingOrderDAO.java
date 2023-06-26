@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -20,6 +21,7 @@ import beans.CustomerType;
 import beans.Location;
 import beans.RentACarObject;
 import beans.RentingOrder;
+import beans.RentingOrderCreation;
 import beans.ShoppingCart;
 import beans.User;
 import beans.Vehicle;
@@ -158,7 +160,7 @@ public class RentingOrderDAO {
         }
 		return customerOrders;
 	}
-	public RentingOrder createOrder(ArrayList<Vehicle> cars, RentACarObject object,int duration,int price,User user,String date,String time) {
+	public RentingOrder createOrder(RentingOrderCreation c) {
 		RentingOrder order=new RentingOrder();
 		Integer maxId = -1;
 		for (RentingOrder f : orders) {
@@ -170,15 +172,20 @@ public class RentingOrderDAO {
 		maxId++;
 		order.setId(maxId.toString());
 		order.setIdentificator(generateRandomId());
-		order.setVehicles(cars);
-		order.setRentingObject(object);
-		order.setDate(date);
-		order.setTime(time);
-		order.setDuration(duration);
-		order.setPrice(price);
-		order.setCustomer(user);
+		order.setVehicles(c.getCars());
+		order.setRentingObject(c.getObject());
+		order.setDate(c.getStartDate());
+		order.setTime(c.getTime());
+		LocalDate startDate = LocalDate.parse(c.getStartDate());
+        LocalDate endDate = LocalDate.parse(c.getEndDate());
+        long duration = ChronoUnit.DAYS.between(startDate, endDate);
+        int durationInDays = (int) duration;
+		order.setDuration(durationInDays);
+		order.setPrice(c.getPrice());
+		order.setCustomer(c.getCustomer());
 		order.setOrderStatus(RentingOrderStatus.Processing);
-		
+		orders.add(order);
+		writeToFile();
 		return order;
 	}
 	/*private String setDateToString(LocalDate date) {

@@ -36,11 +36,11 @@ public class ShoppingCart {
 		this.cars = cars;
 	}
 
-	public String getCustomer() {
+	public String getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomer(String customer) {
+	public void setCustomerId(String customer) {
 		this.customerId = customer;
 	}
 

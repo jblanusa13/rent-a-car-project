@@ -16,7 +16,7 @@ Vue.component("customerRentalObjects", {
   },
   template: `
 		<div>
-		  <h3>All reservations in your object</h3>
+		  <h3>All reservations</h3>
 		  
 		  <div>
 		    <button type="submit" v-on:click="goBack">Return to home page</button><br><br>

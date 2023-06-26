@@ -80,7 +80,7 @@ public class ShoppingCartDAO {
 		maxId++;
 		cart.setId(maxId.toString());
 		cart.setPrice(0);
-		cart.setCustomer(customer.getId());
+		cart.setCustomerId(customer.getId());
 		ArrayList<Vehicle> cars= new ArrayList<>();
 		cart.setCars(cars);
 		carts.add(cart);
@@ -106,6 +106,27 @@ public class ShoppingCartDAO {
 			return c;
 		}
 		System.out.println("Nije nadena korpa."+ id);
+		return null;
+	}
+
+	public ShoppingCart removeVehicleById(String id, String sc) {
+		System.out.println("Parametri id vozila: "+ id+"Id korpe"+sc);
+		ShoppingCart c=getById(sc);
+		if(c!=null) {			
+			System.out.println("Trazenje vozila za brisanje.");
+			for(Vehicle v: c.getCars()) {
+				System.out.println("VOZILO SA ID"+v.getId()+" treba id: "+id);
+				if(v.getId().equals(id)) {
+					c.getCars().remove(v);
+					c.setPrice(c.getPrice()-(int)v.getPrice());
+					System.out.println("NADENO vozila za brisanje.");
+					return c;
+				}
+			}
+			System.out.println("NIJE NADENO");
+			return null;
+		}
+		System.out.println("Nije nadeno vozilo."+ id);
 		return null;
 	}
     
