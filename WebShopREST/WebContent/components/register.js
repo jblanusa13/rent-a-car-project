@@ -140,7 +140,7 @@ Vue.component("register", {
 	  }
     }
 
-      axios.post('rest/user/register', this.userRegistration)
+      axios.post('rest/user/register/c/', this.userRegistration)
   		.then(response => {
 		    this.user = response.data;
 		    console.log(`User id: ${this.user.id}`)

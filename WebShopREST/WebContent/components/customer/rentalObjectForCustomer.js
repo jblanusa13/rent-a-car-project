@@ -24,7 +24,7 @@ Vue.component("objectForCustomer", {
     <div>
       <h1 style="display: flex; flex-direction: column; align-items: center;">{{ object.name }}</h1>
       <div style="display: flex; justify-content: center; align-items: center;">
-		  <img :src="object.imageURL" style="width: 75%; height: auto;">
+		  <img :src="object.imageURL" style="width: 15%; height: auto;">
 	  </div>
 	  <div><br><br>
       <table style="margin-left: 50px;">

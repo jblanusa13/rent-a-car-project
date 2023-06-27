@@ -103,13 +103,13 @@ public class UserService {
     }
 	
 	@POST
-	@Path("/register")
+	@Path("/register/{type}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public User registerUser(UserRegistration userRegistration) {
+	public User registerUser(@PathParam("type") String type, UserRegistration userRegistration) {
 		System.out.println("Registrovanje korisnika u register servisu");
 		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
-		User user = dao.registerUser(userRegistration);
+		User user = dao.registerUser(userRegistration, type);
 		if(user!=null) {
 			System.out.println("Korisnik JESTE registrovan");
 			return user;
@@ -142,6 +142,7 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<User> getAvailableManagers() {
 		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		System.out.println("Trazi u servisu menadzere");
 		return dao.getAvailableManagers();
     }
 	
