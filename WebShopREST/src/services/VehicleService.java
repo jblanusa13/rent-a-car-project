@@ -41,29 +41,29 @@ public class VehicleService {
 	    }
 	}
 	
-	@POST
+	@GET
 	@Path("/changeStatusToRented/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Vehicle rented(@PathParam("id") String id) {
-		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleOrderDAO");
-		System.out.println("Service received id : " + id);
+	public Boolean rented(@PathParam("id") String id) {
+		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
+		System.out.println("Service received id of v in v service: " + id);
 		Vehicle v= dao.vehicleRented(id);
         if (v!=null) {
         	System.out.println("v updejtovana: rented");
-            return v;
+            return true;
         } else {
         	System.out.println("v NIJE updejtovana: rented");
-            return null;
+            return false;
         }
     }
 	
-	@POST
+	@GET
 	@Path("/changeStatusToAvailable/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Vehicle available(@PathParam("id") String id) {
-		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleOrderDAO");
+		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
 		System.out.println("Service received id : " + id);
 		Vehicle v= dao.vehicleAvailable(id);
         if (v!=null) {

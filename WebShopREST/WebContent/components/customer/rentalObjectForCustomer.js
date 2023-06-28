@@ -94,7 +94,7 @@ Vue.component("objectForCustomer", {
             <th>Door number</th>
             <th>People number</th>
             <th>Description</th>
-            <th>Todays vehicle status</th>
+            <th>Vehicle status</th>
           </tr>
           <tr v-for="v in allCars" :key="v.id">
             <td><img :src="v.imageURL" alt="Vehicle Image" style="width: 100%; height: auto;"></td>

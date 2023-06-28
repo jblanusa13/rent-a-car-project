@@ -228,10 +228,17 @@ public class RentingOrderDAO {
 	}
 
 	public Boolean changeOrderStatusToTaken(String orderId) {
-		RentingOrder order= getOrderById(orderId);
-		if(order!=null) {
-			order.setOrderStatus(RentingOrderStatus.Taken);
-			update(order);
+		RentingOrder o= getOrderById(orderId);
+		ArrayList<Vehicle> vehicles= new ArrayList<Vehicle>();
+		if(o!=null) {
+			o.setOrderStatus(RentingOrderStatus.Taken);
+			System.out.println("Vehicles u orderu se updejtuju: rented");
+        	for(Vehicle v: o.getVehicles()) {
+        		v.setCarStatus(CarStatus.Rented);
+        		vehicles.add(v);
+        	}
+        	o.setVehicles(vehicles);
+			update(o);
 			return true;
 		}
 		return false;
@@ -239,11 +246,18 @@ public class RentingOrderDAO {
 	}
 	
 	public Boolean changeOrderStatusToReturned(String orderId) {
-		RentingOrder order= getOrderById(orderId);
-		if(order!=null) {
-			order.setOrderStatus(RentingOrderStatus.Returned);
-			update(order);
-			return true;
+		RentingOrder o= getOrderById(orderId);
+		ArrayList<Vehicle> vehicles= new ArrayList<Vehicle>();
+		if(o!=null) {
+			o.setOrderStatus(RentingOrderStatus.Returned);
+			System.out.println("Vehicles u orderu se updejtuju: rented");
+	    	for(Vehicle v: o.getVehicles()) {
+	    		v.setCarStatus(CarStatus.Available);
+	    		vehicles.add(v);
+    	}
+    	o.setVehicles(vehicles);
+		update(o);
+		return true;
 		}
 		return false;
 	}
@@ -374,39 +388,5 @@ public class RentingOrderDAO {
 		}
 		return false;
 	}
-	public Boolean vehicleRented(String orderId) {
-		RentingOrder o =  getOrderById(orderId);
-		ArrayList<Vehicle> vehicles= new ArrayList<Vehicle>();
-        if (o != null) {
-        	System.out.println("Vehicles u orderu se updejtuju: rented");
-        	for(Vehicle v: o.getVehicles()) {
-        		v.setCarStatus(CarStatus.Rented);
-        		vehicles.add(v);
-        	}
-        	o.setVehicles(vehicles);
-            writeToFile();
-            return true;
-        }	
-        System.out.println("Nije updejtovan Vehicles u orderu");
-        return false;
-	}
-	
-	public Boolean vehicleAvailable(String id) {
-		RentingOrder o =  getOrderById(id);
-		ArrayList<Vehicle> vehicles= new ArrayList<Vehicle>();
-        if (o != null) {
-        	System.out.println("Vehicles u orderu se updejtuju: available");
-        	for(Vehicle v: o.getVehicles()) {
-        		v.setCarStatus(CarStatus.Available);
-        		vehicles.add(v);
-        	}
-        	o.setVehicles(vehicles);
-            writeToFile();
-            return true;
-        }	
-        System.out.println("Nije updejtovan Vehicles u orderu");
-        return false;
-	}
-	
-	
+		
 }

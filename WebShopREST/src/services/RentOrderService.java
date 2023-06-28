@@ -312,34 +312,4 @@ public class RentOrderService {
 		}	
 	}
 	
-	@GET
-	@Path("/managerOrderStatusChangeTakenCars/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Boolean changingStatusToTakenCars(@PathParam("id") String id) {
-		System.out.println("Service received id : " + id);
-
-		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
-		System.out.println("Service recived id :"+id);
-		Boolean b= dao.vehicleRented(id);
-		System.out.println("Taken enabled: "+b);
-        return b;
-    }
-	@GET
-	@Path("/managerOrderStatusChangeCarsAvailable/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Boolean changingStatusCarsAvailable(@PathParam("id") String id) {
-		System.out.println("Service received id : " + id);
-/*
-	    String[] idParts = id.split("_");
-	    String orderId = idParts[0];
-	    String carId = idParts[1];
-	    
-		System.out.println("Orderid: " + orderId);
-		System.out.println("CarId: "+ carId);*/
-		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
-		System.out.println("Service recived id :"+id);
-		Boolean b= dao.vehicleAvailable(id);
-		System.out.println("Taken enabled: "+b);
-        return b;
-    }
 }

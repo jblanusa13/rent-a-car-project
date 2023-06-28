@@ -180,17 +180,40 @@ Vue.component("managerRentalObjects", {
 			      order.orderStatus = 'Error state';
 			      return;
 			    } else {
-			      order.orderStatus = 'Taken';
+			      
 			      //ovde moram jos da promenim status svih vozila u poruzbini na rented u vozilima, poruybini,rentacaru
+			      
+				  //status svakog u rentacaru
 			      for (const vehicle of order.vehicles) {
-				    console.log("I'm here:", vehicle);
+				      console.log("I'm here:", vehicle);
+				      var help=this.managerObjectId+"_"+vehicle.id;
+					  var h=vehicle.id.toString();
+				      axios
+				      .get("rest/objects/carRented/"+ help)
+						      .then((response) => {
+						       console.log("vehicles in rentacar changed");
+						       // u vozilima			
+							      axios
+							      .get("rest/vehicles/changeStatusToRented/"+ h)
+									      .then((response) => {
+											var b=response.data;
+											if(b){
+									        	console.log("Changed to rented in vehicles");												
+											}
+									      })
+								  .catch((error) => console.log(error));
+						      })
+					  .catch((error) => console.log(error));
 				  }
+				  // porudzbina	       
+			      
 			      axios
-			      .put("rest/rentingOrders/managerOrderTaken/"+ order.id,order.managerComment)
+			      .put("rest/rentingOrders/managerOrderTaken/"+ order.id)
 					      .then((response) => {
-					        console.log("Changed to taken");
+					        console.log("Changed to taken. Vheiacles updated too.");
+					        order.orderStatus = 'Taken';
 					      })
-					      .catch((error) => console.log(error));
+				  .catch((error) => console.log(error));
 			    }
 			})
 			.catch((error) => console.log(error));
@@ -202,12 +225,34 @@ Vue.component("managerRentalObjects", {
 	      axios
 	      .put("rest/rentingOrders/managerOrderReturn/"+ order.id)
 			      .then((response) => {
-			        console.log("Successfuly returned order.");
+			        console.log("Successfuly returned order.Vehiacles updated.");
 			        order.orderStatus = 'Returned';
 			        //ovde moram jos da promenim status svih vozila u poruzbini na rented u vozilima, poruybini,rentacaru
 			        for (const vehicle of order.vehicles) {
+				          console.log("I'm here:", vehicle);
+					      var help=this.managerObjectId+"_"+vehicle.id;
+						  var h=vehicle.id.toString();
+					      axios
+					      .get("rest/objects/carAvailable/"+ help)
+							      .then((response) => {
+							       console.log("vehicles in rentacar changed");
+							       // u vozilima			
+								      axios
+								      .get("rest/vehicles/changeStatusToAvailable/"+ h)
+										      .then((response) => {
+												var b=response.data;
+												if(b){
+										        	console.log("Changed to rented in vehicles");												
+												}
+										      })
+									  .catch((error) => console.log(error));
+							      })
+						  .catch((error) => console.log(error));
 				    
-				  }
+				    
+				    
+				    
+				    }
 			      })
 			      .catch((error) => console.log(error));
 	      return;
