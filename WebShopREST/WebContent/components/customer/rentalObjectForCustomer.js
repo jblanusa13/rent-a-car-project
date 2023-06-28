@@ -94,7 +94,7 @@ Vue.component("objectForCustomer", {
             <th>Door number</th>
             <th>People number</th>
             <th>Description</th>
-            <th>Status</th>
+            <th>Todays vehicle status</th>
           </tr>
           <tr v-for="v in allCars" :key="v.id">
             <td><img :src="v.imageURL" alt="Vehicle Image" style="width: 100%; height: auto;"></td>
@@ -249,100 +249,104 @@ Vue.component("objectForCustomer", {
       axios
 	   .get("rest/rentingOrders/allOrders")
 	   .then((response) => {
-	 	   this.orders = response.data;
+	 	    this.orders = response.data;
+	 	    let temp = [];
+	        temp = this.orders;
+			this.orders = [];
+			let count = 0;
+				for (const _ in temp) {
+					count++;
+				}
+			for (let i = 0; i < count; i++) {
+				  let item = temp[i];
+				  console.log("ORDER:"+item+ "startDate"+ item.date);
+				  const orderStartDate = new Date(item.date);
+				  const orderEndDate = new Date(item.date);
+				  orderEndDate.setDate(orderEndDate.getDate() + item.duration);
+				  let isFiltered = true;
+				
+				  // Iterate through each day in the startDate and endDate range
+				  let currentDate = new Date(this.startDate);
+				  const endDate = new Date(this.endDate);
+				  console.log(this.startDate+"pocetni, krajnji datum"+this.endDate)
+					  for (
+					    currentDate;
+					    currentDate <= endDate;
+					    currentDate.setDate(currentDate.getDate() + 1)
+					  ) {
+						    // Iterate through each day of the order
+						    let orderCurrentDate = new Date(orderStartDate);
+						    for (
+						      orderCurrentDate;
+						      orderCurrentDate <= orderEndDate;
+						      orderCurrentDate.setDate(orderCurrentDate.getDate() + 1)
+						    ) {
+						      // Check if the current days match
+						      if (currentDate.toDateString() === orderCurrentDate.toDateString()) {
+						        isFiltered = false;
+						        break;
+						      }
+						    }
+						
+						    if (!isFiltered) {
+						      break;
+						    }
+					  }
+				
+				  if (!isFiltered) {
+				    this.orders.push(item);
+				  }
+			}
+	      
+	        let vehiclesNotInOrders = [];
+	        vehiclesNotInOrders = this.allCars;
+			this.allCars = [];
+			let countC = 0;
+			let countO = 0;
+			for (const _ in vehiclesNotInOrders) {
+				countC++;
+			}
+			for (const _ in this.orders) {
+				countO++;
+			}
+			for (let i = 0; i < countC; i++) {
+			  this.vehicle = vehiclesNotInOrders[i];
+			  let isFoundInOrders = false;
+			
+			  for (let j = 0; j < countO; j++) {
+			    let order = this.orders[j];
+			    let countCO = 0;
+				for (const _ in order.vehicles) {
+					countCO++;
+				}
+			    for (let k = 0; k < countCO; k++) {
+			      let orderVehicle = order.vehicles[k];
+			      
+			      if (orderVehicle.id === this.vehicle.id) {
+			        isFoundInOrders = true;
+			        break;
+			      }
+			    }
+			    
+			    if (isFoundInOrders) {
+			      break;
+			    }
+			  }
+			
+			  if (isFoundInOrders) {
+				  this.vehicle.carStatus='Rented';	    			
+			  }
+			  else{
+				  this.vehicle.carStatus='Available';
+			  }
+			  this.addingCar=this.vehicle;
+			  this.allCars.push(this.vehicle);
+			}
+		
 	    })
 	    .catch((error) => console.log(error));
 	    
-        let temp = [];
-        temp = this.orders;
-		this.orders = [];
-		let count = 0;
-		for (const _ in temp) {
-			count++;
-		}
-		for (let i = 0; i < count; i++) {
-		  let item = temp[i];
-		  const orderStartDate = new Date(item.date);
-		  const orderEndDate = new Date(item.date);
-		  orderEndDate.setDate(orderEndDate.getDate() + item.duration);
-		  let isFiltered = true;
-		
-		  // Iterate through each day in the startDate and endDate range
-		  let currentDate = new Date(this.startDate);
-		  const endDate = new Date(this.endDate);
-		  for (
-		    currentDate;
-		    currentDate <= endDate;
-		    currentDate.setDate(currentDate.getDate() + 1)
-		  ) {
-		    // Iterate through each day of the order
-		    let orderCurrentDate = new Date(orderStartDate);
-		    for (
-		      orderCurrentDate;
-		      orderCurrentDate <= orderEndDate;
-		      orderCurrentDate.setDate(orderCurrentDate.getDate() + 1)
-		    ) {
-		      // Check if the current days match
-		      if (currentDate.toDateString() === orderCurrentDate.toDateString()) {
-		        isFiltered = false;
-		        break;
-		      }
-		    }
-		
-		    if (!isFiltered) {
-		      break;
-		    }
-		  }
-		
-		  if (!isFiltered) {
-		    this.orders.push(item);
-		  }
-		}
-      
-        let vehiclesNotInOrders = [];
-        vehiclesNotInOrders = this.allCars;
-		this.allCars = [];
-		let countC = 0;
-		let countO = 0;
-		for (const _ in vehiclesNotInOrders) {
-			countC++;
-		}
-		for (const _ in this.orders) {
-			countO++;
-		}
-		for (let i = 0; i < countC; i++) {
-		  this.vehicle = vehiclesNotInOrders[i];
-		  let isFoundInOrders = false;
-		
-		  for (let j = 0; j < countO; j++) {
-		    let order = this.orders[j];
-		    let countCO = 0;
-			for (const _ in order.vehicles) {
-				countCO++;
-			}
-		    for (let k = 0; k < countCO; k++) {
-		      let orderVehicle = order.vehicles[k];
-		      
-		      if (orderVehicle.id === this.vehicle.id) {
-		        isFoundInOrders = true;
-		        break;
-		      }
-		    }
-		    
-		    if (isFoundInOrders) {
-		      break;
-		    }
-		  }
-		
-		  if (isFoundInOrders) {
-			  this.vehicle.carStatus='Rented';	    			
-		  }
-		  else{
-			  this.vehicle.carStatus='Available';
-		  }
-		  this.addingCar=this.vehicle;
-		  this.allCars.push(this.vehicle);
-		}
+        
            
     },
     ShowShoppingCart:function () {

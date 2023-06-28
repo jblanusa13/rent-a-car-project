@@ -6,27 +6,13 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import beans.CustomerType;
-import beans.Location;
-import beans.RentACarObject;
-import beans.RentingOrder;
-import beans.ShoppingCart;
-import beans.User;
 import beans.Vehicle;
 import enums.CarStatus;
-import enums.CustomerTypes;
-import enums.FuelType;
-import enums.RentACarStatus;
-import enums.RentingOrderStatus;
-import enums.StickType;
-import enums.UserRole;
-import enums.VehicleType;
 
 public class VehicleDAO {
 
@@ -99,7 +85,7 @@ public class VehicleDAO {
 	    }
 	}
 	
-	public Vehicle getOrderById(String id) {
+	public Vehicle getById(String id) {
         for (Vehicle v : vehicles) {
             if (v.getId().equals(id)) {
                 return v;
@@ -111,4 +97,29 @@ public class VehicleDAO {
 	public ArrayList<Vehicle> findAll() {
 		return vehicles;
 	}
+	
+	public Vehicle vehicleRented(String id) {
+		Vehicle v = getById(id);
+        if (v != null) {
+        	System.out.println("Vehicle naden koji  se updejtuje");
+        	v.setCarStatus(CarStatus.Rented);
+            writeToFile();
+            return v;
+        }	
+        System.out.println("Nije updejtovan Vehicle");
+        return null;
+	}
+	
+	public Vehicle vehicleAvailable(String id) {
+		Vehicle v = getById(id);
+        if (v != null) {
+        	System.out.println("Vehicle naden koji  se updejtuje");
+        	v.setCarStatus(CarStatus.Available);
+            writeToFile();
+            return v;
+        }	
+        System.out.println("Nije updejtovan Vehicle");
+        return null;
+	}
+
 }

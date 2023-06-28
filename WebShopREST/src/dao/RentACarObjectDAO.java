@@ -12,7 +12,6 @@ import com.google.gson.reflect.TypeToken;
 
 import beans.Location;
 import beans.RentACarObject;
-import beans.User;
 import beans.Vehicle;
 import enums.CarStatus;
 import enums.FuelType;
@@ -22,7 +21,6 @@ import enums.VehicleType;
 
 public class RentACarObjectDAO {
 	private String path=null;
-	private ArrayList<Vehicle> vehicles = new ArrayList<>();
 	private ArrayList<RentACarObject> objects = new ArrayList<>();
 
 	public RentACarObjectDAO(String contextPath) {
@@ -131,5 +129,37 @@ public class RentACarObjectDAO {
 	    }
 	    return null;
 	}
+	public Boolean vehicleRented(String id,String CarId) {
+		RentACarObject ro =  getById(id);
+        if (ro != null) {
+        	System.out.println("Vehicles u orderu se updejtuju: rented rentacar");
+        	for(Vehicle v: ro.getAvailableCars()) {
+        		if(v.getId().equals(CarId)) {
+        			System.out.println("Naden auto koji se updejtuje: rented rentacar");
+        			v.setCarStatus(CarStatus.Rented);
+        		}
+        	}
+            writeToFile();
+            return true;
+        }	
+        System.out.println("Nije updejtovan Vehicles u rentacar");
+        return false;
+	}
 	
+	public Boolean vehicleAvailable(String id,String CarId) {
+		RentACarObject ro =  getById(id);
+        if (ro != null) {
+        	System.out.println("Vehicles u orderu se updejtuju: available rentacar");
+        	for(Vehicle v: ro.getAvailableCars()) {
+        		if(v.getId().equals(CarId)) {
+        			System.out.println("Naden auto koji se updejtuje: available rentacar");
+        			v.setCarStatus(CarStatus.Available);
+        		}
+        	}
+            writeToFile();
+            return true;
+        }	
+        System.out.println("Nije updejtovan Vehicles u rentacar");
+        return false;
+	}
 }

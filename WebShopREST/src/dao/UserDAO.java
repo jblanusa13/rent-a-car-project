@@ -20,7 +20,6 @@ import java.time.format.DateTimeFormatter;
 import java.io.FileWriter;
 import java.io.*;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 
 import java.lang.reflect.Type;
 
@@ -222,7 +221,7 @@ public class UserDAO {
 		return managers;
 	}
 	
-	public boolean userPointsChange(String id,int numberOfPoints,boolean lost) {
+	public User userPointsChange(String id,int numberOfPoints,boolean lost) {
 		User user = getUserById(id);
         if (user != null) {
         	int newPoints=0;
@@ -235,10 +234,10 @@ public class UserDAO {
         	}
             user.setCollectedPoints(newPoints);
             writeToFile();
-            return true;
+            return user;
         }	
         System.out.println("Nije updejtovan korisnik");
-        return false;
+        return null;
 	}
 
 	public Boolean updateUserShoppingCart(String id, ShoppingCart cart) {

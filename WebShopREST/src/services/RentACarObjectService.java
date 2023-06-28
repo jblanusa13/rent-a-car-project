@@ -66,4 +66,38 @@ public class RentACarObjectService {
 		System.out.println("Vozilo NIJE pronadeno");
 		return null;
 	}
+	
+	@GET
+	@Path("/carAvailable/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Boolean changeCarStatusToAvailable(@PathParam("id") String id){
+
+	    String[] idParts = id.split("_");
+	    String objectId = idParts[0];
+	    String carId = idParts[1];
+	    
+		System.out.println("Objectid: " + objectId);
+		System.out.println("CarId: "+ carId);
+		RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+		Boolean b= dao.vehicleAvailable(objectId,carId);
+		System.out.println("Taken enabled: "+b);
+        return b;
+	}
+	
+	@GET
+	@Path("/carRented/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Boolean changeCarStatusToRented(@PathParam("id") String id){
+
+	    String[] idParts = id.split("_");
+	    String objectId = idParts[0];
+	    String carId = idParts[1];
+	    
+		System.out.println("Objectid: " + objectId);
+		System.out.println("CarId: "+ carId);
+		RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+		Boolean b= dao.vehicleRented(objectId,carId);
+		System.out.println("Taken enabled: "+b);
+        return b;
+	}
 }

@@ -100,7 +100,7 @@ Vue.component("managerRentalObjects", {
 			        </div>
 			        <div v-if="order.orderStatus === 'Error state'">
 				        <br><br>
-				        <label style="color: red;">You can change the status of the order to TAKEN only on the day of the beginning of the reservation. Try again on {{ order.date }}, after {{ order.time }}</label>
+				        <label style="color: red;">You can change the status of the order to TAKEN only on the day of the beginning of the reservation until the end date of reservation. The period is {{ order.date }} after {{ order.time }}, for {{order.duration}} day(s).</label>
 				        <br><br>
 				        <button v-on:click="okAceppt(order)">OK</button>
 			      	</div>
@@ -181,6 +181,10 @@ Vue.component("managerRentalObjects", {
 			      return;
 			    } else {
 			      order.orderStatus = 'Taken';
+			      //ovde moram jos da promenim status svih vozila u poruzbini na rented u vozilima, poruybini,rentacaru
+			      for (const vehicle of order.vehicles) {
+				    console.log("I'm here:", vehicle);
+				  }
 			      axios
 			      .put("rest/rentingOrders/managerOrderTaken/"+ order.id,order.managerComment)
 					      .then((response) => {
@@ -194,11 +198,16 @@ Vue.component("managerRentalObjects", {
       
     },
     orderReturned: function (order) {
-		  order.orderStatus = 'Returned';
+		  
 	      axios
 	      .put("rest/rentingOrders/managerOrderReturn/"+ order.id)
 			      .then((response) => {
 			        console.log("Successfuly returned order.");
+			        order.orderStatus = 'Returned';
+			        //ovde moram jos da promenim status svih vozila u poruzbini na rented u vozilima, poruybini,rentacaru
+			        for (const vehicle of order.vehicles) {
+				    
+				  }
 			      })
 			      .catch((error) => console.log(error));
 	      return;
