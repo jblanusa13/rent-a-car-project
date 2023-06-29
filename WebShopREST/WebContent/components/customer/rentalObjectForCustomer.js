@@ -97,7 +97,7 @@ Vue.component("objectForCustomer", {
             <th>Status</th>
           </tr>
           <tr v-for="v in allCars" :key="v.id">
-            <td><img :src="v.imageURL" alt="Vehicle Image" style="width: 100%; height: auto;"></td>
+            <td><img :src="v.imageURL" alt="Vehicle Image" style="width: 25%; height: auto;"></td>
             <td>{{ v.brand }}</td>
             <td>{{ v.model }}</td>
             <td>{{ v.price }}</td>

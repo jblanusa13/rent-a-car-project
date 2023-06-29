@@ -7,6 +7,8 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import beans.Manager;
+import beans.RentACarObject;
 import beans.ShoppingCart;
 import beans.User;
 import beans.UserCredentials;
@@ -140,11 +142,23 @@ public class UserService {
 	@GET
 	@Path("/managers")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<User> getAvailableManagers() {
+	public ArrayList<Manager> getAvailableManagers() {
 		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
 		System.out.println("Trazi u servisu menadzere");
 		return dao.getAvailableManagers();
     }
+	
+	@POST
+    @Path("/setManagerObject/{managerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+	public String setObjectForManager(@PathParam("managerId") String managerId, RentACarObject object) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		System.out.println("Usao u servis za menadzera");
+		System.out.println(managerId);
+		System.out.println(object.getId());
+		return dao.setManagerObject(managerId, object);
+	}
 	
 	@POST
     @Path("/addShoppingCart/{id}")

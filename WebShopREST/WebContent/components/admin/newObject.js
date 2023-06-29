@@ -1,18 +1,14 @@
 Vue.component("addNewObject", {
   data: function () {
     return {
+		rentACarObject:{id:null, name:null, availableCars:null, openingTime:null, closingTime:null, status:null, location:{longitude:null, latitude:null, address:null}, imageURL:'', rate:0.0},
 		managerRegistration:{username:null, password: null, name: null, surname:null, gender: null, birthDate:null},
-		manager:{username:null, password: null, name: null, surname:null, gender: null, birthDate:null},
+		manager:{id:null, username:null, password: null, name: null, surname:null, gender: null, birthDate:null},
+		managerId:null,
 		managers:null,
-		name:null,
-		longitude:null,
-		latitude:null,
-		address:null,
-		openingTime:null,
-		closingTime:null,
 		confirmPassword:null,
-		logoURL:null,
-		logo:null
+		logo:null,
+		userId:null
     }
   },
   template: `
@@ -22,7 +18,7 @@ Vue.component("addNewObject", {
 			<table>
 				<tr>
             		<td>Name:</td>
-            		<td><input type="text" name="name" v-model="name"></td>
+            		<td><input type="text" name="name" v-model="rentACarObject.name"></td>
           		</tr>
           		<tr>
             		<td>Location:</td>
@@ -30,30 +26,30 @@ Vue.component("addNewObject", {
 						<table>
 							<tr>
 								<td>Longitude: </td>
-								<td><input type="text" name="longitude" v-model="longitude"></td>
+								<td><input type="text" name="longitude" v-model="rentACarObject.location.longitude"></td>
 							</tr>
 							<tr>
 								<td>Latitude: </td>
-								<td><input type="text" name="latitude" v-model="latitude"></td>
+								<td><input type="text" name="latitude" v-model="rentACarObject.location.latitude"></td>
 							</tr>
 							<tr>
 								<td>Address: </td>
-								<td><input type="text" name="address" v-model="address"></td>
+								<td><input type="text" name="address" v-model="rentACarObject.location.address"></td>
 							</tr>
 						</table>
 					</td>
           		</tr>
           		<tr>
             		<td>Opening time:</td>
-           		 	<td><input type="time" name="opening" v-model="openingTime" ></td>
+           		 	<td><input type="time" name="opening" v-model="rentACarObject.openingTime" ></td>
           		</tr>
           		<tr>
             		<td>Closing time:</td>
-            		<td><input type="time" name="closingTime" v-model="closingTime" ></td>
+            		<td><input type="time" name="closingTime" v-model="rentACarObject.closingTime" ></td>
           		</tr>
           		<tr>
             		<td>Logo:</td>
-            		<td><input type="file" name="logo" @change="onFilePicked"></td>
+            		<td><input type="file" id="file" ref="file"/></td>
           		</tr>
 			</table>
 			<br>
@@ -105,7 +101,7 @@ Vue.component("addNewObject", {
 					<tr>
 						<td>Choose manager for object: </td>
 						<td><select name="managers" v-model="manager">
-							<option v-for="m in managers">{{m.name}} {{m.surname}}</option>
+							<option v-for="m in managers" :value="m">{{m.name}} {{m.surname}}</option>
 						</select></td>
 					</tr>
 				</table>
@@ -116,6 +112,7 @@ Vue.component("addNewObject", {
 	</div>
   `,
   mounted() {
+	this.userId =this.$route.params.id;
 	axios.get('rest/user/managers/')
 		.then(response =>{
 				this.managers = response.data;				
@@ -125,6 +122,39 @@ Vue.component("addNewObject", {
   methods: {
 	confirm: function(){
 		event.preventDefault();
+		//logo
+		this.logo = this.$refs.file.files[0];
+		console.log(this.logo);
+		console.log(this.rentACarObject.name);
+		console.log(this.rentACarObject.location.latitude);
+		console.log(this.rentACarObject.location.longitude);
+		console.log(this.rentACarObject.location.address);
+		console.log(this.rentACarObject.openingTime);
+		console.log(this.rentACarObject.closingTime);
+		
+		this.rentACarObject.imageURL = "images/objects/"+this.logo.name;
+		console.log(this.rentACarObject.imageURL);
+		
+		axios.post('rest/objects/registerObject/', this.rentACarObject)
+			.then(response=>{
+				console.log("Uspesno registrovan objekat");
+				this.rentACarObject = response.data;
+				console.log(this.rentACarObject);
+			})
+			.catch(error=> console.log(error))
+			
+			
+		console.log(this.manager.id);
+		console.log(this.manager.name);
+		console.log(this.manager.surname);	
+		axios.post('rest/user/setManagerObject/'+this.manager.id, this.rentACarObject)
+			.then(response=>{
+				console.log("Dodat objekat menadzeru");
+				this.managerId = response.data;
+			})
+			.catch(error=>console.log(error))
+			
+		router.push(`/loggedInAdmin/${this.userId}`);
 	},
 	registerManager: function(){
 		event.preventDefault();
@@ -132,34 +162,7 @@ Vue.component("addNewObject", {
   		.then(response => {
 		    this.manager = response.data;
 		    console.log(`Manager id: ${this.manager.id}`)
-		    if(this.manager.id==null){
-				this.errortext = 'This username is already in use. Try another one.';
-		        document.getElementsByName("username")[0].style.background = "red";
-				console.log(' user not found')
-				return;
-			}
-			else
-			{
-				console.log('user found ')
-				return;
-			}
   			})
 		}
-	},
-	onPickFile : function() {
-		event.preventDefault();
-  		this.$refs.fileInput.click()
-	},
-	onFilePicked : function(event) {
-		event.preventDefault();
-  		const files = event.target.files
-  		let filename = files[0].name
-  		const fileReader = new FileReader()
-  		fileReader.addEventListener('load', () => {
-    		this.logoURL = fileReader.result;
-			console.log(this.logoURL);
-  		})
-  		fileReader.readAsDataURL(files[0])
-  		this.logo = files[0]
 	}
 });

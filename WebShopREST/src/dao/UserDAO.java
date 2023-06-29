@@ -3,6 +3,7 @@ package dao;
 import java.util.ArrayList;
 import beans.CustomerType;
 import beans.Location;
+import beans.Manager;
 import beans.RentACarObject;
 import beans.RentingOrder;
 import beans.ShoppingCart;
@@ -218,15 +219,22 @@ public class UserDAO {
 		return null;
 	}
 	
-	public ArrayList<User> getAvailableManagers(){
-		ArrayList<User> managers = new ArrayList<User>();
+	public ArrayList<Manager> getAvailableManagers(){
+		ArrayList<Manager> managers = new ArrayList<Manager>();
 		for(User user : users) {
 			if(user.getRole().equals(UserRole.Manager) && user.getRentACar() == null) {
-				managers.add(user);			
+				
+				managers.add(new Manager(user.getId(), 
+										user.getUsername(),
+										user.getPassword(),
+										user.getName(),
+										user.getSurname(),
+										user.getGender(),
+										user.getBirthDate()));			
 			}
 		}
 		
-		for(User manager : managers) {
+		for(Manager manager : managers) {
 			System.out.println("Menadzer: "+manager.getId());
 		}
 		
@@ -276,6 +284,21 @@ public class UserDAO {
         }	
         System.out.println("Nije nadena korpa");
         return null;
+	}
+	
+	public String setManagerObject(String managerId, RentACarObject object) {
+		System.out.println("Menadzer: "+managerId);
+		System.out.println("Objekat: "+object.getId());
+		User manager = getUserById(managerId);
+		if(manager == null) {
+			System.out.println("Nije nasao menadzera ne znam zasto");
+		}
+		else {
+			System.out.println("NASAO menadzera");
+			manager.setRentACar(object);
+			writeToFile();
+		}
+		return manager.getId();
 	}
 }
 

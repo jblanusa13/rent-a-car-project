@@ -66,4 +66,13 @@ public class RentACarObjectService {
 		System.out.println("Vozilo NIJE pronadeno");
 		return null;
 	}
+	
+	@POST
+	@Path("/registerObject")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public RentACarObject registerObject(RentACarObject newObject){
+		RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+		return dao.registerObject(newObject);
+	}
 }

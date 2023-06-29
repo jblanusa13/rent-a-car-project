@@ -10,6 +10,7 @@ Vue.component("logInManager", {
 	<h3>Rent a car objects</h3>
 	<table border="1">
 		<tr>
+			<th></th>
 			<th>Name</th>
 			<th>Latitude</th>
 			<th>Longitude</th>
@@ -17,6 +18,7 @@ Vue.component("logInManager", {
 			<th>Average rate</th>
 		</tr>
 		<tr v-for="o in objects">
+			<td><img :src="o.imageURL" alt="Logo" style="width: 25%; height: auto;"></td>
 			<td>{{o.name}}</td>
 			<td>{{o.location.latitude}}</td>
 			<td>{{o.location.longitude}}</td>
