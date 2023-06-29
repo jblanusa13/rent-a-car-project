@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import beans.ComplexRentingOrderCreation;
 import beans.CustomerType;
 import beans.Location;
 import beans.RentACarObject;
@@ -52,11 +53,11 @@ public class RentingOrderDAO {
 		ArrayList<Vehicle> cars = new ArrayList<Vehicle>();
 		
 		Vehicle vehicle1 = new Vehicle("1", "Honda", "ne znam sad", 10000, VehicleType.Car, "1", StickType.Automatic, FuelType.Diesel, 15, 5, 5, "lepa kola", "images/vehicles/1.jpg", CarStatus.Available,"");
-		Vehicle vehicle2 = new Vehicle("2", "Golfic", "ne znam sad", 2002, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 11, 5, 4, "lepa kola", "images/vehicles/2.jpg", CarStatus.Available,"");
-		Vehicle vehicle3 = new Vehicle("3", "Audi", "ne znam sad", 12000, VehicleType.Car, "1", StickType.Manual, FuelType.Diesel, 12, 4, 5, "lepa kola", "images/vehicles/3.jpg", CarStatus.Available,"");
+		Vehicle vehicle2 = new Vehicle("2", "Golfic", "ne znam sad", 2002, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 11, 5, 4, "odlicno", "images/vehicles/2.jpg", CarStatus.Available,"");
+		Vehicle vehicle3 = new Vehicle("3", "Audi", "ne znam sad", 12000, VehicleType.Car, "1", StickType.Manual, FuelType.Diesel, 12, 4, 5, "super", "images/vehicles/3.jpg", CarStatus.Available,"");
 		Vehicle vehicle4 = new Vehicle("4", "BrzaKola", "ne znam sad", 20000, VehicleType.Van, "1", StickType.Automatic, FuelType.Diesel, 13, 4, 5, "lepa kola", "images/vehicles/4.jpg", CarStatus.Available,"");
 		Vehicle vehicle5 = new Vehicle("5", "Tojota", "ne znam sad", 50000, VehicleType.MobileHome, "1", StickType.Manual, FuelType.Diesel, 15, 5, 16, "lepa kola", "images/vehicles/5.jpg", CarStatus.Available,"");
-		
+
 		cars.add(vehicle1);
 		cars.add(vehicle2);
 		
@@ -387,6 +388,34 @@ public class RentingOrderDAO {
 	        //moze da vrati bilo kada ali ako je posle end date-a verovatno ce biti oznacen kao los ili tako nesto
 		}
 		return false;
+	}
+
+	public ArrayList<RentingOrder> createComplexOrder(ComplexRentingOrderCreation c) {
+		System.out.println("PRAVLJENJE KOMPLEKSNE NARUZBINE");
+		ArrayList<RentingOrder> complexOrders= new ArrayList<RentingOrder>();
+		for(RentACarObject object: c.getObjects()) {
+			ArrayList<Vehicle> vehicles= new ArrayList<Vehicle>();
+			int price=0;
+			for(Vehicle v: object.getAvailableCars()) {
+				for(Vehicle vShoppingCart: c.getCars()) {
+					if(v.getId().equals(vShoppingCart.getId()))
+					{
+						vehicles.add(v);
+						price+=(int)v.getPrice();
+					}
+				}
+			}
+			System.out.println("Cena naruzbine u objektu "+object.getId()+" je "+price);
+			RentingOrderCreation cr= new RentingOrderCreation(c.getStartDate(),c.getEndDate(),object,vehicles,c.getCustomer() , price , c.getTime());
+			RentingOrder ro = createOrder(cr);
+			complexOrders.add(ro);
+		}
+		System.out.println("SVI DELOVI KOMLEKSNE NARUZBINE:");
+		for(RentingOrder u: complexOrders) {
+			System.out.println(u.getId()+"IDENTIFIKATOR:"+u.getIdentificator());
+		}
+		
+		return complexOrders;
 	}
 		
 }

@@ -5,6 +5,8 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import beans.ComplexRentingOrderCreation;
 import beans.RentingOrder;
 import beans.RentingOrderCreation;
 import dao.RentingOrderDAO;
@@ -298,10 +300,28 @@ public class RentOrderService {
 	@Path("/createOrder")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Boolean registerUser(RentingOrderCreation c) {
+	public Boolean registerOrder(RentingOrderCreation c) {
 		System.out.println("Registrovanje korisnika u register servisu");
 		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
 		RentingOrder o = dao.createOrder(c);
+		if(o!=null) {
+			System.out.println("NARUDZBINA JESTE registrovana");
+			return true;
+		}
+		else {
+			System.out.println("NARUDZBINA NIJE registrovanA");
+            return null;
+		}	
+	}
+	
+	@POST
+	@Path("/createComplexOrder")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Boolean registerComplexOrder(ComplexRentingOrderCreation c) {
+		System.out.println("Registrovanje korisnika u register servisu");
+		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+		 ArrayList<RentingOrder> o = dao.createComplexOrder(c);
 		if(o!=null) {
 			System.out.println("NARUDZBINA JESTE registrovana");
 			return true;

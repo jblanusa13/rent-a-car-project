@@ -29,7 +29,7 @@ public class VehicleService {
 	@Path("/allVehicles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Vehicle> getAllVehicleOrders() {
-	    VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleOrderDAO");
+	    VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
 	    System.out.println("Finding All Vehicle Orders");
 	    ArrayList<Vehicle> orders = dao.findAll();
 	    if (orders.size() != 0) {
@@ -37,6 +37,21 @@ public class VehicleService {
 	    } else {
 	        System.out.println("All vehicle orders: " + orders.size());
 	        System.out.println("No vehicle orders found.");
+	        return null;
+	    }
+	}
+	
+	@GET
+	@Path("/findVehicle/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Vehicle getVehicle(@PathParam("id") String id) {
+	    VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
+	    System.out.println("Finding Vehicle ");
+	    Vehicle v = dao.findVehicle(id);
+	    if (v!=null) {
+	        return v;
+	    } else {
+	        System.out.println("No vehicle found.");
 	        return null;
 	    }
 	}

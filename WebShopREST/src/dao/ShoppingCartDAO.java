@@ -109,6 +109,23 @@ public class ShoppingCartDAO {
 		return null;
 	}
 
+	public ArrayList<Vehicle> findCustomerCartVehicles(String id, String cart) {
+		ShoppingCart c=getById(cart);
+		ArrayList<Vehicle> vs= new ArrayList<Vehicle>();
+		if(c!=null) {
+			System.out.println("Trazenje korpe za usera i vozila odgovarajucih.");
+			for(Vehicle v: c.getCars()) {
+				System.out.println("VOZILO SA objektom ID"+v.getObjectId()+" treba id: "+id);
+				if(v.getObjectId().equals(id)) {
+					vs.add(v);
+				}
+			}
+			return vs;
+		}
+		System.out.println("Nije nadena korpa. niti vozila u njoj"+ cart);
+		return null;
+	}
+	
 	public ShoppingCart removeVehicleById(String id, String sc) {
 		System.out.println("Parametri id vozila: "+ id+"Id korpe"+sc);
 		ShoppingCart c=getById(sc);

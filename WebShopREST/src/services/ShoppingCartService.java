@@ -110,6 +110,28 @@ public class ShoppingCartService {
 	}
 	
 	@GET
+	@Path("/getShoppingCartVehiclesOfObject/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<Vehicle> getShoppingCartVehiclesOfObject(@PathParam("id") String id) {
+		ShoppingCartDAO dao = (ShoppingCartDAO) ctx.getAttribute("ShoppingCartDAO");
+		String[] idParts = id.split("_");
+	    String objectId = idParts[1];
+	    String scId = idParts[0];
+	    
+		System.out.println("Objectid: " + objectId);
+		System.out.println("ShoppingCartId: "+ scId);
+	    System.out.println("Finding shoppingCart vehicles from customer with id:"+id);
+	    ArrayList<Vehicle> v = dao.findCustomerCartVehicles(objectId,scId);
+	    if (v!=null) {
+	        return v;
+	    } else {
+	        System.out.println("No vehicles found for this customer with this id.");
+	        return null;
+	    }
+	}
+	
+	@GET
 	@Path("/getShoppingCartPrice/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -15,6 +15,8 @@ const CustomerRentalObjects={ template: '<customerRentalObjects></customerRental
 const AddNewRentACar={ template: '<addNewObject></addNewObject>' }
 const RentalObjectForCustomer={ template: '<objectForCustomer></objectForCustomer>' }
 const CustomerShoppingCart = { template: '<customerShoppingCart></customerShoppingCart>' }
+const AllVehiclesForRenting={ template: '<allVehiclesForRenting></allVehiclesForRenting>' }
+const CustomerAllRentalsShoppingCart={ template: '<customerAllRentalsShoppingCart></customerAllRentalsShoppingCart>' }
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -33,7 +35,9 @@ const router = new VueRouter({
 		{ path: '/addNew', name: 'home8', component: AddNewRentACar},
 		{ path: '/customerRentalObjects/:id', name: 'home9', component: CustomerRentalObjects},
 		{ path: '/customerShoppingCart/:id', name: 'home11', component: CustomerShoppingCart},
-		{ path: '/rentalObjectForCustomer/:id', name: 'home10', component: RentalObjectForCustomer}
+		{ path: '/rentalObjectForCustomer/:id', name: 'home10', component: RentalObjectForCustomer},
+		{ path: '/allVehiclesForRenting/:id', name: 'home12', component: AllVehiclesForRenting},
+		{ path: '/customerAllRentalsShoppingCart/:id', name: 'home13', component: CustomerAllRentalsShoppingCart}
 	  ]
 });
 
