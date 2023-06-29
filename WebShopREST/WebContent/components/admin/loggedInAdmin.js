@@ -29,6 +29,7 @@ Vue.component("logInAdmin", {
 	<div>
 		<button type="submit" v-on:click="profile">Profile</button>
 		<button type="submit" v-on:click="addNew">Add new object</button>
+		<button type="submit" v-on:click="allUsers">Show all users</button>
 		<button type="submit" v-on:click="logOut">Log out</button>
 	</div>
 </div>
@@ -60,6 +61,10 @@ Vue.component("logInAdmin", {
       	const combinedParam = id+"_"+this.userId;
       	event.preventDefault();
 	    router.push(`/rentalObjectForAdmin/${combinedParam}`);
+    },
+    allUsers: function () {
+      	event.preventDefault();
+	    router.push(`/allUsersForAdmin/${this.userId}`);
     },
   }
 });

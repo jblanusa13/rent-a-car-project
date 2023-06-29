@@ -135,6 +135,13 @@ public class UserService {
         }
     }
 	
+	@GET
+	@Path("/allUsers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<User> getAllUsers() {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		return dao.findAll();
+    }
 	
 	@GET
 	@Path("/managers")
@@ -222,6 +229,23 @@ public class UserService {
             return user;
         } else {
         	System.out.println("Porudzbina NIJE updejtovana: rejected");
+            return null;
+        }
+    }
+	
+	@POST
+	@Path("/userDeactivated/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public User userDeactivated(@PathParam("id") String id) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		System.out.println("Service received id : " + id);
+		User user= dao.userDeactivated(id);
+        if (user!=null) {
+        	System.out.println("User deaktiviran");
+            return user;
+        } else {
+        	System.out.println("User nije deaktiviran");
             return null;
         }
     }

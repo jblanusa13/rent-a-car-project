@@ -33,6 +33,7 @@ import enums.RentACarStatus;
 import enums.RentingOrderStatus;
 import enums.StickType;
 import enums.UserRole;
+import enums.UserStatus;
 import enums.VehicleType;
 
 public class RentingOrderDAO {
@@ -47,7 +48,7 @@ public class RentingOrderDAO {
 		path = contextPath;
 		User user1 = new User("7", "user7", "password7", "Daniel", "Wilson", "Male", "1976-11-25",
         		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0));
+                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
 		
 		RentACarObject object1 = new RentACarObject("1", "Kod Milana", new ArrayList<Vehicle>(),"08:30","19:00", RentACarStatus.Open, new Location("1", "22", "23", "Super"),"images/objects/1.jpg", 5);
 		ArrayList<Vehicle> cars = new ArrayList<Vehicle>();

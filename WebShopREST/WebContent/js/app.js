@@ -19,6 +19,7 @@ const AllVehiclesForRenting={ template: '<allVehiclesForRenting></allVehiclesFor
 const CustomerAllRentalsShoppingCart={ template: '<customerAllRentalsShoppingCart></customerAllRentalsShoppingCart>' }
 const RentalObjectForManager={ template: '<objectForManager></objectForManager>' }
 const RentalObjectForAdmin={ template: '<objectForAdmin></objectForAdmin>' }
+const AllUsersForAdmin={ template: '<allUsersForAdmin></allUsersForAdmin>' }
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -42,6 +43,7 @@ const router = new VueRouter({
 		{ path: '/customerAllRentalsShoppingCart/:id', name: 'home13', component: CustomerAllRentalsShoppingCart},
 		{ path: '/rentalObjectForManager/:id', name: 'home14', component: RentalObjectForManager},
 		{ path: '/rentalObjectForAdmin/:id', name: 'home15', component: RentalObjectForAdmin},
+		{ path: '/allUsersForAdmin/:id', name: 'home16', component: AllUsersForAdmin},
 	  ]
 });
 
