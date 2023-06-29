@@ -10,7 +10,13 @@ Vue.component("customerRentalObjects", {
       endDate:null,
       minPrice:null,
       maxPrice:null,
-      objectName:null
+      objectName:null,
+      objectGrade:null,
+      comment:null,
+      commentCreation:{customer:null, object:null, grade:null, comment:null},
+      createdComment:null,
+      errortext:''
+      
     };
   },
   template: `
@@ -80,11 +86,14 @@ Vue.component("customerRentalObjects", {
 		              </li>
 		            </ul>
 		            Order status: {{ order.orderStatus }}<br>
+		            <div v-if="order.orderStatus === 'Rejected'">
+		          		<br><label>Reason for order rejection: {{order.managerComment}}</label><br><br>
+		          	</div>
 		            Order rent a car object: {{ order.rentingObject.name }}<br>
 		            Date and time of rental: {{ order.date }} {{ order.time }}<br>
 		            Duration: {{ order.duration }} days<br>
-		            Customer: {{ order.customer.name }} {{ order.customer.surname }}<br>
-		            Price: {{ order.price }}<br><br>
+		            Customer: {{ order.customer.name }} {{ order.customer.surname }}<br><br>
+		            <strong>Price: {{ order.price }}</strong><br><br>
 		            <div v-if="order.orderStatus === 'Processing'">
 		              <button v-on:click="cancelOrder(order)">Cancel order</button>
 		            </div>
@@ -92,6 +101,17 @@ Vue.component("customerRentalObjects", {
 		              <label>This order has been cancelled</label><br>
 		            </div>
 		          </td>
+		          <td>
+			    	<div v-if="order.orderStatus === 'Returned' && !order.customerComment">
+			        	<label>{{errortext}}</label><br>
+			        	<label>Please feel free to grade this renting object: </label><br>
+			        	<label>Insert grade: </label><br><br>
+			        	<input type="number" min="1" max="5" v-model="objectGrade"><br><br>
+			        	<label>Insert comment: </label><br>
+			        	<textarea v-model="comment" style="width: 300px; height: 45px;"></textarea><br><br>
+			        	<button type="submit" v-on:click="submitComment(order)">Submit</button><br><br>
+			        </div>
+			    </td>
 		        </tr>
 		      </table>
 		    </div>
@@ -102,6 +122,8 @@ Vue.component("customerRentalObjects", {
   mounted() {
     this.userId = this.$route.params.id;
     console.log("id usera:" + this.userId);
+    this.errortext=''
+    //dobavim usera
     axios
       .get("rest/user/profile/" + this.userId)
       .then((response) => {
@@ -109,6 +131,7 @@ Vue.component("customerRentalObjects", {
         console.log(this.user);
       })
       .catch((error) => console.log(error));
+      //dobavim naruzbinu
      axios
       .get("rest/rentingOrders/customerOrders/"+ this.userId)
       .then((response) => {
@@ -122,6 +145,47 @@ Vue.component("customerRentalObjects", {
       event.preventDefault();
       router.push(`/loggedInCustomer/${this.userId}`);
     },
+    submitComment: function (order){
+		//moram prvo da popunim komentar u orderu
+		//zatim da kreiram komentar
+		if (!this.comment) {
+	      this.errortext = 'Enter the comment before submitting.';
+	      return;
+	    }
+	    if (!this.objectGrade) {
+	      this.errortext = 'Enter the grade before between 1-5 submitting.';
+	      return;
+	    }
+		var help=order.id+"_"+this.comment;
+		 axios
+	      .put("rest/rentingOrders/customerComment/"+ help)
+	      .then((response) => {
+	         order.customerComment=this.comment;
+			  axios
+				  .get("rest/objects/" + order.rentingObject.id)
+				  .then((response) => {
+				    this.commentCreation.object = response.data;
+				    this.commentCreation.customer=this.user;
+				    this.commentCreation.grade=this.objectGrade;
+				    this.commentCreation.comment=this.comment;
+					    console.log("Object:", this.commentCreation.object);
+						console.log("Customer:", this.commentCreation.customer);
+						console.log("Grade:", this.commentCreation.grade);
+						console.log("Comment:", this.commentCreation.comment);
+					//ovde sad treba da pozovem komentar da mi se kreira
+					axios
+				      .post("rest/comments/newComment",this.commentCreation)
+				      .then((response) => {
+				        this.createdComment = response.data;
+				      })
+				      .catch((error) => console.log(error)); 					
+		
+			  })
+			  .catch((error) => console.log(error));
+	      })
+	      .catch((error) => console.log(error));
+		 
+	},
     cancelOrder: function (order) {
 		  order.orderStatus = 'Cancelled';
 	      axios

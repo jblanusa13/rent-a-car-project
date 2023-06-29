@@ -332,4 +332,26 @@ public class RentOrderService {
 		}	
 	}
 	
+	@PUT
+	@Path("/customerComment/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response customerComment(@PathParam("id") String id) {
+		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+		System.out.println("Service recived id of order:"+id);
+		String[] idParts = id.split("_");
+	    String orderId = idParts[0];
+	    String comment = idParts[1];
+	    
+		System.out.println("Order id: " + orderId);
+		System.out.println("Comment: "+ comment);
+		Boolean b= dao.custommerCommentAdded(orderId,comment);
+        if (b) {
+        	System.out.println("Porudzbina updejtovana: cancelled");
+            return Response.ok().build();
+        } else {
+        	System.out.println("Porudzbina NIJE updejtovana: cancelled");
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+	
 }

@@ -189,18 +189,7 @@ public class RentingOrderDAO {
 		writeToFile();
 		return order;
 	}
-	/*private String setDateToString(LocalDate date) {
-        String dateString = date.format(dateFormatter);
-        //LocalDate parsedDate = LocalDate.parse(dateString, dateFormatter);
-        System.out.println(dateString);
-		return dateString;
-	}
-	private String setTimeToString(LocalTime time) {
-        String timeString = time.format(timeFormatter);
-        //LocalTime parsedTime = LocalTime.parse(timeString, timeFormatter);
-        System.out.println(timeString);
-		return timeString;
-	}*/
+	
 	public static String generateRandomId() {
         UUID uuid = UUID.randomUUID();
         String randomId = uuid.toString().replaceAll("-", "").substring(0, 10);
@@ -416,6 +405,16 @@ public class RentingOrderDAO {
 		}
 		
 		return complexOrders;
+	}
+
+	public Boolean custommerCommentAdded(String id, String comment) {
+		RentingOrder order= getOrderById(id);
+		if(order!=null) {
+			order.setCustomerComment(comment);
+			update(order);
+			return true;
+		}
+		return false;
 	}
 		
 }

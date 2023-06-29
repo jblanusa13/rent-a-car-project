@@ -80,7 +80,7 @@ Vue.component("customerShoppingCart", {
 		</div>
 		<div style="display: flex; justify-content: center; align-items: center;">
 		<br><br><br><br>
-			<button type="submit" v-on:click="goBack">Give up from the order</button>
+			<button type="submit" v-on:click="goBack">Return to start page</button>
 		</div>				
 	</div>
   `,
