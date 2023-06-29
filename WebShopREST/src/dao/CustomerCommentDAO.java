@@ -4,8 +4,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
@@ -17,8 +15,6 @@ import beans.CustomerCommentCreation;
 import beans.CustomerType;
 import beans.Location;
 import beans.RentACarObject;
-import beans.RentingOrder;
-import beans.RentingOrderCreation;
 import beans.ShoppingCart;
 import beans.Vehicle;
 import beans.User;
@@ -27,7 +23,6 @@ import enums.CommentStatus;
 import enums.CustomerTypes;
 import enums.FuelType;
 import enums.RentACarStatus;
-import enums.RentingOrderStatus;
 import enums.StickType;
 import enums.UserRole;
 import enums.VehicleType;
@@ -78,10 +73,10 @@ public class CustomerCommentDAO {
         		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
                 new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0));
         
-        CustomerComment comment1 = new CustomerComment("1", user6, object1, 4, CommentStatus.Approved,"Great place");
-        CustomerComment comment2 = new CustomerComment("2", user7, object1, 5, CommentStatus.Approved,"Awesome");
-        CustomerComment comment3 = new CustomerComment("3", user6, object2, 3, CommentStatus.Rejected,"Never EVER go there!!!!");
-        CustomerComment comment4 = new CustomerComment("4", user7, object2, 5, CommentStatus.Approved,"Okayish");
+        CustomerComment comment1 = new CustomerComment("1", user6, object1, 4, CommentStatus.Pending,"Great place");
+        CustomerComment comment2 = new CustomerComment("2", user7, object1, 5, CommentStatus.Pending,"Awesome");
+        CustomerComment comment3 = new CustomerComment("3", user6, object1, 1, CommentStatus.Rejected,"Never EVER go there!!!!");
+        CustomerComment comment4 = new CustomerComment("4", user7, object1, 5, CommentStatus.Approved,"Okayish");
         
         comments.add(comment1);
         comments.add(comment2);
@@ -181,6 +176,26 @@ public class CustomerCommentDAO {
         System.out.println("Nije updejtovana komentar");
         return false;
 		
+	}
+
+	public ArrayList<CustomerComment> findAllApproved(String id) {
+		ArrayList<CustomerComment> approvedComments = new ArrayList<>();
+		for (CustomerComment v :comments) {
+            if (v.getStatus().equals(CommentStatus.Approved) && v.getObject().getId().equals(id)) {
+            	approvedComments.add(v);
+            }
+        }
+		return approvedComments;
+	}
+
+	public ArrayList<CustomerComment> findAllCommentsInRental(String id) {
+		ArrayList<CustomerComment> approvedComments = new ArrayList<>();
+		for (CustomerComment v :comments) {
+            if (v.getObject().getId().equals(id)) {
+            	approvedComments.add(v);
+            }
+        }
+		return approvedComments;
 	}
 	
 }

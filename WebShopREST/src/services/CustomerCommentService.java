@@ -10,10 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import beans.CustomerComment;
 import beans.CustomerCommentCreation;
-import beans.ShoppingCart;
-import beans.User;
 import dao.CustomerCommentDAO;
-import dao.ShoppingCartDAO;
 
 @Path("/comments")
 public class CustomerCommentService {
@@ -97,4 +94,34 @@ public class CustomerCommentService {
             return false;
         }
     }
+	
+	@GET
+	@Path("/allApprovedComments/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerComment> getAllApprovedComments(@PathParam("id") String id) {
+	    CustomerCommentDAO dao = (CustomerCommentDAO) ctx.getAttribute("CustomerCommentDAO");
+	    System.out.println("Finding All Comments");
+	    ArrayList<CustomerComment> comments = dao.findAllApproved(id);
+	    if (comments.size() != 0) {
+	        return comments;
+	    } else {
+	        System.out.println("No comments found.");
+	        return null;
+	    }
+	}
+	
+	@GET
+	@Path("/allCommentsInRental/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerComment> getAllallCommentsInRental(@PathParam("id") String id) {
+	    CustomerCommentDAO dao = (CustomerCommentDAO) ctx.getAttribute("CustomerCommentDAO");
+	    System.out.println("Finding All Comments");
+	    ArrayList<CustomerComment> comments = dao.findAllCommentsInRental(id);
+	    if (comments.size() != 0) {
+	        return comments;
+	    } else {
+	        System.out.println("No comments found.");
+	        return null;
+	    }
+	}
 }

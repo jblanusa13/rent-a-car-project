@@ -22,6 +22,7 @@ Vue.component("logInManager", {
 			<td>{{o.location.longitude}}</td>
 			<td>{{o.location.address}}</td>
 			<td>{{o.rate}}</td>
+			<td><button type="submit" v-on:click="showObject(o.id)">Show</button></td>
 		</tr>
 	</table><br><br>
 	
@@ -54,6 +55,11 @@ Vue.component("logInManager", {
     showAllRentingOrders: function () {
       	event.preventDefault();
 		router.push(`/managerRentalObjects/${this.userId}`);
-    }
+    },
+    showObject: function (id) {
+      	const combinedParam = id+"_"+this.userId;
+      	event.preventDefault();
+	    router.push(`/rentalObjectForManager/${combinedParam}`);
+    },
   }
 });

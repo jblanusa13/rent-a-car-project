@@ -18,25 +18,21 @@ Vue.component("objectForCustomer", {
       empty:"yes",
       addingCar:null,
       userShoppingCart:null,
+      objectStatus: null,
+      objectName:null,
+      image:null,
+      comments:null
     };
   },
   template: `
     <div>
-      <h1 style="display: flex; flex-direction: column; align-items: center;">{{ object.name }}</h1>
+      <h1 style="display: flex; flex-direction: column; align-items: center;">{{ objectName }}</h1>
       <div style="display: flex; justify-content: center; align-items: center;">
-		  <img :src="object.imageURL" style="width: 75%; height: auto;">
+		  <img :src="image" style="width: 75%; height: auto;">
 	  </div>
-	  <div><br><br>
-      <table style="margin-left: 50px;">
-        <tr>
-          <td><strong>Working time:</strong></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><strong>Status: </strong></td>
-          <td></td>
-        </tr>
-      </table>
+	  <div><br><br>     
+        <label style="margin-left: 50px;"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
+        <label style="margin-left: 50px;"><strong>Status: {{objectStatus}}</strong></label><br><br>          
   		<label style="margin-left: 50px;"><strong> Location:</strong></label>
       <table>
         <tr>          
@@ -55,7 +51,9 @@ Vue.component("objectForCustomer", {
             </tr>
           </table>
         </tr>
-      </table><br><br></div>
+      </table><br><br>
+      </div>
+      
       <div style="display: flex; flex-direction: column; align-items: center;">
 		  <form style="display: flex; flex-direction: row; align-items: center;">
 		    <label for="startdate">Start date: </label>
@@ -75,6 +73,39 @@ Vue.component("objectForCustomer", {
 		
 		  <label v-if="searched !== 'yes'" style="color: red;">{{ errorText }}</label>
 		</div>
+	  <div v-if="searched !== 'yes'">
+	  	<h4 style="margin-left: 50px;">Available vehicles</h4>
+        <table border='1' style=" margin: 0 auto; width: 85%;">
+          <tr>
+            <th>Picture</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Price</th>
+            <th>Vehicle type</th>
+            <th>Stick type</th>
+            <th>Fuel type</th>
+            <th>Consumption</th>
+            <th>Door number</th>
+            <th>People number</th>
+            <th>Description</th>
+            <th>Official current vehicle status</th>
+          </tr>
+          <tr v-for="v in allCars" :key="v.id">
+            <td><img :src="v.imageURL" alt="Vehicle Image" style="width: 100%; height: auto;"></td>
+            <td>{{ v.brand }}</td>
+            <td>{{ v.model }}</td>
+            <td>{{ v.price }}</td>
+            <td>{{ v.type }}</td>
+            <td>{{ v.stickType }}</td>
+            <td>{{ v.fuelType }}</td>
+            <td>{{ v.consumption }}</td>
+            <td>{{ v.doorNumber }}</td>
+            <td>{{ v.peopleNumber }}</td>
+            <td>{{ v.description }}</td>
+            <td>{{ v.carStatus }}</td>
+          </tr>
+        </table>
+	  </div>
       <div v-if="searched === 'yes'">
         <div v-if="empty === 'yes'">
         	<br><label style="margin-left: 50px;">The shopping cart is empty. Add the vehicles you wish to order.</label><br>
@@ -120,12 +151,35 @@ Vue.component("objectForCustomer", {
          <label v-if="empty === 'yes'" style="color: red;">{{ errorTextsc }}</label><br><br>
         </div>
         <div style="display: flex; justify-content: center; align-items: center;">        
-          <button  v-on:click="ShowShoppingCart"><strong>Show shoppig cart and make reservation</strong></button><br><br>
+          <button  v-on:click="ShowShoppingCart">Show shoppig cart and make reservation</button><br><br>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center;">        
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center; margin-top: 40px;">
+      <br><h2> Comments of the renting object: </h2><br>
+      </div>
+      <div v-for="c in comments" class="rectangle" style="margin-bottom: 20px;">
+		      <table style="border: 1px solid black; margin: 0 auto; width: 75%;">
+		        <tr>
+		          <td>
+				      <div style="display: inline-block; vertical-align: middle;">
+		                <div>
+		                  Customer: {{c.customer.name}}<br><br>
+		                </div>
+		                <div>
+		                  Grade: {{c.grade}}<br><br>
+		                </div>
+		                <div>
+		                  Comment: <br><br>{{c.comment}}<br><br>
+		                </div>
+		                <br>
+		              </div>
+				   </td>
+		        </tr>
+		      </table>
+	  </div>
+	  <div style="display: flex; justify-content: center; align-items: center;">        
           <br><br>
-          <button type="submit" v-on:click="ShowAll">Show all objects</button>
-        </div>
+          <button type="submit" v-on:click="ShowAll">Go back</button>
       </div>
     </div>
   `,
@@ -164,6 +218,39 @@ Vue.component("objectForCustomer", {
 	  .get("rest/objects/" + this.objectId)
 	  .then((response) => {
 	    this.object = response.data;
+	    this.objectName=this.object.name;
+	    this.image= this.object.imageURL;
+	    
+	        var openingTime = this.object.openingTime; // Example opening time
+			var closingTime = this.object.closingTime; // Example closing time
+			
+			var currentDateTime = new Date(); // Current date and time
+			
+			var hours = currentDateTime.getHours(); // Get the current hour (0-23)
+			var minutes = currentDateTime.getMinutes(); // Get the current minute (0-59)
+			var seconds = currentDateTime.getSeconds(); // Get the current second (0-59)
+			
+			console.log("Opening Time: " + openingTime);
+			console.log("Closing Time: " + closingTime);
+			console.log("Current Time: " + hours + ":" + minutes + ":" + seconds);
+			
+			var openingDateTime = new Date();
+			var closingDateTime = new Date();
+			
+			// Set the opening and closing times
+			openingDateTime.setHours(parseInt(openingTime.split(":")[0]), parseInt(openingTime.split(":")[1]), 0);
+			closingDateTime.setHours(parseInt(closingTime.split(":")[0]), parseInt(closingTime.split(":")[1]), 0);
+			
+			// Compare the timestamps
+			if (currentDateTime.getTime() >= openingDateTime.getTime() && currentDateTime.getTime() <= closingDateTime.getTime()) {
+			  console.log("The current time is within the opening hours.");
+			  this.objectStatus = 'Opened';
+			} else {
+			  console.log("The current time is outside the opening hours.");
+			  this.objectStatus = 'Closed';
+			}
+
+	    
 	    this.allCars= this.object.availableCars;
 	  })
 	  .catch((error) => console.log(error));
@@ -178,11 +265,19 @@ Vue.component("objectForCustomer", {
 	
       this.textForCustomer= 'The shopping cart is empty. Add the vehicles you wish to order.';
       console.log(this.textForCustomer);
-	
+	//treba da dobavim sve komentare za ovaj objekat koji su potvrdeni
+	axios
+	   .get("rest/comments/allApprovedComments/"+ objectId)
+	   .then((response) => {
+	 	   this.comments = response.data;
+	    })
+	    .catch((error) => console.log(error));
 	      
   },
   methods: {
     ShowAll: function () {
+		event.preventDefault();
+        router.push(`/loggedInCustomer/${this.userId}`);
 		
 	},
     AddToCart: function (v) {
