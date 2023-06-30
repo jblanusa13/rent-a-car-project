@@ -417,5 +417,19 @@ public class RentingOrderDAO {
 		}
 		return false;
 	}
+
+	public ArrayList<User> findUsers(String id) {
+	    ArrayList<User> users = new ArrayList<>();
+	    for (RentingOrder order : orders) {
+	        if (order.getRentingObject().getId().equals(id)) {
+	            User user = order.getCustomer();
+	            if (!users.contains(user)) {
+	                users.add(user);
+	            }
+	        }
+	    }
+	    return users;
+	}
+
 		
 }

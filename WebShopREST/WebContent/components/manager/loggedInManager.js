@@ -29,6 +29,7 @@ Vue.component("logInManager", {
 	<div>
 		<button type="submit" v-on:click="profile">Profile</button>
 		<button type="submit" v-on:click="showAllRentingOrders">Show all renting orders</button>
+		<button type="submit" v-on:click="allUsers">Show all users</button>
 		<button type="submit" v-on:click="logOut">Log out</button>
 	</div>
 </div>
@@ -60,6 +61,10 @@ Vue.component("logInManager", {
       	const combinedParam = id+"_"+this.userId;
       	event.preventDefault();
 	    router.push(`/rentalObjectForManager/${combinedParam}`);
+    },
+    allUsers: function () {
+      	event.preventDefault();
+	    router.push(`/allUsersForManager/${this.userId}`);
     },
   }
 });

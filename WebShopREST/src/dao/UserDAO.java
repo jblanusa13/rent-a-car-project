@@ -70,6 +70,7 @@ public class UserDAO {
         		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
                 new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
         users.add(user7);
+        addrentacar();
 		writeToFile();
 		
 		//loadFromFile();

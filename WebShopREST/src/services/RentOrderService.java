@@ -9,6 +9,7 @@ import javax.ws.rs.core.*;
 import beans.ComplexRentingOrderCreation;
 import beans.RentingOrder;
 import beans.RentingOrderCreation;
+import beans.User;
 import dao.RentingOrderDAO;
 
 @Path("/rentingOrders")
@@ -353,5 +354,18 @@ public class RentOrderService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
+	
+	@GET
+	@Path("/customersThatOrdered/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<User> findAllCustomers(@PathParam("id") String id) {
+	    RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+	    System.out.println("TRAZE SE USERI");
+	    ArrayList<User> users = dao.findUsers(id);
+	    if (users.isEmpty()) {
+	        System.out.println("there isnt any users");
+	    }
+	    return users;
+	}
 	
 }
