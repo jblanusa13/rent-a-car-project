@@ -110,6 +110,7 @@ Vue.component("logInAdmin", {
 	<div>
 		<button type="submit" v-on:click="profile">Profile</button>
 		<button type="submit" v-on:click="addNew">Add new object</button>
+		<button type="submit" v-on:click="allUsers">Show all users</button>
 		<button type="submit" v-on:click="logOut">Log out</button>
 	</div>
 </div>
@@ -255,6 +256,10 @@ Vue.component("logInAdmin", {
 			console.log("zavrsio pretragu");
 	      })
 	      .catch((error) => console.log(error));
-	}
+	},
+    allUsers: function () {
+      	event.preventDefault();
+	    router.push(`/allUsersForAdmin/${this.userId}`);
+    }
   }
 });

@@ -11,6 +11,7 @@ import beans.User;
 import beans.UserRegistration;
 import beans.Vehicle;
 import enums.UserRole;
+import enums.UserStatus;
 import enums.VehicleType;
 import enums.CarStatus;
 import enums.CustomerTypes;
@@ -37,8 +38,44 @@ public class UserDAO {
 	public UserDAO(String contextPath) {
 		
 		path=contextPath;
+		
+		User user1 = new User("1", "user1", "password1", "John", "Doe", "Male", "2002-01-14",
+                UserRole.Administrator , new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 100, new CustomerType(),UserStatus.Active);
+        users.add(user1);
 
-		loadFromFile();
+        User user2 = new User("2", "user2", "password2", "Jane", "Smith", "Female", "1995-05-22",
+        		UserRole.Administrator, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 50, new CustomerType(),UserStatus.Active);
+        users.add(user2);
+
+        User user3 = new User("3", "user3", "password3", "Mike", "Johnson", "Male", "1988-12-10",
+        		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 75, new CustomerType(),UserStatus.Active);
+        users.add(user3);
+        User user4 = new User("4", "user4", "password4", "Emily", "Anderson", "Female", "1990-07-18",
+        		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 60, new CustomerType(),UserStatus.Active);
+        users.add(user4);
+
+        User user5 = new User("5", "user5", "password5", "Michael", "Brown", "Male", "1985-03-28",
+        		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 90, new CustomerType(),UserStatus.Active);
+        users.add(user5);
+
+        User user6 = new User("6", "user6", "password6", "Sophia", "Taylor", "Female", "1998-09-06",
+        		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 40, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
+        users.add(user6);
+
+        User user7 = new User("7", "user7", "password7", "Daniel", "Wilson", "Male", "1976-11-25",
+        		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
+                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
+        users.add(user7);
+        addrentacar();
+		writeToFile();
+		
+		//loadFromFile();
 		System.out.println("SVI USERI:");
 		for(User u: users) {
 			System.out.println(u.getId());
@@ -115,7 +152,14 @@ public class UserDAO {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
             	System.out.println("nasao usera");
-                return user;
+            	if(user.getUserStatus().equals(UserStatus.Active)) {
+            		return user;
+            	}
+            	else {
+            		System.out.println("nalog deaktiviran");
+            		return user;
+            	}
+            	
             }
         }
         System.out.println("nije nasao usera");
@@ -298,6 +342,17 @@ public class UserDAO {
 			writeToFile();
 		}
 		return manager.getId();
+	}
+
+	public User userDeactivated(String id) {
+		User user = getUserById(id);
+        if (user != null) {
+        	user.setUserStatus(UserStatus.Deactivated);
+            writeToFile();
+            return user;
+        }	
+        System.out.println("Nije updejtovan korisnik");
+        return null;
 	}
 }
 

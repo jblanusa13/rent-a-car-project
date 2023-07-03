@@ -80,6 +80,10 @@ Vue.component("logIn", {
 		 axios.post('rest/user/login/', this.userCredentials)
     .then(response => {
         this.user = response.data; 
+        if(this.user.userStatus==='Deactivated'){
+			this.errortext='Your account has been blocked.'
+			return;
+		}
         console.log('Uloga korisnika:')
         console.log("Uloga korisnika:"+this.user.role)
         if (this.user.role === 'Administrator') {

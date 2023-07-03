@@ -25,6 +25,7 @@ import enums.FuelType;
 import enums.RentACarStatus;
 import enums.StickType;
 import enums.UserRole;
+import enums.UserStatus;
 import enums.VehicleType;
 
 public class CustomerCommentDAO {
@@ -67,11 +68,11 @@ public class CustomerCommentDAO {
 		
 		User user6 = new User("6", "user6", "password6", "Sophia", "Taylor", "Female", "1998-09-06",
         		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 40, new CustomerType(CustomerTypes.Bronze, 0, 0));
+                new RentACarObject(), 40, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
 
         User user7 = new User("7", "user7", "password7", "Daniel", "Wilson", "Male", "1976-11-25",
         		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0));
+                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
         
         CustomerComment comment1 = new CustomerComment("1", user6, object1, 4, CommentStatus.Pending,"Great place");
         CustomerComment comment2 = new CustomerComment("2", user7, object1, 5, CommentStatus.Pending,"Awesome");
