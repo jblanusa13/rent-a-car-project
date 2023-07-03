@@ -59,7 +59,7 @@ public class RentACarObjectDAO {
 		//object2.setImageURL(contextPath+object2.getImageURL());
 		objects.add(object2);
 		writeToFile();
-		loadFromFile();
+		//loadFromFile();
 		System.out.println("SVI Objecti:");
 		for(RentACarObject o: objects) {
 			System.out.println(o.getId());
