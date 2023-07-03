@@ -9,8 +9,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import beans.RentACarObject;
+import beans.RentingOrder;
 import beans.Vehicle;
 import dao.RentACarObjectDAO;
+import dao.RentingOrderDAO;
 
 @Path("/objects")
 public class RentACarObjectService {
@@ -67,6 +69,108 @@ public class RentACarObjectService {
 		return null;
 	}
 	
+	@POST
+	@Path("/registerObject")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public RentACarObject registerObject(RentACarObject newObject){
+		RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+		return dao.registerObject(newObject);
+	}
+	
+	@PUT
+	@Path("/objectsRateSortingAscending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<RentACarObject> sortObjectByRateAscending(ArrayList<RentACarObject> objectsToSort) {
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Sorting objects by rate (ascending)");
+	    if(objectsToSort.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.sortObjectsByRate(false, objectsToSort);
+	}
+	
+	@PUT
+	@Path("/objectsRateSortingDescending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<RentACarObject> sortObjectByRateDescending(ArrayList<RentACarObject> objectsToSort) {
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Sorting objects by rate (descending)");
+	    if(objectsToSort == null) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.sortObjectsByRate(true, objectsToSort);
+	}
+	
+	@PUT
+	@Path("/objectsNameSortingAscending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<RentACarObject> sortObjectByNameAscending(ArrayList<RentACarObject> objectsToSort) {
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Sorting objects by name (ascending)");
+	    return dao.sortObjectsByRate(false, objectsToSort);
+	}
+	
+	@PUT
+	@Path("/objectsNameSortingDescending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<RentACarObject> sortObjectByNameDescending(ArrayList<RentACarObject> objectsToSort) {
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Sorting objects by name (descending)");
+	    return dao.sortObjectsByRate(true, objectsToSort);
+	}
+	
+	@PUT
+	@Path("/objectsLocationSortingAscending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<RentACarObject> sortObjectByCityAscending(ArrayList<RentACarObject> objectsToSort) {
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Sorting objects by name (ascending)");
+	    return dao.sortObjectsByRate(false, objectsToSort);
+	}
+	
+	@PUT
+	@Path("/objectsLocationSortingDescending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<RentACarObject> sortObjectByCityDescending(ArrayList<RentACarObject> objectsToSort) {
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Sorting objects by name (descending)");
+	    return dao.sortObjectsByRate(true, objectsToSort);
+	}
+	
+	@PUT
+	@Path("/filterObjects/{stickType}/{fuelType}/{openObject}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<RentACarObject> filterObjects(@PathParam("stickType") String stickType,
+													@PathParam("fuelType") String fuelType,
+													@PathParam("openObject") boolean openObject,
+													ArrayList<RentACarObject> objects){
+		RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Filter objects");
+	    return dao.filterObjects(stickType, fuelType, openObject, objects);
+	}
+	
+	@PUT
+	@Path("/searchObjects/{name}/{vehicleType}/{location}/{averageRate}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<RentACarObject> searchObjects(@PathParam("name") String name,
+													@PathParam("vehicleType") String vehicleType,
+													@PathParam("location") String location,
+													@PathParam("averageRate") String averageRate,
+													ArrayList<RentACarObject> objects){
+		RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Search objects");
+	    return dao.searchObjects(name, vehicleType, location, averageRate, objects);
+	}
+
 	@GET
 	@Path("/carAvailable/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

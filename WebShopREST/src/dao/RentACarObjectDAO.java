@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,12 +14,15 @@ import com.google.gson.reflect.TypeToken;
 
 import beans.Location;
 import beans.RentACarObject;
+import beans.RentingOrder;
+import beans.User;
 import beans.Vehicle;
 import enums.CarStatus;
 import enums.FuelType;
 import enums.RentACarStatus;
 import enums.StickType;
 import enums.VehicleType;
+import sun.security.action.GetLongAction;
 
 public class RentACarObjectDAO {
 	private String path=null;
@@ -25,41 +30,7 @@ public class RentACarObjectDAO {
 
 	public RentACarObjectDAO(String contextPath) {
 		path = contextPath;
-		RentACarObject object1 = new RentACarObject("1", "Kod Milana", new ArrayList<Vehicle>(),"08:30","19:00", RentACarStatus.Open, new Location("1", "22", "23", "Super"),"images/objects/1.jpg", 5);
-		ArrayList<Vehicle> cars1 = new ArrayList<Vehicle>();
-		
-		Vehicle vehicle1 = new Vehicle("1", "Honda", "ne znam sad", 10000, VehicleType.Car, "1", StickType.Automatic, FuelType.Diesel, 15, 5, 5, "lepa kola", "images/vehicles/1.jpg", CarStatus.Available,"");
-		Vehicle vehicle2 = new Vehicle("2", "Golfic", "ne znam sad", 2002, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 11, 5, 4, "odlicno", "images/vehicles/2.jpg", CarStatus.Available,"");
-		Vehicle vehicle3 = new Vehicle("3", "Audi", "ne znam sad", 12000, VehicleType.Car, "1", StickType.Manual, FuelType.Diesel, 12, 4, 5, "super", "images/vehicles/3.jpg", CarStatus.Available,"");
-		Vehicle vehicle4 = new Vehicle("4", "BrzaKola", "ne znam sad", 20000, VehicleType.Van, "1", StickType.Automatic, FuelType.Diesel, 13, 4, 5, "lepa kola", "images/vehicles/4.jpg", CarStatus.Available,"");
-		Vehicle vehicle5 = new Vehicle("5", "Tojota", "ne znam sad", 50000, VehicleType.MobileHome, "1", StickType.Manual, FuelType.Diesel, 15, 5, 16, "lepa kola", "images/vehicles/5.jpg", CarStatus.Available,"");
-		Vehicle vehicle6 = new Vehicle("6", "Ford", "Mustang", 15000, VehicleType.Car, "2", StickType.Automatic, FuelType.Diesel, 10, 2, 2, "Powerful sports car", "images/vehicles/6.jpg", CarStatus.Available,"");
-		Vehicle vehicle7 = new Vehicle("7", "BMW", "X5", 25000, VehicleType.Van, "2", StickType.Automatic, FuelType.Diesel, 12, 5, 5, "Luxury SUV", "images/vehicles/7.png", CarStatus.Available,"");
-		Vehicle vehicle8 = new Vehicle("8", "Mercedes-Benz", "C-Class", 18000, VehicleType.Car, "2", StickType.Automatic, FuelType.Diesel, 11, 4, 5, "good old car", "images/vehicles/8.jpg", CarStatus.Available,"");
-		Vehicle vehicle9 = new Vehicle("9", "Porsche", "911", 50000, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 15, 2, 2, "Iconic sports car", "images/vehicles/9.jpg", CarStatus.Available,"");
-		Vehicle vehicle10 = new Vehicle("10", "Tesla", "Model S", 60000, VehicleType.Car, "2", StickType.Automatic, FuelType.Electric, 0, 4, 5, "amazing", "images/vehicles/10.jpg", CarStatus.Available,"");
-		
-		cars1.add(vehicle1);
-		cars1.add(vehicle2);
-		cars1.add(vehicle3);
-		cars1.add(vehicle4);
-		cars1.add(vehicle5);
-		object1.setAvailableCars(cars1);
-		//object1.setImageURL(contextPath+object1.getImageURL());
-		objects.add(object1);
-		RentACarObject object2 = new RentACarObject("2", "Rent-A-Wheels", new ArrayList<Vehicle>(), "09:00", "18:00", RentACarStatus.Open, new Location("2", "25", "28", "Prime"), "images/objects/2.jpg", 8);
-		ArrayList<Vehicle> cars2 = new ArrayList<Vehicle>();
-
-		cars2.add(vehicle6);
-		cars2.add(vehicle7);
-		cars2.add(vehicle8);
-		cars2.add(vehicle9);
-		cars2.add(vehicle10);
-		object2.setAvailableCars(cars2);
-		//object2.setImageURL(contextPath+object2.getImageURL());
-		objects.add(object2);
-		writeToFile();
-		//loadFromFile();
+		loadFromFile();
 		System.out.println("SVI Objecti:");
 		for(RentACarObject o: objects) {
 			System.out.println(o.getId());
@@ -145,6 +116,134 @@ public class RentACarObjectDAO {
         return false;
 	}
 	
+	public RentACarObject registerObject(RentACarObject newObject) {
+		System.out.println("Objekat treba da se registruje");
+		Integer maxId = -1;
+		for (RentACarObject f : objects) {
+		    int idNum = Integer.parseInt(f.getId());
+		    if (idNum > maxId) {
+		        maxId = idNum;
+		    }
+		}
+		
+		RentACarObject object = new RentACarObject();
+		maxId++;
+		object.setId(maxId.toString());
+		object.setAvailableCars(new ArrayList<Vehicle>());
+		object.setName(newObject.getName());
+		object.setStatus(RentACarStatus.Closed);
+		object.setLocation(newObject.getLocation());
+		object.setOpeningTime(newObject.getOpeningTime());
+		object.setClosingTime(newObject.getClosingTime());
+		object.setImageURL(newObject.getImageURL());
+		object.setRate(0);
+		objects.add(object);
+		System.out.println("Objekat registrovan");
+		writeToFile();
+		return object;
+	}
+	
+	// Sort objects by rate
+    public ArrayList<RentACarObject> sortObjectsByRate(boolean descending, ArrayList<RentACarObject> objectsToSort) {
+        Comparator<RentACarObject> comparator = Comparator.comparing(rentACarObject -> rentACarObject.getRate());
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(objectsToSort, comparator);
+        return objectsToSort;
+    }
+    
+    // Sort objects by name
+    public ArrayList<RentACarObject> sortObjectsByName(boolean descending, ArrayList<RentACarObject> objectsToSort) {
+        Comparator<RentACarObject> comparator = Comparator.comparing(rentACarObject -> rentACarObject.getName());
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(objectsToSort, comparator);
+        return objectsToSort;
+    }
+    
+    // Sort objects by city
+    public ArrayList<RentACarObject> sortObjectsByCity(boolean descending, ArrayList<RentACarObject> objectsToSort) {
+        Comparator<RentACarObject> comparator = Comparator.comparing(rentACarObject -> rentACarObject.getLocation().getAddress().split(",")[1]);
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(objectsToSort, comparator);
+        return objectsToSort;
+    }
+    
+    public ArrayList<RentACarObject> filterObjects(String stickType, String fuelType, boolean openObject, ArrayList<RentACarObject> objectsToFilter){
+    	System.out.println(stickType);
+    	System.out.println(fuelType);
+    	System.out.println(openObject);
+    	ArrayList<RentACarObject> filteredObjects= new ArrayList<RentACarObject>();
+    	for(RentACarObject object : objectsToFilter) {
+    		for(Vehicle vehicle : object.getAvailableCars()) {
+    			System.out.println("DA LI JE TACAN USLOV?");
+    			boolean firstTrue = stickType.equals(vehicle.getStickType().name()) || stickType.equals("notSelected");
+    			boolean secondTrue = fuelType.equals(vehicle.getFuelType().name()) || fuelType.equals("notSelected");
+    			boolean isTrue = firstTrue && secondTrue;
+    			System.out.println(firstTrue);
+    			System.out.println(secondTrue);
+    			System.out.println(isTrue);
+    			if(isTrue) {
+    				filteredObjects.add(object);
+    				System.out.println("Filtrirani objekat: "+object.getId());
+    				break;
+    			}
+    		}
+    	}
+    	
+    	if(openObject) {
+    		ArrayList<RentACarObject> filteredOpenObjects= new ArrayList<RentACarObject>();
+        	for(RentACarObject object : filteredObjects) {
+        		if(object.getStatus() == RentACarStatus.Open) {
+        			filteredOpenObjects.add(object);
+        			System.out.println("Otvoren objekat: "+object.getId());
+        		}
+        	}
+        	return filteredOpenObjects;
+    	}
+    	return filteredObjects;
+    }
+    
+    public ArrayList<RentACarObject> searchObjects(String name, String vehicleType, String location, String rate, ArrayList<RentACarObject> objectsToSearch){
+    	ArrayList<RentACarObject> searchedObjects= new ArrayList<RentACarObject>();
+    	
+    	for(RentACarObject object : objectsToSearch) {
+    		for(Vehicle vehicle : object.getAvailableCars()) {
+    			System.out.println("DA LI JE TACAN USLOV?");
+    			boolean nameTrue = object.getName().toLowerCase().contains(name.toLowerCase()) || name.equals("null");
+    			boolean typeTrue = vehicle.getType().name().toLowerCase().contains(vehicleType.toLowerCase()) || vehicleType.equals("null");
+    			boolean locationTrue = object.getLocation().getAddress().split(",")[1].toLowerCase().contains(location.toLowerCase()) || location.equals("null");
+    			//boolean rateTrue = rate.equals(String.valueOf(object.getRate())) || rate.equals("null");
+    			boolean rateTrue = false;
+    			if(rate.equals("null")) {
+    				rateTrue = true;
+    			}
+    			else if (Float.parseFloat(rate) == object.getRate()) {
+    				rateTrue = true;
+    			}
+    	
+    			boolean isTrue = nameTrue && typeTrue && locationTrue && rateTrue;
+    			System.out.println("ime:"+nameTrue);
+    			System.out.println("tip:"+typeTrue);
+    			System.out.println("grad:"+locationTrue);
+    			System.out.println("Vrednost rate u objektu: " + String.valueOf(object.getRate()));
+    			System.out.println("Vrednost rate pretrage: " + rate);
+    			System.out.println("ocena:"+rateTrue);
+    			System.out.println(isTrue);
+    			if(isTrue) {
+    				searchedObjects.add(object);
+    				System.out.println("Pretrazeni objekat: "+object.getId());
+    				break;
+    			}
+    		}
+    	}
+    	
+    	return searchedObjects;
+    }
 	public Boolean vehicleAvailable(String id,String CarId) {
 		RentACarObject ro =  getById(id);
         if (ro != null) {

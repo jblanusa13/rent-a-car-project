@@ -3,7 +3,9 @@ package dao;
 import java.util.ArrayList;
 import beans.CustomerType;
 import beans.Location;
+import beans.Manager;
 import beans.RentACarObject;
+import beans.RentingOrder;
 import beans.ShoppingCart;
 import beans.User;
 import beans.UserRegistration;
@@ -164,8 +166,10 @@ public class UserDAO {
         return null;
     }
 	
-	public User registerUser(UserRegistration userReg) {
+	public User registerUser(UserRegistration userReg, String type) {
 		System.out.println("Korisnik treba da se registruje");
+		System.out.println("Tip korisnika: " + type);
+		System.out.println("Pol korisnika: " + userReg.getGender());
 		boolean userExists = users.stream()
 		        .anyMatch(u -> u.getUsername().equals(userReg.getUsername()));
 
@@ -184,16 +188,23 @@ public class UserDAO {
 			maxId++;
 			user.setId(maxId.toString());
 			user.setBirthDate(userReg.getBirthDate());
-			user.setCollectedPoints(0);
-			user.setCustomerType(new CustomerType(CustomerTypes.Bronze, 0.0, 10));
 			user.setGender(userReg.getGender());
 			user.setName(userReg.getName());
 			user.setPassword(userReg.getPassword());
 			user.setUsername(userReg.getUsername());
-			user.setRole(UserRole.Customer);
-			user.setRentACar(new RentACarObject());
-			user.setShoppingCart(new ShoppingCart());
 			user.setSurname(userReg.getSurname());
+			if(type.equals("m")) {
+				System.out.println("Registruje menadzera");
+				user.setRole(UserRole.Manager);
+			}
+			else if(type.equals("c")){
+				System.out.println("Registruje kupca");
+				user.setRole(UserRole.Customer);
+				user.setOrders(new ArrayList<RentingOrder>());
+				user.setCustomerType(new CustomerType(CustomerTypes.Bronze, 0.0, 10));
+				user.setShoppingCart(new ShoppingCart());
+				user.setCollectedPoints(0);
+			}
 		    users.add(user);
 		    System.out.println("Korisnik registrovan");
 			writeToFile();
@@ -251,15 +262,27 @@ public class UserDAO {
 		return null;
 	}
 	
-	public ArrayList<User> getAvailableManagers(){
-		ArrayList<User> managers = new ArrayList<User>();
+	public ArrayList<Manager> getAvailableManagers(){
+		ArrayList<Manager> managers = new ArrayList<Manager>();
 		for(User user : users) {
-			if(user.getRole().equals(UserRole.Manager) && user.getRentACar().equals(null)) {
-				managers.add(user);
+			if(user.getRole().equals(UserRole.Manager) && user.getRentACar() == null) {
+				
+				managers.add(new Manager(user.getId(), 
+										user.getUsername(),
+										user.getPassword(),
+										user.getName(),
+										user.getSurname(),
+										user.getGender(),
+										user.getBirthDate()));			
 			}
 		}
 		
+		for(Manager manager : managers) {
+			System.out.println("Menadzer: "+manager.getId());
+		}
+		
 		if(managers.isEmpty()) {
+			System.out.println("Menadzeri: null");
 			return null;
 		}
 		return managers;
@@ -304,6 +327,21 @@ public class UserDAO {
         }	
         System.out.println("Nije nadena korpa");
         return null;
+	}
+	
+	public String setManagerObject(String managerId, RentACarObject object) {
+		System.out.println("Menadzer: "+managerId);
+		System.out.println("Objekat: "+object.getId());
+		User manager = getUserById(managerId);
+		if(manager == null) {
+			System.out.println("Nije nasao menadzera ne znam zasto");
+		}
+		else {
+			System.out.println("NASAO menadzera");
+			manager.setRentACar(object);
+			writeToFile();
+		}
+		return manager.getId();
 	}
 
 	public User userDeactivated(String id) {

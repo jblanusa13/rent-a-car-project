@@ -36,7 +36,7 @@ const router = new VueRouter({
 		{ path: '/loggedInManager/:id', name: 'home5b', component: LoggedInManager},
 		{ path: '/loggedInCustomer/:id', name: 'home5c', component: LoggedInCustomer},
 		{ path: '/managerRentalObjects/:id', name: 'home6', component: ManagerRentalObjects},
-		{ path: '/addNew', name: 'home8', component: AddNewRentACar},
+		{ path: '/addNew/:id', name: 'home8', component: AddNewRentACar},
 		{ path: '/customerRentalObjects/:id', name: 'home9', component: CustomerRentalObjects},
 		{ path: '/customerShoppingCart/:id', name: 'home11', component: CustomerShoppingCart},
 		{ path: '/rentalObjectForCustomer/:id', name: 'home10', component: RentalObjectForCustomer},
@@ -45,7 +45,7 @@ const router = new VueRouter({
 		{ path: '/rentalObjectForManager/:id', name: 'home14', component: RentalObjectForManager},
 		{ path: '/rentalObjectForAdmin/:id', name: 'home15', component: RentalObjectForAdmin},
 		{ path: '/allUsersForAdmin/:id', name: 'home16', component: AllUsersForAdmin},
-		{ path: '/allUsersForManager/:id', name: 'home17', component: AllUsersForManager},
+		{ path: '/allUsersForManager/:id', name: 'home17', component: AllUsersForManager}
 	  ]
 });
 
