@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 import beans.Location;
 import beans.RentACarObject;
+import beans.RentingOrder;
 import beans.User;
 import beans.Vehicle;
 import enums.CarStatus;
@@ -125,4 +128,105 @@ public class RentACarObjectDAO {
 		return object;
 	}
 	
+	// Sort objects by rate
+    public ArrayList<RentACarObject> sortObjectsByRate(boolean descending, ArrayList<RentACarObject> objectsToSort) {
+        Comparator<RentACarObject> comparator = Comparator.comparing(rentACarObject -> rentACarObject.getRate());
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(objectsToSort, comparator);
+        return objectsToSort;
+    }
+    
+    // Sort objects by name
+    public ArrayList<RentACarObject> sortObjectsByName(boolean descending, ArrayList<RentACarObject> objectsToSort) {
+        Comparator<RentACarObject> comparator = Comparator.comparing(rentACarObject -> rentACarObject.getName());
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(objectsToSort, comparator);
+        return objectsToSort;
+    }
+    
+    // Sort objects by city
+    public ArrayList<RentACarObject> sortObjectsByCity(boolean descending, ArrayList<RentACarObject> objectsToSort) {
+        Comparator<RentACarObject> comparator = Comparator.comparing(rentACarObject -> rentACarObject.getLocation().getAddress().split(",")[1]);
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(objectsToSort, comparator);
+        return objectsToSort;
+    }
+    
+    public ArrayList<RentACarObject> filterObjects(String stickType, String fuelType, boolean openObject, ArrayList<RentACarObject> objectsToFilter){
+    	System.out.println(stickType);
+    	System.out.println(fuelType);
+    	System.out.println(openObject);
+    	ArrayList<RentACarObject> filteredObjects= new ArrayList<RentACarObject>();
+    	for(RentACarObject object : objectsToFilter) {
+    		for(Vehicle vehicle : object.getAvailableCars()) {
+    			System.out.println("DA LI JE TACAN USLOV?");
+    			boolean firstTrue = stickType.equals(vehicle.getStickType().name()) || stickType.equals("notSelected");
+    			boolean secondTrue = fuelType.equals(vehicle.getFuelType().name()) || fuelType.equals("notSelected");
+    			boolean isTrue = firstTrue && secondTrue;
+    			System.out.println(firstTrue);
+    			System.out.println(secondTrue);
+    			System.out.println(isTrue);
+    			if(isTrue) {
+    				filteredObjects.add(object);
+    				System.out.println("Filtrirani objekat: "+object.getId());
+    				break;
+    			}
+    		}
+    	}
+    	
+    	if(openObject) {
+    		ArrayList<RentACarObject> filteredOpenObjects= new ArrayList<RentACarObject>();
+        	for(RentACarObject object : filteredObjects) {
+        		if(object.getStatus() == RentACarStatus.Open) {
+        			filteredOpenObjects.add(object);
+        			System.out.println("Otvoren objekat: "+object.getId());
+        		}
+        	}
+        	return filteredOpenObjects;
+    	}
+    	return filteredObjects;
+    }
+    
+    public ArrayList<RentACarObject> searchObjects(String name, String vehicleType, String location, String rate, ArrayList<RentACarObject> objectsToSearch){
+    	ArrayList<RentACarObject> searchedObjects= new ArrayList<RentACarObject>();
+    	
+    	for(RentACarObject object : objectsToSearch) {
+    		for(Vehicle vehicle : object.getAvailableCars()) {
+    			System.out.println("DA LI JE TACAN USLOV?");
+    			boolean nameTrue = object.getName().toLowerCase().contains(name.toLowerCase()) || name.equals("null");
+    			boolean typeTrue = vehicle.getType().name().toLowerCase().contains(vehicleType.toLowerCase()) || vehicleType.equals("null");
+    			boolean locationTrue = object.getLocation().getAddress().split(",")[1].toLowerCase().contains(location.toLowerCase()) || location.equals("null");
+    			//boolean rateTrue = rate.equals(String.valueOf(object.getRate())) || rate.equals("null");
+    			boolean rateTrue = false;
+    			if(rate.equals("null")) {
+    				rateTrue = true;
+    			}
+    			else if (Float.parseFloat(rate) == object.getRate()) {
+    				rateTrue = true;
+    			}
+    	
+    			boolean isTrue = nameTrue && typeTrue && locationTrue && rateTrue;
+    			System.out.println("ime:"+nameTrue);
+    			System.out.println("tip:"+typeTrue);
+    			System.out.println("grad:"+locationTrue);
+    			System.out.println("Vrednost rate u objektu: " + String.valueOf(object.getRate()));
+    			System.out.println("Vrednost rate pretrage: " + rate);
+    			System.out.println("ocena:"+rateTrue);
+    			System.out.println(isTrue);
+    			if(isTrue) {
+    				searchedObjects.add(object);
+    				System.out.println("Pretrazeni objekat: "+object.getId());
+    				break;
+    			}
+    		}
+    	}
+    	
+    	return searchedObjects;
+    }
 }
