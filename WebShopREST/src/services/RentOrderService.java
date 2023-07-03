@@ -7,10 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import beans.RentingOrder;
 import beans.RentingOrderCreation;
-import beans.User;
-import beans.UserRegistration;
 import dao.RentingOrderDAO;
-import dao.UserDAO;
 
 @Path("/rentingOrders")
 

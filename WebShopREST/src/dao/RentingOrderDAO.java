@@ -62,11 +62,11 @@ public class RentingOrderDAO {
 		
 		
 		// Create seven instances of RentingOrder
-		RentingOrder order1 = new RentingOrder("1", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle1)), "2023-06-23", "10:00", 3, user1, RentingOrderStatus.Processing, 300,"","");
-		RentingOrder order2 = new RentingOrder("2", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle2)), "2023-06-23", "11:00", 2, user1, RentingOrderStatus.Processing, 400,"","");
-		RentingOrder order3 = new RentingOrder("3", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle3)), "2023-06-24", "09:00", 1, user1, RentingOrderStatus.Approved, 200,"","");
-		RentingOrder order4 = new RentingOrder("4", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle4)), "2023-06-23", "10:00", 5, user1, RentingOrderStatus.Taken, 600,"","");
-		RentingOrder order5 = new RentingOrder("5", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle5)), "2023-06-24", "13:00", 2, user1, RentingOrderStatus.Returned, 500,"","");
+		RentingOrder order1 = new RentingOrder("1", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle1)), "2023-06-27", "10:00", 3, user1, RentingOrderStatus.Processing, 300,"","");
+		RentingOrder order2 = new RentingOrder("2", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle2)), "2023-06-28", "11:00", 2, user1, RentingOrderStatus.Processing, 400,"","");
+		RentingOrder order3 = new RentingOrder("3", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle3)), "2023-06-29", "09:00", 1, user1, RentingOrderStatus.Approved, 200,"","");
+		RentingOrder order4 = new RentingOrder("4", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle4)), "2023-06-30", "10:00", 5, user1, RentingOrderStatus.Taken, 600,"","");
+		RentingOrder order5 = new RentingOrder("5", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle5)), "2023-07-01", "13:00", 2, user1, RentingOrderStatus.Returned, 500,"","");
 		RentingOrder order6 = new RentingOrder("6", generateRandomId(), object1, cars , "2023-06-26", "15:00", 4, user1, RentingOrderStatus.Rejected, 800,"","");
 		
 		orders.add(order1);
@@ -228,10 +228,17 @@ public class RentingOrderDAO {
 	}
 
 	public Boolean changeOrderStatusToTaken(String orderId) {
-		RentingOrder order= getOrderById(orderId);
-		if(order!=null) {
-			order.setOrderStatus(RentingOrderStatus.Taken);
-			update(order);
+		RentingOrder o= getOrderById(orderId);
+		ArrayList<Vehicle> vehicles= new ArrayList<Vehicle>();
+		if(o!=null) {
+			o.setOrderStatus(RentingOrderStatus.Taken);
+			System.out.println("Vehicles u orderu se updejtuju: rented");
+        	for(Vehicle v: o.getVehicles()) {
+        		v.setCarStatus(CarStatus.Rented);
+        		vehicles.add(v);
+        	}
+        	o.setVehicles(vehicles);
+			update(o);
 			return true;
 		}
 		return false;
@@ -239,11 +246,18 @@ public class RentingOrderDAO {
 	}
 	
 	public Boolean changeOrderStatusToReturned(String orderId) {
-		RentingOrder order= getOrderById(orderId);
-		if(order!=null) {
-			order.setOrderStatus(RentingOrderStatus.Returned);
-			update(order);
-			return true;
+		RentingOrder o= getOrderById(orderId);
+		ArrayList<Vehicle> vehicles= new ArrayList<Vehicle>();
+		if(o!=null) {
+			o.setOrderStatus(RentingOrderStatus.Returned);
+			System.out.println("Vehicles u orderu se updejtuju: rented");
+	    	for(Vehicle v: o.getVehicles()) {
+	    		v.setCarStatus(CarStatus.Available);
+	    		vehicles.add(v);
+    	}
+    	o.setVehicles(vehicles);
+		update(o);
+		return true;
 		}
 		return false;
 	}
@@ -362,9 +376,7 @@ public class RentingOrderDAO {
 		RentingOrder order= getOrderById(id);
 		if(order!=null) {
 			LocalDate currentDate = LocalDate.now();
-	        LocalTime currentTime = LocalTime.now();
 			LocalDate parsedDate = LocalDate.parse(order.getDate(), dateFormatter);
-			LocalTime parsedTime = LocalTime.parse(order.getTime(), timeFormatter);
 
 	        LocalDate endDate = parsedDate.plusDays(order.getDuration());
 	        if (currentDate.isAfter(parsedDate) && currentDate.isBefore(endDate)) {
@@ -376,4 +388,5 @@ public class RentingOrderDAO {
 		}
 		return false;
 	}
+		
 }

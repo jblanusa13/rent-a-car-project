@@ -103,6 +103,7 @@ Vue.component("logInAdmin", {
 			<td>{{o.location.longitude}}</td>
 			<td>{{o.location.address}}</td>
 			<td>{{o.rate}}</td>
+			<td><button type="submit" v-on:click="showObject(o.id)">Show</button></td>
 		</tr>
 	</table><br><br>
 	
@@ -131,6 +132,11 @@ Vue.component("logInAdmin", {
 	addNew: function () {
       	event.preventDefault();
 		router.push(`/addNew/${this.userId}`);
+    },
+	showObject: function (id) {
+		event.preventDefault();
+		const combinedParam = id+"_"+this.userId;
+	    router.push(`/rentalObjectForAdmin/${combinedParam}`);
     },
 	logOut: function () {
       	event.preventDefault();

@@ -2,8 +2,7 @@ Vue.component("customerRentalObjects", {
   data: function () {
     return {
       objects: null,
-      user:{id:' ',username:null, password: null, name: null, surname:null, gender: null, birthDate:null,
-			role: null,orders:null,shoppingCart:null, rentACar:null, collectedPoints:null, customerType:null},
+      user:null,
       userId: null,
       orderReservationDate:null,
       selectedSortOption: null,
@@ -128,24 +127,26 @@ Vue.component("customerRentalObjects", {
 	      axios
 	      .put("rest/rentingOrders/customerOrderCancellation/"+ order.id)
 			      .then((response) => {
-			        console.log("Successfuly cancelled order.");
+			          console.log("Successfuly cancelled order.");
+			        //treba sad ovde jos jedan axios metod za usere da mu se oduzmu bodovi
+					  var currentPrice = order.price;
+					  var pointsLoss = parseInt((currentPrice / 1000) * 133 * 4);
+					  var requestString = this.userId + "_" + pointsLoss.toString();
+					  console.log("Request" + requestString);
+					  
+					  // Use the calculated value as needed
+					  console.log(pointsLoss);
+					  
+					  axios
+					      .post("rest/user/customerPointsLoss/" + requestString)
+					      .then((response) => {
+							  this.user=response.data;
+					        console.log("Updejtovani poeni usera");
+					      })
+					      .catch((error) => console.log(error));
 			      })
 			      .catch((error) => console.log(error));
 			      
-		  //treba sad ovde jos jedan axios metod za usere da mu se oduzmu bodovi
-		  var currentPrice = order.price;
-		  var pointsLoss = (currentPrice / 1000) * 133 * 4;
-		
-		  // Use the calculated value as needed
-		  console.log(pointsLoss);
-		  
-		  /*axios
-		      .put("rest/user/customerPointsLoss/" + this.userId,pointsLoss)
-		      .then((response) => {
-		        console.log("Updejtovani poeni usera");
-		      })
-		      .catch((error) => console.log(error));
-		  */
 	      return;
     },
     filterOrdersClick: function () {
@@ -163,8 +164,6 @@ Vue.component("customerRentalObjects", {
 		    const orderStartDate = new Date(item.date);
 		    const orderEndDate = new Date(item.date);
 			orderEndDate.setDate(orderEndDate.getDate() + item.duration);
-			console.log("GLEDAJ OVO MORA BITI DEFINISANO orderStartDate:", orderStartDate);
-			console.log("GLEDAJ OVO MORA BITI DEFINISANOorderEndDate:", orderEndDate);
 		    
 		    let isFiltered = true;
 		

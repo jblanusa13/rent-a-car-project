@@ -13,7 +13,6 @@ import beans.ShoppingCart;
 import beans.User;
 import beans.UserCredentials;
 import beans.UserRegistration;
-import dao.ShoppingCartDAO;
 import dao.UserDAO;
 
 @Path("/user")
@@ -193,38 +192,52 @@ public class UserService {
 	        return null;
 	    }
 	}
-	/*@PUT
+	@POST
 	@Path("/customerPointsLoss/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response customerPointsLoss(@PathParam("id") String id,int points) {
+	public User customerPointsLoss(@PathParam("id") String id) {
 		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
-		System.out.println("Service recived id of user:"+id);
-		System.out.println("New number of points to be added: -"+points);
-		Boolean b= dao.userPointsChange(id, points, true);
-        if (b) {
-        	System.out.println("Porudzbina updejtovana: oduzeti bodovi");
-            return Response.ok().build();
+		System.out.println("Service received id : " + id);
+
+		    String[] idParts = id.split("_");
+		    String userId = idParts[0];
+		    int points = Integer.parseInt(idParts[1]);
+		    
+		System.out.println("New number of points to be added: " + points);
+		System.out.println("Service recived id of user:"+userId);
+		System.out.println("New number of points to be added:"+points);
+		User user= dao.userPointsChange(userId, points, false);
+        if (user!=null) {
+        	System.out.println("Porudzbina updejtovana: dodati bodovi");
+            return user;
         } else {
-        	System.out.println("Porudzbina NIJE updejtovana: oduzeti bodovi");
-            return Response.status(Response.Status.NOT_FOUND).build();
+        	System.out.println("Porudzbina NIJE updejtovana: rejected");
+            return null;
         }
     }
 	
-	@PUT
+	@POST
 	@Path("/customerPointsGain/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response customerPointsGain(@PathParam("id") String id,int points) {
+	public User customerPointsGain(@PathParam("id") String id) {
 		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
-		System.out.println("Service recived id of user:"+id);
+		System.out.println("Service received id : " + id);
+
+		    String[] idParts = id.split("_");
+		    String userId = idParts[0];
+		    int points = Integer.parseInt(idParts[1]);
+		    
+		System.out.println("New number of points to be added: " + points);
+		System.out.println("Service recived id of user:"+userId);
 		System.out.println("New number of points to be added:"+points);
-		Boolean b= dao.userPointsChange(id, points, false);
-        if (b) {
+		User user= dao.userPointsChange(userId, points, false);
+        if (user!=null) {
         	System.out.println("Porudzbina updejtovana: dodati bodovi");
-            return Response.ok().build();
+            return user;
         } else {
         	System.out.println("Porudzbina NIJE updejtovana: rejected");
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return null;
         }
-    }*/
+    }
 }
