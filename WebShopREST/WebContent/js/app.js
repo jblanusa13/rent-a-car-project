@@ -14,7 +14,6 @@ const ManagerRentalObjects={ template: '<managerRentalObjects></managerRentalObj
 const CustomerRentalObjects={ template: '<customerRentalObjects></customerRentalObjects>' }
 const AddNewRentACar={ template: '<addNewObject></addNewObject>' }
 const RentalObjectForCustomer={ template: '<objectForCustomer></objectForCustomer>' }
-const RentalObjectForAdmin={ template: '<objectForAdmin></objectForAdmin>' }
 const CustomerShoppingCart = { template: '<customerShoppingCart></customerShoppingCart>' }
 const AllVehiclesForRenting={ template: '<allVehiclesForRenting></allVehiclesForRenting>' }
 const CustomerAllRentalsShoppingCart={ template: '<customerAllRentalsShoppingCart></customerAllRentalsShoppingCart>' }

@@ -28,11 +28,7 @@ Vue.component("objectForCustomer", {
     <div>
       <h1 style="display: flex; flex-direction: column; align-items: center;">{{ objectName }}</h1>
       <div style="display: flex; justify-content: center; align-items: center;">
-<<<<<<< HEAD
-		  <img :src="object.imageURL" style="width: 15%; height: auto;">
-=======
 		  <img :src="image" style="width: 75%; height: auto;">
->>>>>>> 370e6a260dde8c8d0d8b0b44e13f8b9dc7a22486
 	  </div>
 	  <div><br><br>     
         <label style="margin-left: 50px;"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
