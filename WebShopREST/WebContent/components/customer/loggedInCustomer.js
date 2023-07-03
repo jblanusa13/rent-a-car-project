@@ -110,6 +110,7 @@ Vue.component("logInCustomer", {
 	<div>
 		<button type="submit" v-on:click="profile">Profile</button>
 		<button type="submit" v-on:click="showAllRentingOrders">All my renting orders</button>
+		<button type="submit" v-on:click="rentVehicles">Rent vehicles</button>
 		<button type="submit" v-on:click="logOut">Log out</button>
 	</div>
 	
@@ -256,6 +257,10 @@ sortObjects: function() {
 			console.log("zavrsio pretragu");
 	      })
 	      .catch((error) => console.log(error));
-	}
+	},
+    rentVehicles: function () {
+      	event.preventDefault();
+		router.push(`/allVehiclesForRenting/${this.userId}`);
+    }
   }
 });

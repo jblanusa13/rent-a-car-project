@@ -5,6 +5,8 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import beans.ComplexRentingOrderCreation;
 import beans.RentingOrder;
 import beans.RentingOrderCreation;
 import dao.RentingOrderDAO;
@@ -298,7 +300,7 @@ public class RentOrderService {
 	@Path("/createOrder")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Boolean registerUser(RentingOrderCreation c) {
+	public Boolean registerOrder(RentingOrderCreation c) {
 		System.out.println("Registrovanje korisnika u register servisu");
 		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
 		RentingOrder o = dao.createOrder(c);
@@ -311,5 +313,45 @@ public class RentOrderService {
             return null;
 		}	
 	}
+	
+	@POST
+	@Path("/createComplexOrder")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Boolean registerComplexOrder(ComplexRentingOrderCreation c) {
+		System.out.println("Registrovanje korisnika u register servisu");
+		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+		 ArrayList<RentingOrder> o = dao.createComplexOrder(c);
+		if(o!=null) {
+			System.out.println("NARUDZBINA JESTE registrovana");
+			return true;
+		}
+		else {
+			System.out.println("NARUDZBINA NIJE registrovanA");
+            return null;
+		}	
+	}
+	
+	@PUT
+	@Path("/customerComment/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response customerComment(@PathParam("id") String id) {
+		RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+		System.out.println("Service recived id of order:"+id);
+		String[] idParts = id.split("_");
+	    String orderId = idParts[0];
+	    String comment = idParts[1];
+	    
+		System.out.println("Order id: " + orderId);
+		System.out.println("Comment: "+ comment);
+		Boolean b= dao.custommerCommentAdded(orderId,comment);
+        if (b) {
+        	System.out.println("Porudzbina updejtovana: cancelled");
+            return Response.ok().build();
+        } else {
+        	System.out.println("Porudzbina NIJE updejtovana: cancelled");
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
 	
 }

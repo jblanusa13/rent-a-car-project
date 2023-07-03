@@ -1,4 +1,4 @@
-Vue.component("customerShoppingCart", {
+Vue.component("customerAllRentalsShoppingCart", {
   data: function () {
     return {
 		userId:null,
@@ -11,15 +11,15 @@ Vue.component("customerShoppingCart", {
 		endDate:null,
 		rentACarObjectId:null,
 		time:null,
-		rentingOrderInfo:{startDate:null,endDate:null, object:null, cars:null,customer:null,price:null,time:null},
+		rentingOrderInfo:{startDate:null,endDate:null, objects:null, cars:null,customer:null,price:null,time:null},
 		errortextTime:'',
-		object:null,
 		user:null,
 		points:null,
 		confirmationText:null,
 		orderTaken:'no',
 		orders:null,
-		vehicle:null
+		vehicle:null,
+		allRentACarObjects: null,
 		
     }
   },
@@ -87,12 +87,10 @@ Vue.component("customerShoppingCart", {
   mounted() {
 	const combinedParam = this.$route.params.id;
     console.log(combinedParam); 
-    const [objectId, userId,startDate,endDate] = combinedParam.split('_');
-    this.objectId = objectId;
+    const [userId,startDate,endDate] = combinedParam.split('_');
     this.userId = userId;
     this.startDate=startDate;
     this.endDate=endDate;
-    console.log(this.objectId); 
     console.log(this.userId);
     console.log(this.startDate); 
     console.log(this.endDate);
@@ -101,11 +99,11 @@ Vue.component("customerShoppingCart", {
 	this.errortextTime='';
 	this.confirmationText='';
 	this.orderTaken='no'
-	//getting object
+	//getting all rentacars
 	axios
-	  .get("rest/objects/" + this.objectId)
+	  .get("rest/objects/")
 	  .then((response) => {
-	    this.object = response.data;
+	    this.allRentACarObjects = response.data;
 	  })
 	  .catch((error) => console.log(error));
 	//getting user
@@ -263,12 +261,12 @@ Vue.component("customerShoppingCart", {
 	
 	checkTimeAvailability: function() {
 	  if (!this.time) {
-	    this.errortextTime = 'The vehicle pick-up time must be entered!';
+	    this.errortextTime = 'The vehicles pick-up time must be entered!';
 	    return;
 	  }
 	
-	  var openingTime = this.object.openingTime; // Example opening time
-	  var closingTime = this.object.closingTime; // Example closing time
+	  var openingTime = "09:00"; // Example opening time
+      var closingTime = "18:00"; // Example closing time
 	  var currentTime = this.time; // Current time from HTML
 	
 	  var openingDateTime = new Date();
@@ -284,10 +282,44 @@ Vue.component("customerShoppingCart", {
 	  if (currentDateTime.getTime() >= openingDateTime.getTime() && currentDateTime.getTime() <= closingDateTime.getTime()) {
 	    console.log("The current time is within the opening hours.");
 	    this.errortextTime = '';
-	    this.createRentingOrder();
+	    //napravi se order za svaki rentacar
+	    //svaki rentacar dobijem tako sto nabavim sve rentacarove i vidim da li su vozila u tom rentacaru ako jesu dodajem ga u listu. nakon toga za svaki rentacar pravim poruzbinu i cena je suma cena vozila u tom rentacaru koji se nalazi u ovoj poruzdbini
+	    	this.relevantCars=[];
+	        let temp = [];
+	        temp = this.allRentACarObjects;
+			this.allRentACarObjects = [];
+			let count = 0;
+				for (const _ in temp) {
+					count++;
+				}
+			for (let i = 0; i < count; i++) {
+				  let item = temp[i];
+				  console.log("Object:"+item);
+				  let isFiltered = false;
+				  for (let j = 0; j < item.availableCars.length; j++) {
+					    let availableCar = item.availableCars[j];
+					
+					    for (let k = 0; k < this.vehicles.length; k++) {
+					      let car = this.vehicles[k];
+					
+					      if (availableCar.id === car.id) {
+					        isFiltered = true;
+					        this.relevantCars.push(car);
+					        break;
+					      }
+					    }
+				  }    
+				  
+				  if (isFiltered) {
+				    this.allRentACarObjects.push(item);				    				    
+				  }
+			}
+	    
+	     this.createRentingOrder();
+	    
 	  } else {
-	    console.log("The current time is outside the opening hours.");
-	    this.errortextTime = 'This time is outside the opening hours. The opening hours for this object are: ' + this.object.openingTime + "-" + this.object.closingTime;
+	    console.log("The current time is outside the order picking up hours.");
+	    this.errortextTime = 'This time is outside the opening hours.';
 	    return;
 	  }
 	},
@@ -300,7 +332,7 @@ Vue.component("customerShoppingCart", {
 	  var requestString = this.userId + "_" + this.points.toString();
 	  console.log("Request" + requestString);
 	  this.rentingOrderInfo.time = this.time;
-	  this.rentingOrderInfo.object = this.object;
+	  this.rentingOrderInfo.objects = this.allRentACarObjects;
 	
 	  axios.post("rest/user/customerPointsGain/" + requestString)
 	    .then((response) => {
@@ -312,10 +344,10 @@ Vue.component("customerShoppingCart", {
 	          console.log('End Date:', this.rentingOrderInfo.endDate);
 	          console.log('Renting Order Cars:', this.rentingOrderInfo.cars);
 	          console.log('Renting Order user:', this.rentingOrderInfo.customer);
-	          console.log('Renting Order object:', this.rentingOrderInfo.object);
+	          console.log('Renting Order objects:', this.rentingOrderInfo.objects);
 	          console.log('Renting Order price:', this.rentingOrderInfo.price);
 	          console.log('Renting Order time:', this.rentingOrderInfo.time);
-	          axios.post("rest/rentingOrders/createOrder", this.rentingOrderInfo)
+	          axios.post("rest/rentingOrders/createComplexOrder", this.rentingOrderInfo)
 	            .then((response) => {
 	              var b = null;
 	              b = response.data;
