@@ -9,10 +9,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import beans.RentACarObject;
-import beans.RentingOrder;
 import beans.Vehicle;
 import dao.RentACarObjectDAO;
-import dao.RentingOrderDAO;
 
 @Path("/objects")
 public class RentACarObjectService {

@@ -202,7 +202,7 @@ public class UserDAO {
 				System.out.println("Registruje kupca");
 				user.setRole(UserRole.Customer);
 				user.setOrders(new ArrayList<RentingOrder>());
-				user.setCustomerType(new CustomerType(CustomerTypes.Bronze, 0.0, 10));
+				user.setCustomerType(new CustomerType(CustomerTypes.Bronze, 0.0, 3000));
 				user.setShoppingCart(new ShoppingCart());
 				user.setCollectedPoints(0);
 			}
@@ -299,6 +299,13 @@ public class UserDAO {
         	}
         	else {
         		newPoints=user.getCollectedPoints()+numberOfPoints;
+        		if (newPoints > 10000) {
+        			user.setCustomerType(new CustomerType(CustomerTypes.Golden,10.0,10000));
+        		} 
+        		else if (newPoints > 5000) {
+        			user.setCustomerType(new CustomerType(CustomerTypes.Silver,5.0,5000));
+        		}
+        		
         	}
             user.setCollectedPoints(newPoints);
             writeToFile();

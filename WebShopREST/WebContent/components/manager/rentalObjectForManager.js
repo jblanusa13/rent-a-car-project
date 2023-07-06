@@ -9,7 +9,8 @@ Vue.component("objectForManager", {
       comments: null,
       userId:null,
 	  manager:null,
-	  hisObject:false
+	  hisObject:false,
+      commentsChange: null
     };
   },
   template: `
@@ -107,7 +108,7 @@ Vue.component("objectForManager", {
 		        <br>
 		      </div>
 		    </td>
-		    <td style="position: absolute; bottom: 15px; right: 15px;" v-if="c.status === 'Pending'">
+		    <td style="position: absolute; bottom: 15px; right: 15px;" v-if="c.status === 'Pending' && commentsChange==='True'">
 		      <div>
 		        <button v-on:click="approve(c)">Approve</button>
 		        <button style="margin-left: 20px;" v-on:click="reject(c)">Reject</button>
@@ -168,10 +169,25 @@ Vue.component("objectForManager", {
         }
         
         this.allCars = this.object.availableCars;
+        
+        axios.get("rest/user/profile/"+this.userId)
+		.then(response=>{
+			this.manager = response.data;
+			if(this.manager.rentACar.id == this.object.id){
+				this.hisObject = true;
+				this.commentsChange='True';
+				console.log("Menadzerov objekat");
+			}
+			else{
+				this.hisObject = false;
+				this.commentsChange='';
+				console.log("Nije menadzerov objekat");
+			}
+		})
+		.catch(error => console.log(error))
       })
       .catch((error) => console.log(error));
-      
-    // Fetching all approved comments for this object
+
     axios
       .get("rest/comments/allCommentsInRental/" + this.objectId)
       .then((response) => {
@@ -179,19 +195,6 @@ Vue.component("objectForManager", {
       })
       .catch((error) => console.log(error));
 
-	axios.get("rest/user/profile/"+this.userId)
-		.then(response=>{
-			this.manager = response.data;
-			if(this.manager.rentACar.id == this.object.id){
-				this.hisObject = true;
-				console.log("Menadzerov objekat");
-			}
-			else{
-				this.hisObject = false;
-				console.log("Nije menadzerov objekat");
-			}
-		})
-		.catch(error=>{console.log(error)})
   },
   methods: {
     ShowAll: function () {

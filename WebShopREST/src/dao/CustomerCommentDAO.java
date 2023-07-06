@@ -84,6 +84,16 @@ public class CustomerCommentDAO {
         comments.add(comment3);
         comments.add(comment4);
         
+        CustomerComment comment5 = new CustomerComment("5", user6, object2, 3, CommentStatus.Pending,"Decent experience");
+        CustomerComment comment6 = new CustomerComment("6", user7, object2, 4, CommentStatus.Pending,"Good service");
+        CustomerComment comment7 = new CustomerComment("7", user6, object2, 2, CommentStatus.Rejected,"Not worth the money");
+        CustomerComment comment8 = new CustomerComment("8", user7, object2, 5, CommentStatus.Approved,"Highly recommended");
+
+        comments.add(comment5);
+        comments.add(comment6);
+        comments.add(comment7);
+        comments.add(comment8);
+        
         writeToFile();
         
         System.out.println("SVI KOMENTARI:");
