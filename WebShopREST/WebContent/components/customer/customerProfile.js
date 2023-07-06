@@ -65,6 +65,8 @@ Vue.component("customer-profile", {
 			</div>
 		</form>
 		<br>
+		<button id="deactivateBtn" type="submit" v-on:click="deactivateAccount">Deactivate Account</button>
+		<label id="statusLabel" style="display: none;"></label>
 		<button type="submit" v-on:click="goBack">Home page</button>
     </div>
   `,
@@ -92,7 +94,27 @@ Vue.component("customer-profile", {
 	goBack: function () {
       event.preventDefault();
       router.push(`/loggedInCustomer/${this.userId}`);
-    }
+    },
+    deactivateAccount: function() {
+	  event.preventDefault();
+	  
+	  var confirmation = confirm("Are you sure that you want to deactivate the account?");
+	  if (confirmation) {
+	    console.log("Account is deactivated");
+	    axios
+	      .post("rest/user/userDeactivated/"+this.userId)
+	      .then((response) => {
+	        console.log("Deactivation of user account");
+	        router.push(`/`);
+	        return;
+	      })
+	      .catch((error) => console.log(error));
+	  } else {
+	    var statusLabel = document.createElement("label");
+	    statusLabel.textContent = "Account is still active";
+	    document.body.appendChild(statusLabel);
+	  }
+	}
   }
   
 });

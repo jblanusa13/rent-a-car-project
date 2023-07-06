@@ -81,7 +81,7 @@ Vue.component("logIn", {
     .then(response => {
         this.user = response.data; 
         if(this.user.userStatus==='Deactivated'){
-			this.errortext='Your account has been blocked.'
+			this.errortext='Your account has been deactivated.'
 			return;
 		}
         console.log('Uloga korisnika:')
