@@ -12,17 +12,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import beans.Location;
+
 import beans.RentACarObject;
-import beans.RentingOrder;
-import beans.User;
 import beans.Vehicle;
 import enums.CarStatus;
-import enums.FuelType;
 import enums.RentACarStatus;
-import enums.StickType;
-import enums.VehicleType;
-import sun.security.action.GetLongAction;
 
 public class RentACarObjectDAO {
 	private String path=null;

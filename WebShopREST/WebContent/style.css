@@ -6,7 +6,6 @@ body {
   color: #000;
 }
 
-/* Header styles */
 header {
   padding: 20px;
   text-align: center;
@@ -14,8 +13,7 @@ header {
 }
 
 h1,h2,h3 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 48px;
+  font-family: 'Gill Sans MT', sans-serif;
   font-weight: bold;
   font-style: italic;
   letter-spacing: 2px;
@@ -24,7 +22,6 @@ h1,h2,h3 {
   animation: pulse 2s infinite;
 }
 
-/* Navigation styles */
 nav {
   text-align: center;
   background-color: #000;

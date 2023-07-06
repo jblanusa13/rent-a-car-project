@@ -159,10 +159,13 @@ Vue.component("objectForManager", {
         }
         
         this.allCars = this.object.availableCars;
+        
+        //treba da dobavim usera u ovom slucaju menadzera i da uporedim njegov id objekta sa ovim id objekta
       })
       .catch((error) => console.log(error));
       
-    // Fetching all approved comments for this object
+    // Fetching all comments for this object
+    //DODAJ AKO JE NJEGOV OBJEKAT ONDA OVO AKO NIJE ONDA SAMO ODOBRENI KOMENTARI KO KOD CUSTOMERA
     axios
       .get("rest/comments/allCommentsInRental/" + this.objectId)
       .then((response) => {

@@ -8,7 +8,7 @@ Vue.component("customer-profile", {
   },
   template: `
     <div>
-		<h2>Profile ({{user.role}})</h2>
+		<h2>Profile</h2>
 		<form>
 			<table>
 				<tr>
@@ -43,17 +43,12 @@ Vue.component("customer-profile", {
 		<br><br>
 		
 		<form>
-			<table>
-				<tr>
-            		<td>Collected points:</td>
-            		<td><input type="text" name="points" v-model="user.collectedPoints" disabled></td>
-          		</tr>
-			</table>
-		</form>
-		
-		<form>
 			<div>
 				<table>
+					<tr>
+	            		<td>Collected points:</td>
+	            		<td><input type="text" name="points" v-model="user.collectedPoints" disabled></td>
+	          		</tr>
 					<tr>
 						<td>Customer type:</td>
            				<td><input type="text" name="type" v-model="user.customerType.typeName" disabled></td>
@@ -68,27 +63,8 @@ Vue.component("customer-profile", {
 					</tr>
 				</table>
 			</div>
-			<div>
-				<h3>Shopping cart</h3>
-				<table>
-					<tr>
-						<td>Cars in cart:</td>
-            			<td v-if="user.shoppingCart.cars">
-							<ul data-role="listview" data-view="list" v-for="c in user.shoppingCart.cars">
-								<li>{{c}}</li>
-							</ul>
-						</td>
-						<td v-else>
-							Shopping cart is empty!
-						</td>
-					</tr>
-					<tr>
-						<td>Price:</td>
-            			<td><input type="text" name="price" v-model="user.shoppingCart.price" disabled></td>
-					</tr>
-				</table>
-			</div>
 		</form>
+		<br>
 		<button type="submit" v-on:click="goBack">Home page</button>
     </div>
   `,

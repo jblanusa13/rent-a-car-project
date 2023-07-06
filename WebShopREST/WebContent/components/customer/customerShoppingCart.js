@@ -19,13 +19,16 @@ Vue.component("customerShoppingCart", {
 		confirmationText:null,
 		orderTaken:'no',
 		orders:null,
-		vehicle:null
+		vehicle:null,
+		textPrice:'',
+		textOriginalPrice:'',
+		originalPrice:null
 		
     }
   },
   template: `
     <div>
-		<h2 style="display: flex; justify-content: center; align-items: center;">Shopping cart</h2>
+		<h1 style="display: flex; justify-content: center; align-items: center;">Shopping cart</h1>
 		<h3 style="display: flex; justify-content: center; align-items: center;">Vehicles:</h3>
 		<div style="display: flex; justify-content: center; align-items: center;">        
          <label style="color: red;">{{ errortext }}</label><br><br>
@@ -63,7 +66,15 @@ Vue.component("customerShoppingCart", {
 		        </tr>
 		      </table>
 		</div>
-		<div style="display: flex; justify-content: center; align-items: center;"><h3>Total price: {{price}}</h3></div><br>
+		<div style="display: flex; justify-content: center; align-items: center;">		
+		<label>{{ textPrice }}</label>
+		</div><br>
+		<div style="display: flex; justify-content: center; align-items: center;">		
+		<label>{{ textOriginalPrice }}</label>
+		</div><br>
+		<div style="display: flex; justify-content: center; align-items: center;">		
+		<h3>Total price: {{price}}</h3>
+		</div><br>
 		
 		<div style="display: flex; justify-content: center; align-items: center;">        
          <label style="color: red;">{{ errortextTime }}</label><br><br>
@@ -115,26 +126,48 @@ Vue.component("customerShoppingCart", {
         this.user = response.data;
         console.log(this.user);
         console.log("Making new shoppingCart");
+        axios.get('rest/user/getShoppingCart/'+ this.userId)
+	  		.then(response => {
+			    this.shoppingCart = response.data;	
+			    console.log("Id korpe:"+ this.shoppingCart.id);	
+			    axios.get('rest/shoppingCarts/getShoppingCartVehicles/'+ this.shoppingCart.id)
+			  		.then(response => {
+					    this.vehicles = response.data;	
+					    console.log("Vozila:"+ this.vehicles);	
+					    axios.get('rest/shoppingCarts/getShoppingCartPrice/'+ this.shoppingCart.id)
+					  		.then(response => {
+							    this.price = response.data;	
+							    this.originalPrice=this.price;
+							    if (this.user.customerType.typeName === "Golden") {
+									this.price = this.shoppingCart.price * 0.9;
+								    console.log("Customer is golden.Price: "+  this.price);
+								    this.textPrice = "As a GOLDEN guest, you get 10% OFF out of every purchase!";
+								    this.textOriginalPrice="Original price: " + this.originalPrice;
+								} else if (this.user.customerType.typeName === "Silver") {
+								    // Customer is silver
+								    this.price = this.shoppingCart.price * 0.95;
+								    console.log("Customer is silver.Price: "+  this.price);
+								    this.textPrice="As a SILVER guest, you get 5% OFF out of every purchase!" ;
+								    this.textOriginalPrice="Original price: " + this.originalPrice;
+								} else {
+								    // Customer is bronze
+						            this.price = this.shoppingCart.price;
+								    console.log("Customer is neither golden nor silver.Price: "+ this.price+ this.user.customerType.typeName);
+								    this.textPrice="";
+								    this.textOriginalPrice="";
+								}
+							    console.log("Cena:"+ this.price);	
+							    this.carCounter = this.vehicles.length;	
+							    console.log("Broj vozila:"+ this.carCounter);		         
+						});    
+				});    
+		 });     
+        
+        
       })
       .catch((error) => console.log(error));
 	//gating shopping cart
-	axios.get('rest/user/getShoppingCart/'+ this.userId)
-  		.then(response => {
-		    this.shoppingCart = response.data;	
-		    console.log("Id korpe:"+ this.shoppingCart.id);	
-		    axios.get('rest/shoppingCarts/getShoppingCartVehicles/'+ this.shoppingCart.id)
-		  		.then(response => {
-				    this.vehicles = response.data;	
-				    console.log("Vozila:"+ this.vehicles);	
-				    axios.get('rest/shoppingCarts/getShoppingCartPrice/'+ this.shoppingCart.id)
-				  		.then(response => {
-						    this.price = response.data;	
-						    console.log("Cena:"+ this.price);	
-						    this.carCounter = this.vehicles.length;	
-						    console.log("Broj vozila:"+ this.carCounter);		         
-					});    
-			});    
-	 });
+	
   },
   methods: {
 	goBack: function () {
@@ -295,7 +328,7 @@ Vue.component("customerShoppingCart", {
 	createRentingOrder: function() {
 	  this.rentingOrderInfo.startDate = this.startDate;
 	  this.rentingOrderInfo.endDate = this.endDate;
-	  this.rentingOrderInfo.price = this.shoppingCart.price;
+	  this.rentingOrderInfo.price = this.price;
 	  this.points = parseInt((this.shoppingCart.price / 1000) * 133);
 	  var requestString = this.userId + "_" + this.points.toString();
 	  console.log("Request" + requestString);
