@@ -7,7 +7,9 @@ Vue.component("objectForManager", {
       objectName: null,
       image: null,
       comments: null,
-      userId:null
+      userId:null,
+      commentsChange: null,
+      user:null
     };
   },
   template: `
@@ -99,7 +101,7 @@ Vue.component("objectForManager", {
 		        <br>
 		      </div>
 		    </td>
-		    <td style="position: absolute; bottom: 15px; right: 15px;" v-if="c.status === 'Pending'">
+		    <td style="position: absolute; bottom: 15px; right: 15px;" v-if="c.status === 'Pending' && commentsChange==='True'">
 		      <div>
 		        <button v-on:click="approve(c)">Approve</button>
 		        <button style="margin-left: 20px;" v-on:click="reject(c)">Reject</button>
@@ -160,12 +162,23 @@ Vue.component("objectForManager", {
         
         this.allCars = this.object.availableCars;
         
-        //treba da dobavim usera u ovom slucaju menadzera i da uporedim njegov id objekta sa ovim id objekta
+        axios.get('rest/user/profile/'+this.userId)
+		.then(response => {
+			this.user = response.data
+			
+			if(this.user.rentACar.id===this.object.id){
+				this.commentsChange='True';
+				console.log("Object is from this manager.")
+			}
+			else{
+				this.commentsChange='';
+				console.log("Object isn't from this manager.")
+			}
+		})
+		.catch(error => console.log(error))
       })
       .catch((error) => console.log(error));
-      
-    // Fetching all comments for this object
-    //DODAJ AKO JE NJEGOV OBJEKAT ONDA OVO AKO NIJE ONDA SAMO ODOBRENI KOMENTARI KO KOD CUSTOMERA
+
     axios
       .get("rest/comments/allCommentsInRental/" + this.objectId)
       .then((response) => {

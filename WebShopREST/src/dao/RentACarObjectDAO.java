@@ -24,7 +24,9 @@ public class RentACarObjectDAO {
 
 	public RentACarObjectDAO(String contextPath) {
 		path = contextPath;
+		
 		loadFromFile();
+		
 		System.out.println("SVI Objecti:");
 		for(RentACarObject o: objects) {
 			System.out.println(o.getId());
