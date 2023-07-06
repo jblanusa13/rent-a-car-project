@@ -75,7 +75,9 @@ public class RentACarObjectService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public RentACarObject registerObject(RentACarObject newObject){
 		RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
-		return dao.registerObject(newObject);
+		RentACarObject object = dao.registerObject(newObject);
+		System.out.println("Objekat u servisu: "+object.getId());
+		return object;
 	}
 	
 	@PUT

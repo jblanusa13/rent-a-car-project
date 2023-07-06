@@ -140,6 +140,7 @@ public class RentACarObjectDAO {
 		objects.add(object);
 		System.out.println("Objekat registrovan");
 		writeToFile();
+		System.out.println("Objekat:"+object.getId());
 		return object;
 	}
 	

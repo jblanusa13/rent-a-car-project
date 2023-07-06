@@ -3,7 +3,8 @@ Vue.component("manager-profile", {
     return {
 		userId:null,
 		user:null,
-		userDate:null
+		userDate:null,
+		object:{id:null, name:null, availableCars:null, openingTime:null, closingTime:null, status:null, location:{longitude:null, latitude:null, address:null}, imageURL:'', rate:0.0},
     }
   },
   template: `
@@ -44,9 +45,27 @@ Vue.component("manager-profile", {
 		
 		<form>
 			<table>
+				<colgroup>
+		          <col style="width: 10%;">
+		          <col style="width: 15%;">
+		        </colgroup>
 				<tr>
-           			<td>Rent a car object:</td>
-           			<td><input type="text" name="carObject" disabled></td>
+					<td style="padding: 20px;">
+		          	  <img :src="object.imageURL" alt="Logo" style="width: 100%; height: auto;">
+		          	</td>
+           			<td>
+						<div style="display: inline-block; vertical-align: middle;">
+							<div>
+								Rent a car object: {{object.name}}
+							</div>
+							<div>
+								Address: {{object.location.address}}
+							</div>
+							<div>
+								Rate: {{object.rate}}
+							</div>
+						</div>
+					</td>
        			</tr>
 			</table>
 		</form>
@@ -69,6 +88,8 @@ Vue.component("manager-profile", {
 			this.userDate = response.data
 		})
 		.catch(error => console.log(error))
+		
+	this.object = this.user.rentACar;
   },
   methods: {
     editUser: function () {

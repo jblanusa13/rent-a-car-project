@@ -39,7 +39,7 @@ public class UserDAO {
 		
 		path=contextPath;
 		
-		User user1 = new User("1", "user1", "password1", "John", "Doe", "Male", "2002-01-14",
+		/*User user1 = new User("1", "user1", "password1", "John", "Doe", "Male", "2002-01-14",
                 UserRole.Administrator , new ArrayList<>(), new ShoppingCart(),
                 new RentACarObject(), 100, new CustomerType(),UserStatus.Active);
         users.add(user1);
@@ -73,9 +73,9 @@ public class UserDAO {
                 new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
         users.add(user7);
         addrentacar();
-		writeToFile();
+		writeToFile();*/
 		
-		//loadFromFile();
+		loadFromFile();
 		System.out.println("SVI USERI:");
 		for(User u: users) {
 			System.out.println(u.getId());
@@ -193,6 +193,7 @@ public class UserDAO {
 			user.setPassword(userReg.getPassword());
 			user.setUsername(userReg.getUsername());
 			user.setSurname(userReg.getSurname());
+			user.setUserStatus(UserStatus.Active);
 			if(type.equals("m")) {
 				System.out.println("Registruje menadzera");
 				user.setRole(UserRole.Manager);

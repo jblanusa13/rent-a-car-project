@@ -154,7 +154,7 @@ public class UserService {
 		return dao.getAvailableManagers();
     }
 	
-	@POST
+	@PUT
     @Path("/setManagerObject/{managerId}")
 	@Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)

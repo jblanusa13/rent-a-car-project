@@ -7,7 +7,9 @@ Vue.component("objectForManager", {
       objectName: null,
       image: null,
       comments: null,
-      userId:null
+      userId:null,
+	  manager:null,
+	  hisObject:false
     };
   },
   template: `
@@ -26,15 +28,15 @@ Vue.component("objectForManager", {
             <table style="margin-left: 60px;">
               <tr>
                 <td>Longitude: </td>
-                <td><input type="text" name="longitude" v-model="object.location.longitude" disabled></td>
+                <td>{{object.location.longitude}}</td>
               </tr>
               <tr>
                 <td>Latitude: </td>
-                <td><input type="text" name="latitude" v-model="object.location.latitude" disabled></td>
+                <td>{{object.location.latitude}}</td>
               </tr>
               <tr>
                 <td>Address: </td>
-                <td><input type="text" name="address" v-model="object.location.address" disabled></td>
+                <td>{{object.location.address}}</td>
               </tr>
             </table>
           </tr>
@@ -72,9 +74,15 @@ Vue.component("objectForManager", {
             <td>{{ v.peopleNumber }}</td>
             <td>{{ v.description }}</td>
             <td>{{ v.carStatus }}</td>
+			<td v-if="this.hisObject"><button type="submit" v-on:click="editVehicle(v.id)">Edit</button></td>
+			<td v-if="this.hisObject"><button type="submit" v-on:click="deleteVehicle(v.id)">Delete</button></td>
           </tr>
         </table>
       </div>
+	
+	  <div v-if="this.hisObject">
+			<button type="submit" v-on:click="addVehicle()">Add new vehicle</button>
+	  </div>
       
       <div style="display: flex; justify-content: center; align-items: center; margin-top: 40px;">
         <br><h2> Comments of the renting object </h2><br>
@@ -128,6 +136,7 @@ Vue.component("objectForManager", {
         this.object = response.data;
         this.objectName = this.object.name;
         this.image = this.object.imageURL;
+
         
         var openingTime = this.object.openingTime; // Example opening time
         var closingTime = this.object.closingTime; // Example closing time
@@ -169,6 +178,20 @@ Vue.component("objectForManager", {
         this.comments = response.data;
       })
       .catch((error) => console.log(error));
+
+	axios.get("rest/user/profile/"+this.userId)
+		.then(response=>{
+			this.manager = response.data;
+			if(this.manager.rentACar.id == this.object.id){
+				this.hisObject = true;
+				console.log("Menadzerov objekat");
+			}
+			else{
+				this.hisObject = false;
+				console.log("Nije menadzerov objekat");
+			}
+		})
+		.catch(error=>{console.log(error)})
   },
   methods: {
     ShowAll: function () {
@@ -200,6 +223,16 @@ Vue.component("objectForManager", {
 		}
       })
       .catch((error) => console.log(error));
-    }
+    },
+	editVehicle: function(id){
+		event.preventDefault();
+	},
+	deleteVehicle: function(id){
+		event.preventDefault();
+	},
+	addVehicle: function(){
+		event.preventDefault();
+		router.push(`/addNewVehicle/${this.userId}`);
+	}
   }
 });

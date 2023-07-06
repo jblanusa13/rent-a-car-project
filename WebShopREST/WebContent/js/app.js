@@ -21,6 +21,7 @@ const RentalObjectForManager={ template: '<objectForManager></objectForManager>'
 const RentalObjectForAdmin={ template: '<objectForAdmin></objectForAdmin>' }
 const AllUsersForAdmin={ template: '<allUsersForAdmin></allUsersForAdmin>' }
 const AllUsersForManager={ template: '<allUsersForManager></allUsersForManager>' }
+const AddNewVehicle={ template: '<newVehicle></newVehicle>' }
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -45,7 +46,8 @@ const router = new VueRouter({
 		{ path: '/rentalObjectForManager/:id', name: 'home14', component: RentalObjectForManager},
 		{ path: '/rentalObjectForAdmin/:id', name: 'home15', component: RentalObjectForAdmin},
 		{ path: '/allUsersForAdmin/:id', name: 'home16', component: AllUsersForAdmin},
-		{ path: '/allUsersForManager/:id', name: 'home17', component: AllUsersForManager}
+		{ path: '/allUsersForManager/:id', name: 'home17', component: AllUsersForManager},
+		{ path: '/addNewVehicle/:id', name: 'home18', component: AddNewVehicle}
 	  ]
 });
 

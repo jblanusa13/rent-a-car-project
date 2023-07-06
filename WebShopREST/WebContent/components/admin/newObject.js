@@ -2,6 +2,7 @@ Vue.component("addNewObject", {
   data: function () {
     return {
 		rentACarObject:{id:null, name:null, availableCars:null, openingTime:null, closingTime:null, status:null, location:{longitude:null, latitude:null, address:null}, imageURL:'', rate:0.0},
+		object:null,
 		managerRegistration:{username:null, password: null, name: null, surname:null, gender: null, birthDate:null},
 		manager:{id:null, username:null, password: null, name: null, surname:null, gender: null, birthDate:null},
 		managerId:null,
@@ -138,22 +139,19 @@ Vue.component("addNewObject", {
 		axios.post('rest/objects/registerObject/', this.rentACarObject)
 			.then(response=>{
 				console.log("Uspesno registrovan objekat");
-				this.rentACarObject = response.data;
-				console.log(this.rentACarObject);
+				this.object = response.data;
+				console.log(this.object.id);
+				console.log(this.object);
+				
+				axios.put('rest/user/setManagerObject/'+this.manager.id, this.object)
+					.then(response=>{
+							console.log("Dodat objekat menadzeru");
+							this.managerId = response.data;
+					})
+					.catch(error=>console.log(error))
 			})
 			.catch(error=> console.log(error))
-			
-			
-		console.log(this.manager.id);
-		console.log(this.manager.name);
-		console.log(this.manager.surname);	
-		axios.post('rest/user/setManagerObject/'+this.manager.id, this.rentACarObject)
-			.then(response=>{
-				console.log("Dodat objekat menadzeru");
-				this.managerId = response.data;
-			})
-			.catch(error=>console.log(error))
-			
+
 		router.push(`/loggedInAdmin/${this.userId}`);
 	},
 	registerManager: function(){
