@@ -22,6 +22,7 @@ Vue.component("addNewObject", {
           		</tr>
           		<tr>
             		<td>Location:</td>
+            		<div id="map"></div>
             		<td>
 						<table>
 							<tr>
@@ -117,52 +118,149 @@ Vue.component("addNewObject", {
 		.then(response =>{
 				this.managers = response.data;				
 		})
-		.catch(error => console.log(error))
+		.catch(error => console.log(error));
+		
+	//adding Map	
+	const map = new ol.Map({
+	  target: 'map',
+	  layers: [
+	    new ol.layer.Tile({
+	      source: new ol.source.OSM(),
+	    })
+	  ],
+	  view: new ol.View({
+	    center: ol.proj.fromLonLat([0, 0]),
+	    zoom: 2,
+	  })
+	});
+	
+	const marker = new ol.layer.Vector({
+		source: new ol.source.Vector({
+			features: [
+				new ol.Feature({
+					geometry: new ol.geom.Point(
+						ol.proj.fromLonLat([0, 0])
+					)
+				})
+			]
+		}),
+		style: new ol.style.Style({
+			image: new ol.style.Icon({
+				src: 'https://docs.maptiler.com/openlayers/default-marker/marker-icon.png',
+				anchor: [0.5,1]
+			})
+		})
+	})
+	
+	map.addLayer(marker);
+	
+	this.mapObject = map;
+	this.markerObject = marker;
+	
+	const vec = new ol.layer.Vector({
+	  source: new ol.source.Vector(),
+	});
+	  		
+	map.on('click', (event) => {
+	  var cor = ol.proj.toLonLat(event.coordinate);
+	  this.convertToMyCoordinates(cor);
+	  vec.getSource().clear();
+	  
+	  var mapMarker = new ol.Feature({
+		  geometry: new ol.geom.Point(event.coordinate),
+	  });
+	  
+	  vec.getSource().addFeature(mapMarker);
+	  
+	  this.moveMarker(event.coordinate);
+   });
+   
   },
   methods: {
-	confirm: function(){
-		event.preventDefault();
-		//logo
-		this.logo = this.$refs.file.files[0];
-		console.log(this.logo);
-		console.log(this.rentACarObject.name);
-		console.log(this.rentACarObject.location.latitude);
-		console.log(this.rentACarObject.location.longitude);
-		console.log(this.rentACarObject.location.address);
-		console.log(this.rentACarObject.openingTime);
-		console.log(this.rentACarObject.closingTime);
-		
-		this.rentACarObject.imageURL = "images/objects/"+this.logo.name;
-		console.log(this.rentACarObject.imageURL);
-		
-		axios.post('rest/objects/registerObject/', this.rentACarObject)
-			.then(response=>{
-				console.log("Uspesno registrovan objekat");
-				this.rentACarObject = response.data;
-				console.log(this.rentACarObject);
-			})
-			.catch(error=> console.log(error))
-			
-			
-		console.log(this.manager.id);
-		console.log(this.manager.name);
-		console.log(this.manager.surname);	
-		axios.post('rest/user/setManagerObject/'+this.manager.id, this.rentACarObject)
-			.then(response=>{
-				console.log("Dodat objekat menadzeru");
-				this.managerId = response.data;
-			})
-			.catch(error=>console.log(error))
-			
-		router.push(`/loggedInAdmin/${this.userId}`);
+  confirm(event) {
+    event.preventDefault();
+    this.logo = this.$refs.file.files[0];
+    console.log(this.logo);
+    console.log(this.rentACarObject.name);
+    console.log(this.rentACarObject.location.latitude);
+    console.log(this.rentACarObject.location.longitude);
+    console.log(this.rentACarObject.location.address);
+    console.log(this.rentACarObject.openingTime);
+    console.log(this.rentACarObject.closingTime);
+
+    this.rentACarObject.imageURL = "images/objects/" + this.logo.name;
+    console.log(this.rentACarObject.imageURL);
+
+    axios
+      .post('rest/objects/registerObject/', this.rentACarObject)
+      .then(response => {
+        console.log("Successfully registered object");
+        this.rentACarObject = response.data;
+        console.log(this.rentACarObject);
+      })
+      .catch(error => console.log(error));
+
+    console.log(this.manager.id);
+    console.log(this.manager.name);
+    console.log(this.manager.surname);
+    axios
+      .post('rest/user/setManagerObject/' + this.manager.id, this.rentACarObject)
+      .then(response => {
+        console.log("Added object to the manager");
+        this.managerId = response.data;
+      })
+      .catch(error => console.log(error));
+
+    router.push(`/loggedInAdmin/${this.userId}`);
+  },
+
+  registerManager(event) {
+    event.preventDefault();
+    axios
+      .post('rest/user/register/m/', this.managerRegistration)
+      .then(response => {
+        this.manager = response.data;
+        console.log(`Manager id: ${this.manager.id}`);
+      })
+      .catch(error => console.log(error));
+  },
+
+  moveMarker: function (lonLatCoordinates) {
+    const marker = this.markerObject.getSource();
+    marker.clear();
+
+    const mapMarker = new ol.Feature({
+      geometry: new ol.geom.Point(lonLatCoordinates)
+    });
+
+    marker.addFeature(mapMarker);
+  },
+
+  convertToMyCoordinates : function(lonLatCoordinates){
+		fetch(
+			"http://nominatim.openstreetmap.org/reverse?format=json&lon=" + lonLatCoordinates[0] + "&lat=" + lonLatCoordinates[1]
+	  		).then(response => { return response.json(); }).then(json => 
+		  	{
+			  let address = json.address;
+			  let street = address.road;
+			  let number = address.house_number;
+			  let livingPlace = address.town || address.village || address.city;
+			  let cityPostal = address.postcode;
+			  
+			  this.rentACarObject.location.address = String(street + " " + number + " " + livingPlace + " " + cityPostal);
+			  
+			  let boundingbox = json.boundingbox;
+			  let geoLength = Math.abs(parseFloat(boundingbox[3]) - parseFloat(boundingbox[1]));
+		   	  let geoWidth = Math.abs(parseFloat(boundingbox[2]) - parseFloat(boundingbox[0]));
+				
+			  this.rentACarObject.location.longitude = Number(geoLength.toFixed(3));
+      		  this.rentACarObject.location.latitude = Number(geoWidth.toFixed(3));
+		  	})
 	},
-	registerManager: function(){
-		event.preventDefault();
-		axios.post('rest/user/register/m/', this.managerRegistration)
-  		.then(response => {
-		    this.manager = response.data;
-		    console.log(`Manager id: ${this.manager.id}`)
-  			})
-		}
-	}
+  
+  
+  
+  
+}
+
 });
