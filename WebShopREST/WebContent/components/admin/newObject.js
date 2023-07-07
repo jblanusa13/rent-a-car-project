@@ -39,6 +39,7 @@ Vue.component("addNewObject", {
           		</div><br>
           		<div>
             		<fieldset>
+					<div id="map"></div>
 					<legend>Location</legend>
 						<div>
 							<label class="formInputs">Longitude: </label><br>
@@ -133,7 +134,63 @@ Vue.component("addNewObject", {
 		.then(response =>{
 				this.managers = response.data;				
 		})
-		.catch(error => console.log(error))
+		.catch(error => console.log(error));
+		
+	//adding Map	
+	const map = new ol.Map({
+	  target: 'map',
+	  layers: [
+	    new ol.layer.Tile({
+	      source: new ol.source.OSM(),
+	    })
+	  ],
+	  view: new ol.View({
+	    center: ol.proj.fromLonLat([0, 0]),
+	    zoom: 2,
+	  })
+	});
+	
+	const marker = new ol.layer.Vector({
+		source: new ol.source.Vector({
+			features: [
+				new ol.Feature({
+					geometry: new ol.geom.Point(
+						ol.proj.fromLonLat([0, 0])
+					)
+				})
+			]
+		}),
+		style: new ol.style.Style({
+			image: new ol.style.Icon({
+				src: 'https://docs.maptiler.com/openlayers/default-marker/marker-icon.png',
+				anchor: [0.5,1]
+			})
+		})
+	})
+	
+	map.addLayer(marker);
+	
+	this.mapObject = map;
+	this.markerObject = marker;
+	
+	const vec = new ol.layer.Vector({
+	  source: new ol.source.Vector(),
+	});
+	  		
+	map.on('click', (event) => {
+	  var cor = ol.proj.toLonLat(event.coordinate);
+	  this.convertToMyCoordinates(cor);
+	  vec.getSource().clear();
+	  
+	  var mapMarker = new ol.Feature({
+		  geometry: new ol.geom.Point(event.coordinate),
+	  });
+	  
+	  vec.getSource().addFeature(mapMarker);
+	  
+	  this.moveMarker(event.coordinate);
+   });
+   
   },
   methods: {
 	confirm: function(){
@@ -312,5 +369,37 @@ Vue.component("addNewObject", {
   				})
 			}
 		}
+	},
+  moveMarker: function (lonLatCoordinates) {
+    const marker = this.markerObject.getSource();
+    marker.clear();
+
+    const mapMarker = new ol.Feature({
+      geometry: new ol.geom.Point(lonLatCoordinates)
+    });
+
+    marker.addFeature(mapMarker);
+  },
+
+  convertToMyCoordinates : function(lonLatCoordinates){
+		fetch(
+			"http://nominatim.openstreetmap.org/reverse?format=json&lon=" + lonLatCoordinates[0] + "&lat=" + lonLatCoordinates[1]
+	  		).then(response => { return response.json(); }).then(json => 
+		  	{
+			  let address = json.address;
+			  let street = address.road;
+			  let number = address.house_number;
+			  let livingPlace = address.town || address.village || address.city;
+			  let cityPostal = address.postcode;
+			  
+			  this.rentACarObject.location.address = String(street + " " + number + " " + livingPlace + " " + cityPostal);
+			  
+			  let boundingbox = json.boundingbox;
+			  let geoLength = Math.abs(parseFloat(boundingbox[3]) - parseFloat(boundingbox[1]));
+		   	  let geoWidth = Math.abs(parseFloat(boundingbox[2]) - parseFloat(boundingbox[0]));
+				
+			  this.rentACarObject.location.longitude = Number(geoLength.toFixed(3));
+      		  this.rentACarObject.location.latitude = Number(geoWidth.toFixed(3));
+		  	})
 	}
 });
