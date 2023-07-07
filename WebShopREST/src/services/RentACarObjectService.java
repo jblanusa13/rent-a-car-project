@@ -219,9 +219,9 @@ public class RentACarObjectService {
 	@Path("/updateVehicle/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public boolean updateVehicleForObject(@PathParam("id") String id, Vehicle vehicle) {
+	public RentACarObject updateVehicleForObject(@PathParam("id") String id, Vehicle vehicle) {
 	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
 	    System.out.println("Update object in service");
-	    return dao.deleteObject(id);
+	    return dao.updateVehicleForObject(id,vehicle);
 	}
 }

@@ -1,8 +1,9 @@
 Vue.component("editVehicle", {
   data: function () {
     return {
-		vehicle:{brand:'', model:'', price:null, type:null, objectId:null, stickType:null, fuelType:null, consumption:null, doorNumber:null, peopleNumber:null, description:'', imageURL:''},
+		vehicle:null,
 		updatedVehicle:null,
+		creation:{brand:'', model:'', price:null, type:null, objectId:null, stickType:null, fuelType:null, consumption:null, doorNumber:null, peopleNumber:null, description:'', imageURL:''},
 		object:null,
 		vehicleId:null,
 		managerId:null,
@@ -106,8 +107,23 @@ Vue.component("editVehicle", {
   },
   methods: {
 	editVehicle: function(){
+		this.image = this.$refs.file.files[0]
 		event.preventDefault();
-		axios.put('rest/vehicles/update/'+this.vehicleId, this.vehicle)
+		console.log(this.vehicle)
+		this.creation.brand=this.vehicle.brand;
+		this.creation.model=this.vehicle.model;
+		this.creation.price=this.vehicle.price;
+		this.creation.type=this.vehicle.type;
+		this.creation.stickType=this.vehicle.stickType;
+		this.creation.fuelType=this.vehicle.fuelType;
+		this.creation.consumption=this.vehicle.consumption;
+		this.creation.doorNumber=this.vehicle.doorNumber;
+		this.creation.peopleNumber=this.vehicle.peopleNumber;
+		this.creation.description=this.vehicle.description;
+		this.creation.imageURL="images/vehicles/"+this.image.name 
+		
+		
+		axios.put('rest/vehicles/update/'+this.vehicleId, this.creation)
 			.then(response=>{
 				this.updatedVehicle = response.data;
 				console.log("Apdejtovan vehicle: "+this.updatedVehicle);
