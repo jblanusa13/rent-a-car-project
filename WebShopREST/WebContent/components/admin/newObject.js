@@ -389,8 +389,8 @@ Vue.component("addNewObject", {
 				this.managerRegistered = true;
   				})
 			}
-		}
-	},
+		},
+		
   moveMarker: function (lonLatCoordinates) {
     const marker = this.markerObject.getSource();
     marker.clear();
@@ -421,5 +421,6 @@ Vue.component("addNewObject", {
 			  this.rentACarObject.location.longitude = Number(geoLength.toFixed(3));
       		  this.rentACarObject.location.latitude = Number(geoWidth.toFixed(3));
 		  	})
+	}
 	}
 });
