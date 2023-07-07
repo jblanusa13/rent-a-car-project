@@ -46,8 +46,8 @@ Vue.component("objectForManager", {
       </div>
 
       <div >
-        <h2 style="display: flex; justify-content: center; align-items: center;">Available vehicles</h2>
-        <table border='1' style=" margin: 0 auto; width: 85%;">
+        <h2>Available vehicles</h2>
+        <table border='1' class="center-tables">
           <tr>
             <th>Picture</th>
             <th>Brand</th>
@@ -89,7 +89,7 @@ Vue.component("objectForManager", {
         <br><h2> Comments of the renting object </h2><br>
       </div>
       <div v-for="c in comments" class="rectangle" style="margin-bottom: 20px;">
-       <table style="border: 1px solid black; margin: 0 auto; width: 75%; position: relative;">
+       <table class="comments-tables">
 		  <tr>
 		    <td style="padding-left: 20px;">
 		      <div style="display: inline-block; vertical-align: middle;">
@@ -117,7 +117,7 @@ Vue.component("objectForManager", {
 		  </tr>
 		</table>
       </div>
-      <div style="display: flex; justify-content: center; align-items: center;">        
+      <div class="center-position">        
         <br><br>
         <button type="submit" v-on:click="ShowAll">Go back</button>
       </div>
