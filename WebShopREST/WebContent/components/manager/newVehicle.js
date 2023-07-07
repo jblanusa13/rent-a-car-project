@@ -218,6 +218,7 @@ Vue.component("newVehicle", {
 			axios.post('rest/vehicles/addVehicle/', this.vehicle)
 				.then((response)=>{
 					this.vehicleId = response.data;
+					console.log("DODATO");					
 				})
 				.catch((error)=>console.log(error))
 				

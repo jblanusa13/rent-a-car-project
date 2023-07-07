@@ -13,6 +13,7 @@ Vue.component("logIn", {
     };
   },
   template: `
+  <div class="center-position">
     <form class="formStyle" style="margin-top:5%;">
 	<fieldset>
 		<legend>Log in</legend>
@@ -33,6 +34,7 @@ Vue.component("logIn", {
     	<input type="submit" v-on:click="registerUser" value="Register" class="formInputs">
     </div>
     </form>
+    </div>
   `,
   mounted() {},
   methods: {

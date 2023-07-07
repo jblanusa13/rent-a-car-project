@@ -10,6 +10,7 @@ Vue.component("manager-profile", {
   template: `
     <div>
 		<h2>Profile ({{user.role}})</h2>
+		<div class="center-position">
 		<form class="formStyle">
 		<fieldset>
 				<div>
@@ -40,19 +41,14 @@ Vue.component("manager-profile", {
 			<button type="submit" v-on:click="editUser">Update user info</button>
 		
 		<br><br>
-			<table>
-				<colgroup>
-		          <col style="width: 15%;">
-		          <col style="width: 10%;">
-		        </colgroup>
-				<td>
-		        	<img :src="object.imageURL" alt="Logo" style="width: 50%; height: auto;">
-		        </td>
-				<td>
-					<h4 style="margin-right:20%;">Rent a car object</h4>
-				</td>
-			</table>
+			<div class="center-position">
+				<h4 >Rent a car object</h4>
+			</div>
+			<div class="center-position">
+			    <img :src="object.imageURL" alt="Logo" style="width: 50%; height: auto;">
+			</div>
 				<div>
+				<br><br>
             		<label class="formInputs">Name:</label><br>
             		<input type="text" name="lastName" v-model="object.name" disabled class="formInputs">
           		</div>
@@ -69,6 +65,7 @@ Vue.component("manager-profile", {
 		</fieldset><br>
 		<button type="submit" v-on:click="goBack">Home page</button>
 		</form>
+		</div>
     </div>
   `,
   mounted() {

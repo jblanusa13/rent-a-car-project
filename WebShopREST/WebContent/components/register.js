@@ -17,6 +17,7 @@ Vue.component("register", {
   template: `
 <div>
       <h2>Register Customer</h2>
+      <div class="center-position">
       <form class="formStyle" style="margin-top:5%;">
 		<fieldset>
           <div>
@@ -60,6 +61,7 @@ Vue.component("register", {
 		</fieldset>
       </form>
       <p>{{ errortext }}</p>
+      </div>
     </div>
   `,
   mounted () {

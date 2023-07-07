@@ -46,8 +46,8 @@ Vue.component("objectForManager", {
       </div>
 
       <div >
-        <h2 style="display: flex; justify-content: center; align-items: center;">Available vehicles</h2>
-        <table border='1' style=" margin: 0 auto; width: 85%;">
+        <h2>Available vehicles</h2>
+        <table border='1' class="center-tables">
           <tr>
             <th>Picture</th>
             <th>Brand</th>
@@ -122,6 +122,7 @@ Vue.component("objectForManager", {
         <button type="submit" v-on:click="ShowAll">Go back</button>
       </div>
     </div>
+
   `,
   mounted() {
     const combinedParam = this.$route.params.id;
