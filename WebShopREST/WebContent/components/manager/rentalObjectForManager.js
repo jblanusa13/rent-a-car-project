@@ -75,8 +75,8 @@ Vue.component("objectForManager", {
             <td>{{ v.peopleNumber }}</td>
             <td>{{ v.description }}</td>
             <td>{{ v.carStatus }}</td>
-			<td v-if="this.hisObject"><button type="submit" v-on:click="editVehicle(v.id)">Edit</button></td>
-			<td v-if="this.hisObject"><button type="submit" v-on:click="deleteVehicle(v.id)">Delete</button></td>
+			<td v-if="hisObject"><button type="submit" v-on:click="editVehicle(v.id)">Edit</button></td>
+			<td v-if="hisObject"><button type="submit" v-on:click="deleteVehicle(v.id)">Delete</button></td>
           </tr>
         </table>
       </div>
@@ -89,7 +89,7 @@ Vue.component("objectForManager", {
         <br><h2> Comments of the renting object </h2><br>
       </div>
       <div v-for="c in comments" class="rectangle" style="margin-bottom: 20px;">
-       <table class="comments-tables">
+       <table style="border: 1px solid black; margin: 0 auto; width: 75%; position: relative;">
 		  <tr>
 		    <td style="padding-left: 20px;">
 		      <div style="display: inline-block; vertical-align: middle;">
@@ -117,11 +117,12 @@ Vue.component("objectForManager", {
 		  </tr>
 		</table>
       </div>
-      <div class="center-position">        
+      <div style="display: flex; justify-content: center; align-items: center;">        
         <br><br>
         <button type="submit" v-on:click="ShowAll">Go back</button>
       </div>
     </div>
+
   `,
   mounted() {
     const combinedParam = this.$route.params.id;

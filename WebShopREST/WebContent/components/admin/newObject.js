@@ -138,61 +138,62 @@ Vue.component("addNewObject", {
 		
 	//adding Map	
 	const map = new ol.Map({
-	  target: 'map',
-	  layers: [
-	    new ol.layer.Tile({
-	      source: new ol.source.OSM(),
-	    })
-	  ],
-	  view: new ol.View({
-	    center: ol.proj.fromLonLat([0, 0]),
-	    zoom: 2,
-	  })
-	});
-	
-	const marker = new ol.layer.Vector({
-		source: new ol.source.Vector({
-			features: [
-				new ol.Feature({
-					geometry: new ol.geom.Point(
-						ol.proj.fromLonLat([0, 0])
-					)
+		  target: 'map',
+		  layers: [
+		    new ol.layer.Tile({
+		      source: new ol.source.OSM(),
+		    })
+		  ],
+		  view: new ol.View({
+		    center: ol.proj.fromLonLat([0, 0]),
+		    zoom: 2,
+		  })
+		});
+		
+		const marker = new ol.layer.Vector({
+			source: new ol.source.Vector({
+				features: [
+					new ol.Feature({
+						geometry: new ol.geom.Point(
+							ol.proj.fromLonLat([0, 0])
+						)
+					})
+				]
+			}),
+			style: new ol.style.Style({
+				image: new ol.style.Icon({
+					src: 'https://docs.maptiler.com/openlayers/default-marker/marker-icon.png',
+					anchor: [0.5,1]
 				})
-			]
-		}),
-		style: new ol.style.Style({
-			image: new ol.style.Icon({
-				src: 'https://docs.maptiler.com/openlayers/default-marker/marker-icon.png',
-				anchor: [0.5,1]
 			})
 		})
-	})
-	
-	map.addLayer(marker);
-	
-	this.mapObject = map;
-	this.markerObject = marker;
-	
-	const vec = new ol.layer.Vector({
-	  source: new ol.source.Vector(),
-	});
-	  		
-	map.on('click', (event) => {
-	  var cor = ol.proj.toLonLat(event.coordinate);
-	  this.convertToMyCoordinates(cor);
-	  vec.getSource().clear();
-	  
-	  var mapMarker = new ol.Feature({
-		  geometry: new ol.geom.Point(event.coordinate),
-	  });
-	  
-	  vec.getSource().addFeature(mapMarker);
-	  
-	  this.moveMarker(event.coordinate);
-   });
+		
+		map.addLayer(marker);
+  		
+  		this.mapObject = map;
+  		this.markerObject = marker;
+  		
+  		const vec = new ol.layer.Vector({
+		  source: new ol.source.Vector(),
+		});
+		  		
+  		map.on('click', (event) => {
+			  var cor = ol.proj.toLonLat(event.coordinate);
+			  this.convertToMyCoordinates(cor);
+			  vec.getSource().clear();
+			  
+			  var mapMarker = new ol.Feature({
+				  geometry: new ol.geom.Point(event.coordinate),
+			  });
+			  
+			  vec.getSource().addFeature(mapMarker);
+			  
+			  this.moveMarker(event.coordinate);
+		  });
    
   },
   methods: {
+
 	confirm: function(){
 		event.preventDefault();
 		if(!this.rentACarObject.name){
@@ -368,17 +369,17 @@ Vue.component("addNewObject", {
 				this.managerRegistered = true;
   				})
 			}
-		}
-	},
-  moveMarker: function (lonLatCoordinates) {
-    const marker = this.markerObject.getSource();
-    marker.clear();
+		},
+		
+	moveMarker: function (lonLatCoordinates) {
+    const markerSource = this.markerObject.getSource();
+    markerSource.clear();
 
     const mapMarker = new ol.Feature({
       geometry: new ol.geom.Point(lonLatCoordinates)
     });
 
-    marker.addFeature(mapMarker);
+    markerSource.addFeature(mapMarker);
   },
 
   convertToMyCoordinates : function(lonLatCoordinates){
@@ -401,5 +402,7 @@ Vue.component("addNewObject", {
 			  this.rentACarObject.location.longitude = Number(geoLength.toFixed(3));
       		  this.rentACarObject.location.latitude = Number(geoWidth.toFixed(3));
 		  	})
-	}
+	}	
+	},
+  
 });
