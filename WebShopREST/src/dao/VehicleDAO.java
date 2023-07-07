@@ -7,11 +7,15 @@ import java.lang.reflect.Type;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import org.eclipse.jdt.internal.compiler.env.IUpdatableModule.UpdateKind;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import beans.RentACarObject;
+import beans.User;
+import beans.UserRegistration;
 import beans.Vehicle;
 import beans.VehicleCreation;
 import enums.CarStatus;
@@ -167,6 +171,27 @@ public class VehicleDAO {
 		writeToFile();
 		System.out.println("Id novog vozila je: "+ vehicle.getId());
 		return vehicle.getId();
+	}
+	
+	public Vehicle updateVehicle(String id, VehicleCreation updatedVehicle) {
+		Vehicle vehicle = getById(id);
+        if (vehicle != null) {
+        	System.out.println("Vehicle nadjen koji  se updejtuje");
+        	vehicle.setBrand(updatedVehicle.getBrand());
+        	vehicle.setConsumption(updatedVehicle.getConsumption());
+        	vehicle.setDescription(updatedVehicle.getDescription());
+        	vehicle.setDoorNumber(updatedVehicle.getDoorNumber());
+        	vehicle.setFuelType(updatedVehicle.getFuelType());
+        	vehicle.setImageURL(updatedVehicle.getImageURL());
+        	vehicle.setModel(updatedVehicle.getModel());
+        	vehicle.setPeopleNumber(updatedVehicle.getPeopleNumber());
+        	vehicle.setPrice(updatedVehicle.getPrice());
+        	vehicle.setStickType(updatedVehicle.getStickType());
+        	vehicle.setType(updatedVehicle.getType());
+            writeToFile();
+            return vehicle;
+        }
+        return null;	
 	}
 
 }

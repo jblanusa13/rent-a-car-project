@@ -36,7 +36,7 @@ public class CustomerCommentDAO {
 	public CustomerCommentDAO(String contextPath) {
 		path = contextPath;
 		
-		RentACarObject object1 = new RentACarObject("1", "Kod Milana", new ArrayList<Vehicle>(),"08:30","19:00", RentACarStatus.Open, new Location("1", "22", "23", "Super"),"images/objects/1.jpg", 5);
+		RentACarObject object1 = new RentACarObject("1", "Kod Milana", new ArrayList<Vehicle>(),"08:30","19:00", RentACarStatus.Open, new Location("1", "22", "23", "Super"),"images/objects/1.jpg", 5, false);
 		ArrayList<Vehicle> cars1 = new ArrayList<Vehicle>();
 		
 		Vehicle vehicle1 = new Vehicle("1", "Honda", "ne znam sad", 10000, VehicleType.Car, "1", StickType.Automatic, FuelType.Diesel, 15, 5, 5, "lepa kola", "images/vehicles/1.jpg", CarStatus.Available,"");
@@ -56,7 +56,7 @@ public class CustomerCommentDAO {
 		cars1.add(vehicle4);
 		cars1.add(vehicle5);
 		object1.setAvailableCars(cars1);
-		RentACarObject object2 = new RentACarObject("2", "Rent-A-Wheels", new ArrayList<Vehicle>(), "09:00", "18:00", RentACarStatus.Open, new Location("2", "25", "28", "Prime"), "images/objects/2.jpg", 8);
+		RentACarObject object2 = new RentACarObject("2", "Rent-A-Wheels", new ArrayList<Vehicle>(), "09:00", "18:00", RentACarStatus.Open, new Location("2", "25", "28", "Prime"), "images/objects/2.jpg", 8, false);
 		ArrayList<Vehicle> cars2 = new ArrayList<Vehicle>();
 
 		cars2.add(vehicle6);

@@ -71,13 +71,13 @@ public class RentACarObjectDAO {
 	public ArrayList<RentACarObject> findAll() {
 		ArrayList<RentACarObject> sortedObjects = new ArrayList<>();
 		for(RentACarObject o : objects) {
-			if(o.getStatus().equals(RentACarStatus.Open)) {
+			if(o.getStatus().equals(RentACarStatus.Open) && o.getDeleted() == false) {
 				sortedObjects.add(o);
 			}
 		}
 		
 		for(RentACarObject o : objects) {
-			if(o.getStatus().equals(RentACarStatus.Closed)) {
+			if(o.getStatus().equals(RentACarStatus.Closed) && o.getDeleted() == false) {
 				sortedObjects.add(o);
 			}
 		}
@@ -133,6 +133,7 @@ public class RentACarObjectDAO {
 		object.setClosingTime(newObject.getClosingTime());
 		object.setImageURL(newObject.getImageURL());
 		object.setRate(0);
+		object.setDeleted(false);
 		objects.add(object);
 		System.out.println("Objekat registrovan");
 		writeToFile();
@@ -256,5 +257,36 @@ public class RentACarObjectDAO {
         }	
         System.out.println("Nije updejtovan Vehicles u rentacar");
         return false;
+	}
+	
+	public boolean deleteObject(String objectId) {
+		RentACarObject object = getById(objectId);
+		System.out.println("Brisanje objekta u dao");
+		object.setDeleted(true);
+		writeToFile();
+		return true;
+	}
+	
+	public RentACarObject updateVehicleForObject(String objectId, Vehicle vehicle) {
+		RentACarObject object = getById(objectId);
+		System.out.println("Izmena objekta u dao");
+		for(Vehicle v : object.getAvailableCars()) {
+			if(v.getId().equals(vehicle.getId())) {
+				v.setBrand(vehicle.getBrand());
+	        	v.setConsumption(vehicle.getConsumption());
+	        	v.setDescription(vehicle.getDescription());
+	        	v.setDoorNumber(vehicle.getDoorNumber());
+	        	v.setFuelType(vehicle.getFuelType());
+	        	v.setImageURL(vehicle.getImageURL());
+	        	v.setModel(vehicle.getModel());
+	        	v.setPeopleNumber(vehicle.getPeopleNumber());
+	        	v.setPrice(vehicle.getPrice());
+	        	v.setStickType(vehicle.getStickType());
+	        	v.setType(vehicle.getType());
+				break;
+			}
+		}
+		writeToFile();
+		return object;
 	}
 }

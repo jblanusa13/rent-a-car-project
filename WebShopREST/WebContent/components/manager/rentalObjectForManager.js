@@ -75,8 +75,8 @@ Vue.component("objectForManager", {
             <td>{{ v.peopleNumber }}</td>
             <td>{{ v.description }}</td>
             <td>{{ v.carStatus }}</td>
-			<td v-if="this.hisObject"><button type="submit" v-on:click="editVehicle(v.id)">Edit</button></td>
-			<td v-if="this.hisObject"><button type="submit" v-on:click="deleteVehicle(v.id)">Delete</button></td>
+			<td v-if="hisObject"><button type="submit" v-on:click="editVehicle(v.id)">Edit</button></td>
+			<td v-if="hisObject"><button type="submit" v-on:click="deleteVehicle(v.id)">Delete</button></td>
           </tr>
         </table>
       </div>
@@ -229,6 +229,8 @@ Vue.component("objectForManager", {
     },
 	editVehicle: function(id){
 		event.preventDefault();
+		const combinedParam = id+"_"+this.userId;
+		router.push(`/editVehicle/${combinedParam}`);
 	},
 	deleteVehicle: function(id){
 		event.preventDefault();

@@ -7,7 +7,8 @@ Vue.component("objectForAdmin", {
       objectName: null,
       image: null,
       comments: null,
-      userId:null
+      userId:null,
+	  deleted:false
     };
   },
   template: `
@@ -39,6 +40,7 @@ Vue.component("objectForAdmin", {
             </table>
           </tr>
         </table>
+		<button type="submit" v-on:click="deleteObject">Delete object</button>
         <br><br>
       </div>
 
@@ -168,7 +170,17 @@ Vue.component("objectForAdmin", {
     ShowAll: function () {
       event.preventDefault();
       router.push(`/loggedInAdmin/${this.userId}`);
-    }
+    },
+	deleteObject: function(){
+		event.preventDefault();
+		axios.put('rest/objects/delete/'+this.objectId)
+			.then(response=>{
+				this.deleted = response.data;
+				alert("Object deleted succesfully");
+				router.push(`/loggedInAdmin/${this.userId}`);
+			})
+			.catch(error=>console.log(error))
+	}
     
   }
 });

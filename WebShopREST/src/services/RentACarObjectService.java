@@ -204,4 +204,24 @@ public class RentACarObjectService {
 		System.out.println("Taken enabled: "+b);
         return b;
 	}
+	
+	@PUT
+	@Path("/delete/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean deleteObject(@PathParam("id") String id) {
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Delete object in service");
+	    return dao.deleteObject(id);
+	}
+	
+	@PUT
+	@Path("/updateVehicle/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean updateVehicleForObject(@PathParam("id") String id, Vehicle vehicle) {
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Update object in service");
+	    return dao.deleteObject(id);
+	}
 }

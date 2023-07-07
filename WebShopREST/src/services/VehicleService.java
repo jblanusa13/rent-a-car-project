@@ -7,10 +7,12 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-
+import beans.UserRegistration;
 import beans.Vehicle;
 import beans.VehicleCreation;
+import dao.UserDAO;
 import dao.VehicleDAO;
 @Path("/vehicles")
 public class VehicleService {
@@ -99,6 +101,16 @@ public class VehicleService {
 		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
 		System.out.println("Dodaje vehicle u servisu");
 		return dao.addVehicle(newVehicle);
+	}
+	
+	@PUT
+    @Path("/update/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Vehicle updateUser(@PathParam("id") String id, VehicleCreation updatedVehicle) {
+		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
+        System.out.println("Vehicle se updejtuje");
+        return dao.updateVehicle(id,updatedVehicle); 
 	}
 
 }

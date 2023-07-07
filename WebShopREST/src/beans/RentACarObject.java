@@ -14,13 +14,15 @@ public class RentACarObject {
 	private Location location;
 	private String imageURL;
 	private float rate;
+	private boolean deleted;
 	
 	public RentACarObject() {
 		super();
 	}
 
+
 	public RentACarObject(String id, String name, ArrayList<Vehicle> availableCars, String openingTime,
-			String closingTime, RentACarStatus status, Location location, String imageURL, float rate) {
+			String closingTime, RentACarStatus status, Location location, String imageURL, float rate, boolean deleted) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -31,8 +33,8 @@ public class RentACarObject {
 		this.location = location;
 		this.imageURL = imageURL;
 		this.rate = rate;
+		this.deleted = deleted;
 	}
-	
 
 	public String getOpeningTime() {
 		return openingTime;
@@ -112,4 +114,15 @@ public class RentACarObject {
 		this.imageURL = imageURL;
 	}
 
+
+	public boolean getDeleted() {
+		return deleted;
+	}
+
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	
 }

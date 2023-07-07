@@ -11,21 +11,23 @@ Vue.component("addNewObject", {
 		logo:null,
 		userId:null,
 		managerRegistered:false,
-		nameValid:false,
-		longitudeValid:false,
-		latitudeValid:false,
-		addressValid:false,
-		openingValid:false,
-		closingValid:false,
-		logoValid:false,
-		usernameValid:false,
-		passwordValid:false,
-		confirmValid:false,
-		firstNameValid:false,
-		lastNameValid:false,
-		genderValid:false,
-		birthValid:false,
-		errortextRegistration:''
+		nameValid:true,
+		longitudeValid:true,
+		latitudeValid:true,
+		addressValid:true,
+		openingValid:true,
+		closingValid:true,
+		logoValid:true,
+		usernameValid:true,
+		passwordValid:true,
+		confirmValid:true,
+		firstNameValid:true,
+		lastNameValid:true,
+		genderValid:true,
+		birthValid:true,
+		errortextRegistration:'',
+		errortext:'',
+		errortextobject:''
     }
   },
   template: `
@@ -108,6 +110,7 @@ Vue.component("addNewObject", {
 						<button type="submit" v-on:click="registerManager">Register</button>
 					</tr>
 					<p>{{ errortextRegistration }}</p>
+					<p>{{ errortext }}</p>
 					</div>
 					<div v-else>
 						<p><b>Manager succesfully added</b></p>
@@ -123,6 +126,7 @@ Vue.component("addNewObject", {
 			</form><br>
 			<div>
 			<button type="submit" v-on:click="confirm">Confirm</button>
+			<p> {{ errortextobject }}</p>
 			</div>
 			</fieldset>
 		</form>
@@ -197,66 +201,66 @@ Vue.component("addNewObject", {
 		event.preventDefault();
 		if(!this.rentACarObject.name){
 			this.nameValid=false;
-			this.errortext='All fields are required';
+			this.errortextobject='All fields are required';
 		}
 		else{
 			this.nameValid=true;
-			this.errortext='';
+			this.errortextobject='';
 		}
 		if(!this.rentACarObject.location.longitude){
 			this.longitudeValid=false;
-			this.errortext='All fields are required';
+			this.errortextobject='All fields are required';
 		}
 		else{
 			this.longitudeValid=true;
-			this.errortext='';
+			this.errortextobject='';
 		}
 		if(!this.rentACarObject.location.latitude){
 			this.latitudeValid=false;
-			this.errortext='All fields are required';
+			this.errortextobject='All fields are required';
 		}
 		else{
 			this.latitudeValid=true;
-			this.errortext='';
+			this.errortextobject='';
 		}
 		if(!this.rentACarObject.location.address){
 			this.addressValid=false;
-			this.errortext='All fields are required';
+			this.errortextobject='All fields are required';
 		}
 		else{
 			this.addressValid=true;
-			this.errortext='';
+			this.errortextobject='';
 		}
 		
 		if(!this.rentACarObject.openingTime){
 			this.openingValid=false;
-			this.errortext='All fields are required';
+			this.errortextobject='All fields are required';
 		}
 		else{
 			this.openingValid=true;
-			this.errortext='';
+			this.errortextobject='';
 		}
 		if(!this.rentACarObject.closingTime){
 			this.closingValid=false;
-			this.errortext='All fields are required';
+			this.errortextobject='All fields are required';
 		}
 		else{
 			this.closingValid=true;
-			this.errortext='';
+			this.errortextobject='';
 		}
 		if(!this.rentACarObject.imageURL){
 			this.logoValid=false;
-			this.errortext='All fields are required';
+			this.errortextobject='All fields are required';
 		}
 		else{
 			this.logoValid=true;
-			this.errortext='';
+			this.errortextobject='';
 		}
 		if(!this.manager){
-			this.errortext='All fields are required';
+			this.errortextobject='All fields are required';
 		}
 		else{
-			this.errortext='';
+			this.errortextobject='';
 		}
 		//logo
 		this.logo = this.$refs.file.files[0];
@@ -273,7 +277,7 @@ Vue.component("addNewObject", {
 		
 		if(this.rentACarObject.name && this.rentACarObject.location.longitude && this.rentACarObject.location.latitude
 		&& this.rentACarObject.location.address && this.rentACarObject.openingTime && this.rentACarObject.closingTime
-		&& this.rentACarObject.imageURL && this.manager){
+		&& this.rentACarObject.imageURL && this.manager.id){
 			axios.post('rest/objects/registerObject/', this.rentACarObject)
 				.then(response=>{
 					console.log("Uspesno registrovan objekat");
@@ -298,51 +302,66 @@ Vue.component("addNewObject", {
 		event.preventDefault();
 		if(!this.managerRegistration.username){
 			this.usernameValid=false;
+			this.errortext='All fields are required';
 		}
 		else{
 			this.usernameValid=true;
+			this.errortext='';
 		}
 		if(!this.managerRegistration.password){
 			this.passwordValid=false;
+			this.errortext='All fields are required';
 		}
 		else{
 			this.passwordValid=true;
+			this.errortext='';
 		}
 		if(!this.confirmPassword){
 			this.confirmValid=false;
+			this.errortext='All fields are required';
 		}
 		else{
 			this.confirmValid=true;
+			this.errortext='';
 		}
 		if(this.managerRegistration.password !== this.confirmPassword){
 			this.confirmValid=false;
 			this.errortextRegistration = 'Passwords do not match';
+			this.errortext='All fields are required';
 		}
 		else{
 			this.confirmValid=true;
 			this.errortextRegistration = '';
+			this.errortext='';
 		}
 		if(!this.managerRegistration.name){
 			this.firstNameValid=false;
+			this.errortext='All fields are required';
 		}
 		else{
 			this.firstNameValid=true;
+			this.errortext='';
 		}
 		
 		if(!this.managerRegistration.surname){
 			this.lastNameValid=false;
+			this.errortext='All fields are required';
 		}
 		else{
 			this.lastNameValid=true;
+			this.errortext='';
 		}
 		if(!this.managerRegistration.gender){
 			this.genderValid=false;
+			this.errortext='All fields are required';
 		}
 		else{
 			this.genderValid=true;
+			this.errortext='';
 		}
 		if(!this.managerRegistration.birthDate){
 			this.birthValid=false;
+			this.errortext='All fields are required';
 		}
 		else{
 			var today = new Date();
@@ -351,10 +370,12 @@ Vue.component("addNewObject", {
 	  		if (selectedDate >= today) {
 	    		this.birthValid=false;
 	    		this.errortextRegistration = 'Birth date must be in the past';
+				this.errortext='';
 	    		return;
 	  		} else {
 	   			this.birthValid=true;
 	    		this.errortextRegistration = '';
+				this.errortext='';
 	  		}
 		}
 		
@@ -380,7 +401,6 @@ Vue.component("addNewObject", {
 
     marker.addFeature(mapMarker);
   },
-
   convertToMyCoordinates : function(lonLatCoordinates){
 		fetch(
 			"http://nominatim.openstreetmap.org/reverse?format=json&lon=" + lonLatCoordinates[0] + "&lat=" + lonLatCoordinates[1]
