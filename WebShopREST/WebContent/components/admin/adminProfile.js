@@ -9,39 +9,38 @@ Vue.component("admin-profile", {
   template: `
     <div>
 		<h2>Profile ({{user.role}})</h2>
-		<form>
-			<table>
-				<tr>
-            		<td>Username:</td>
-            		<td><input type="text" name="username" v-model="user.username" disabled></td>
-          		</tr>
-          		<tr>
-            		<td>Password:</td>
-            		<td><input type="password" name="password" v-model="user.password" disabled></td>
-          		</tr>
-          		<tr>
-            		<td>First Name:</td>
-           		 	<td><input type="text" name="firstName" v-model="user.name" disabled></td>
-          		</tr>
-          		<tr>
-            		<td>Last Name:</td>
-            		<td><input type="text" name="lastName" v-model="user.surname" disabled></td>
-          		</tr>
-          		<tr>
-            		<td>Gender:</td>
-            		<td><input type="text" name="gender" v-model="user.gender" disabled></td>
-          		</tr>
-          		<tr>
-            		<td>Date of birth:</td>
-            		<td><input type="text" name="date" v-model="userDate" disabled></td>
-          		</tr>
-			</table>
+		<form class="formStyle">
+		<fieldset>
+				<div>
+            		<label class="formInputs">Username:</label><br>
+            		<input type="text" name="username" v-model="user.username" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Password:</label><br>
+            		<input type="password" name="password" v-model="user.password" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">First Name:</label><br>
+           		 	<input type="text" name="firstName" v-model="user.name" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Last Name:</label><br>
+            		<input type="text" name="lastName" v-model="user.surname" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Gender:</label><br>
+            		<input type="text" name="gender" v-model="user.gender" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Date of birth:</label><br>
+            		<input type="text" name="date" v-model="userDate" disabled class="formInputs">
+          		</div>
 			<br>
 			<button type="submit" v-on:click="editUser">Update user info</button>
-		</form>
-		
+		</fieldset>
 		<br><br>
 		<button type="submit" v-on:click="goBack">Home page</button>
+		</form>
     </div>
   `,
   mounted() {

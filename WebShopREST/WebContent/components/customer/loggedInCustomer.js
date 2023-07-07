@@ -15,7 +15,7 @@ Vue.component("logInCustomer", {
   },
   template: `
     <div>
-	<h3>Rent a car objects</h3>
+	<h1>Rent a car objects</h1>
 	<div>
 		<form>
 			<table>
@@ -42,37 +42,46 @@ Vue.component("logInCustomer", {
 					</td>
 				</tr>
 			</table>
-		</form><br><br>
+		</form><br>
 	</div>
 	<div>
 		<form>
-			<div >
-				<label for="vehicleTypeFilter">Stick type:</label>
+			<table>
+				<tr>
+				<td for="vehicleTypeFilter">Stick type:<br>
 			 	<select id="vehicleTypeFilter" v-model="stickType">
 					<option value="Manual">Manual</option>
 					<option value="Automatic">Automatic</option>
-				</select>	    	
+				</select>	
+				</td>   	
 		    	
-		  		<label for="fuelTypeFilter">Fuel type:</label>
+		  		<td for="fuelTypeFilter">Fuel type:</label><br>
 			 	<select id="fuelTypeFilter" v-model="fuelType">
 					<option value="Diesel">Diesel</option>
 					<option value="Gasoline">Gasoline</option>
 					<option value="Hybrid">Hybrid</option>
 					<option value="Electric">Electric</option>
 				</select>
+				</td>
 				
-				<input type="checkbox" id="openObjects" name="openObjects" v-model="openObjects">
-				<label for="openObjects">Open objects</label>
-		  	</div>
-		
-			<div><br>
-		    	<button type="submit" v-on:click="filterObjects">Filter</button>
-		  	</div>
+				<td><br>
+					<input type="checkbox" id="openObjects" name="openObjects" v-model="openObjects">
+					<label for="openObjects">Open objects</label>
+				</td>
+				<td>
+				<br><br>
+				<button type="submit" v-on:click="filterObjects">Filter</button><br><br>
+				</td>
+				</tr>
+		  	</table>
 		</form>
 	</div>
 	<div>
 		<form>
-		    <label for="sortOption">Sort by:</label>
+			<table>
+			<tr>
+			<td>
+		    <label for="sortOption">Sort by:</label><br>
 		    <select id="sortOption" v-model="selectedSortOption">
 		        <option value="rateAscending">Average rate (Ascending)</option>
 		        <option value="rateDescending">Average rate (Descending)</option>
@@ -81,10 +90,15 @@ Vue.component("logInCustomer", {
 		        <option value="nameAscending">Name of object (Ascending)</option>
 		    	<option value="nameDescending">Name of object (Descending)</option>
 		    </select>
-		    <br><br>
-		    <button type="button" v-on:click="sortObjects">Sort</button>
-			<br><br>
-			<button type="submit" v-on:click="searchObjectsUndo">Undo search</button><br><br>
+			</td>
+			<td><br><br>
+				<button type="button" v-on:click="sortObjects">Sort</button><br><br>
+			</td>
+			</tr>
+			<tr>
+				<td><button type="submit" v-on:click="searchObjectsUndo">Undo search</button></td>
+			</tr>
+			</table>
 		</form>
 	</div>
 	<table border="1">

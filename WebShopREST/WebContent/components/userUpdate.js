@@ -14,45 +14,36 @@ Vue.component("user-update", {
   template: `
     <div>
       <h2>Update User Info</h2>
-      <form v-if="user">
-        <table>
-          <tr>
-            <td>Username:</td>
-            <td><input type="text" v-model="user.username" name="username" ></td>
-          </tr>
-          <tr>
-            <td>Password:</td>
-            <td><input type="password" v-model="user.password" name="password" ></td>
-          </tr>
-          <tr>
-            <td>Confirm password:</td>
-            <td><input type="password" v-model="confirmPassword" name="confirmPassword" ></td>
-          </tr>
-          <tr>
-            <td>Name:</td>
-            <td><input type="text" v-model="user.name" name="name" ></td>
-          </tr>
-          <tr>
-            <td>Surname:</td>
-            <td><input type="text" v-model="user.surname" name="surname" ></td>
-          </tr>
-          <tr>
-            <td>Gender:</td>
-            <td>
-              <select v-model="user.gender" name="gender">
-                <option value="">Select</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>Birth Date:</td>
-            <td><input type="date" v-model="userDate" name="birthDate" ></td>
-          </tr>
-        </table>
-        <button type="submit" v-on:click="updateUser">Save</button>
-        <button v-on:click="goToUserProfile">Cancel</button>
+      <form v-if="user" class="formStyle">
+		<fieldset>
+				<div>
+            		<label class="formInputs">Username:</label><br>
+            		<input type="text" name="username" v-model="user.username" class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Password:</label><br>
+            		<input type="password" name="password" v-model="user.password" class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">First Name:</label><br>
+           		 	<input type="text" name="firstName" v-model="user.name" class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Last Name:</label><br>
+            		<input type="text" name="lastName" v-model="user.surname" class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Gender:</label><br>
+            		<input type="text" name="gender" v-model="user.gender" class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Date of birth:</label><br>
+            		<input type="text" name="date" v-model="userDate" class="formInputs">
+          		</div>
+			<br>
+			<button type="submit" v-on:click="updateUser">Save</button><br>
+		</fieldset>
+        <button v-on:click="goToUserProfile">Cancel</button><br>
       </form>
       <p v-if="errortext">{{ errortext }}</p>
     </div>

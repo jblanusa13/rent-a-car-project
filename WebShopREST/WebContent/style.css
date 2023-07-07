@@ -4,6 +4,7 @@ body {
   font-family: 'Gill Sans MT', sans-serif;
   background-color: #f8f8f8;
   color: #000;
+  text-align:center;
 }
 
 header {
@@ -12,7 +13,7 @@ header {
   background-color: #000;
 }
 
-h1,h2,h3 {
+h1,h2,h3,h4 {
   font-family: 'Gill Sans MT', sans-serif;
   font-weight: bold;
   font-style: italic;
@@ -27,3 +28,18 @@ nav {
   background-color: #000;
   padding: 10px 0;
 }
+
+.invalid {
+	border-color : red;
+}
+
+.formInputs{
+	width: 20em;
+}
+
+.formStyle {
+	display:inline-block; 
+	width:45%;
+	text-align:center;
+}
+

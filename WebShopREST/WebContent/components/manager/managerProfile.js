@@ -9,69 +9,66 @@ Vue.component("manager-profile", {
   },
   template: `
     <div>
-		<h2>Profile</h2>
-		<form>
-			<table>
-				<tr>
-            		<td>Username:</td>
-            		<td><input type="text" name="username" v-model="user.username" disabled></td>
-          		</tr>
-          		<tr>
-            		<td>Password:</td>
-            		<td><input type="password" name="password" v-model="user.password" disabled></td>
-          		</tr>
-          		<tr>
-            		<td>First Name:</td>
-           		 	<td><input type="text" name="firstName" v-model="user.name" disabled></td>
-          		</tr>
-          		<tr>
-            		<td>Last Name:</td>
-            		<td><input type="text" name="lastName" v-model="user.surname" disabled></td>
-          		</tr>
-          		<tr>
-            		<td>Gender:</td>
-            		<td><input type="text" name="gender" v-model="user.gender" disabled></td>
-          		</tr>
-          		<tr>
-            		<td>Date of birth:</td>
-            		<td><input type="text" name="date" v-model="userDate" disabled></td>
-          		</tr>
-			</table>
+		<h2>Profile ({{user.role}})</h2>
+		<form class="formStyle">
+		<fieldset>
+				<div>
+            		<label class="formInputs">Username:</label><br>
+            		<input type="text" name="username" v-model="user.username" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Password:</label><br>
+            		<input type="password" name="password" v-model="user.password" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">First Name:</label><br>
+           		 	<input type="text" name="firstName" v-model="user.name" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Last Name:</label><br>
+            		<input type="text" name="lastName" v-model="user.surname" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Gender:</label><br>
+            		<input type="text" name="gender" v-model="user.gender" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Date of birth:</label><br>
+            		<input type="text" name="date" v-model="userDate" disabled class="formInputs">
+          		</div>
 			<br>
 			<button type="submit" v-on:click="editUser">Update user info</button>
-		</form>
 		
 		<br><br>
-		
-		<form>
 			<table>
 				<colgroup>
-		          <col style="width: 10%;">
 		          <col style="width: 15%;">
+		          <col style="width: 10%;">
 		        </colgroup>
-				<tr>
-					<td style="padding: 20px;">
-		          	  <img :src="object.imageURL" alt="Logo" style="width: 100%; height: auto;">
-		          	</td>
-           			<td>
-						<div style="display: inline-block; vertical-align: middle;">
-							<div>
-								Rent a car object: {{object.name}}
-							</div>
-							<div>
-								Address: {{object.location.address}}
-							</div>
-							<div>
-								Rate: {{object.rate}}
-							</div>
-						</div>
-					</td>
-       			</tr>
+				<td>
+		        	<img :src="object.imageURL" alt="Logo" style="width: 50%; height: auto;">
+		        </td>
+				<td>
+					<h4 style="margin-right:20%;">Rent a car object</h4>
+				</td>
 			</table>
-		</form>
-		<button id="deactivateBtn" type="submit" v-on:click="deactivateAccount">Deactivate Account</button>
-		<label id="statusLabel" style="display: none;"></label>
+				<div>
+            		<label class="formInputs">Name:</label><br>
+            		<input type="text" name="lastName" v-model="object.name" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Address:</label><br>
+            		<input type="text" name="gender" v-model="object.location.address" disabled class="formInputs">
+          		</div>
+          		<div>
+            		<label class="formInputs">Rate:</label><br>
+            		<input type="text" name="date" v-model="object.rate" disabled class="formInputs">
+          		</div><br>
+		<button id="deactivateBtn" type="submit" v-on:click="deactivateAccount">Deactivate Account</button><br>
+		<label id="statusLabel" style="display: none;"></label><br>
+		</fieldset><br>
 		<button type="submit" v-on:click="goBack">Home page</button>
+		</form>
     </div>
   `,
   mounted() {
@@ -81,6 +78,8 @@ Vue.component("manager-profile", {
 	axios.get('rest/user/profile/'+this.userId)
 		.then(response => {
 			this.user = response.data
+			this.object = this.user.rentACar;
+			console.log(this.object);
 		})
 		.catch(error => console.log(error))
 		
@@ -90,7 +89,6 @@ Vue.component("manager-profile", {
 		})
 		.catch(error => console.log(error))
 		
-	this.object = this.user.rentACar;
   },
   methods: {
     editUser: function () {

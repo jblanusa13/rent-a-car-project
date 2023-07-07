@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 
 import beans.Vehicle;
+import beans.VehicleCreation;
 import dao.VehicleDAO;
 @Path("/vehicles")
 public class VehicleService {
@@ -89,5 +90,15 @@ public class VehicleService {
             return null;
         }
     }
+	
+	@POST
+	@Path("/addVehicle")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String addVehicle(VehicleCreation newVehicle) {
+		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
+		System.out.println("Dodaje vehicle u servisu");
+		return dao.addVehicle(newVehicle);
+	}
 
 }

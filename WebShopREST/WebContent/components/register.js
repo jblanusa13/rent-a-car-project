@@ -17,45 +17,47 @@ Vue.component("register", {
   template: `
 <div>
       <h2>Register Customer</h2>
-      <form>
-        <table>
-          <tr>
-            <td>Username:</td>
-            <td><input type="text" v-model="userRegistration.username" name="username"></td>
-          </tr>
-          <tr>
-            <td>Password:</td>
-            <td><input type="password" v-model="userRegistration.password" name="password"></td>
-          </tr>
-          <tr>
-            <td>Confirm Password:</td>
-            <td><input type="password" v-model="confirmPassword" name="confirmPassword"></td>
-          </tr>
-          <tr>
-            <td>First Name:</td>
-            <td><input type="text" v-model="userRegistration.name" name="firstName"></td>
-          </tr>
-          <tr>
-            <td>Last Name:</td>
-            <td><input type="text" v-model="userRegistration.surname" name="lastName"></td>
-          </tr>
-          <tr>
-            <td>Gender:</td>
-            <td>
-              <select v-model="userRegistration.gender" name="gender">
+      <form class="formStyle" style="margin-top:5%;">
+		<fieldset>
+          <div>
+            <label class="formInputs">Username:</label><br>
+            <input type="text" v-model="userRegistration.username" name="username" class="formInputs">
+          </div>
+          <div>
+            <label class="formInputs">Password:</label><br>
+            <input type="password" v-model="userRegistration.password" name="password" class="formInputs">
+          </div>
+          <div>
+            <label class="formInputs">Confirm Password:</label><br>
+            <input type="password" v-model="confirmPassword" name="confirmPassword" class="formInputs">
+          </div>
+          <div>
+            <label class="formInputs">First Name:</label><br>
+            <input type="text" v-model="userRegistration.name" name="firstName" class="formInputs">
+          </div>
+          <div>
+            <label class="formInputs">Last Name:</label><br>
+            <input type="text" v-model="userRegistration.surname" name="lastName" class="formInputs">
+          </div>
+          <div>
+            <label class="formInputs">Gender:</label><br>
+              <select v-model="userRegistration.gender" name="gender" class="formInputs">
                 <option value="">Select</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
-            </td>
-          </tr>
-          <tr>
-            <td>Date of Birth:</td>
-            <td><input type="date" v-model="userRegistration.birthDate" name="dateOfBirth"></td>
-          </tr>
-        </table>
-        <button type="submit" v-on:click="registerCustomer">Register</button>
-        <button v-on:click="goToLoginPage">Go to Login</button>
+          </div>
+          <div>
+            <label class="formInputs">Date of Birth:</label><br>
+            <input type="date" v-model="userRegistration.birthDate" name="dateOfBirth" class="formInputs">
+          </div><br>
+		<div>
+        <button type="submit" v-on:click="registerCustomer"  class="formInputs">Register</button>
+		</div><br>
+		<div>
+        <button v-on:click="goToLoginPage" class="formInputs">Go to Login</button>
+		</div><br>
+		</fieldset>
       </form>
       <p>{{ errortext }}</p>
     </div>

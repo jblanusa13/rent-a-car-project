@@ -11,7 +11,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import beans.RentACarObject;
 import beans.Vehicle;
+import beans.VehicleCreation;
 import enums.CarStatus;
 import enums.FuelType;
 import enums.StickType;
@@ -29,7 +31,7 @@ public class VehicleDAO {
 	public VehicleDAO(String contextPath) {
 		path = contextPath;
 		
-		Vehicle vehicle1 = new Vehicle("1", "Honda", "ne znam sad", 10000, VehicleType.Car, "1", StickType.Automatic, FuelType.Diesel, 15, 5, 5, "lepa kola", "images/vehicles/1.jpg", CarStatus.Available,"");
+		/*Vehicle vehicle1 = new Vehicle("1", "Honda", "ne znam sad", 10000, VehicleType.Car, "1", StickType.Automatic, FuelType.Diesel, 15, 5, 5, "lepa kola", "images/vehicles/1.jpg", CarStatus.Available,"");
 		Vehicle vehicle2 = new Vehicle("2", "Golfic", "ne znam sad", 2002, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 11, 5, 4, "odlicno", "images/vehicles/2.jpg", CarStatus.Available,"");
 		Vehicle vehicle3 = new Vehicle("3", "Audi", "ne znam sad", 12000, VehicleType.Car, "1", StickType.Manual, FuelType.Diesel, 12, 4, 5, "super", "images/vehicles/3.jpg", CarStatus.Available,"");
 		Vehicle vehicle4 = new Vehicle("4", "BrzaKola", "ne znam sad", 20000, VehicleType.Van, "1", StickType.Automatic, FuelType.Diesel, 13, 4, 5, "lepa kola", "images/vehicles/4.jpg", CarStatus.Available,"");
@@ -53,8 +55,8 @@ public class VehicleDAO {
 		vehicles.add(vehicle10);
 
 		
-		writeToFile();
-		//loadFromFile();
+		writeToFile();*/
+		loadFromFile();
 		System.out.println("SVA VOZILA:");
 		for(Vehicle u: vehicles) {
 			System.out.println("IDENTIFIKATOR:"+u.getId());
@@ -133,6 +135,38 @@ public class VehicleDAO {
         }	
         System.out.println("Nije updejtovan Vehicle");
         return null;
+	}
+	
+	public String addVehicle(VehicleCreation newVehicle) {
+		System.out.println("Treba da se doda vehicle u dao");
+		Integer maxId = -1;
+		for (Vehicle f : vehicles) {
+		    int idNum = Integer.parseInt(f.getId());
+		    if (idNum > maxId) {
+		        maxId = idNum;
+		    }
+		}
+		
+		maxId++;
+		Vehicle vehicle = new Vehicle();
+		vehicle.setId(maxId.toString());
+		vehicle.setBrand(newVehicle.getBrand());
+		vehicle.setModel(newVehicle.getModel());
+		vehicle.setConsumption(newVehicle.getConsumption());
+		vehicle.setDescription(newVehicle.getDescription());
+		vehicle.setDoorNumber(newVehicle.getDoorNumber());
+		vehicle.setFuelType(newVehicle.getFuelType());
+		vehicle.setImageURL(newVehicle.getImageURL());
+		vehicle.setObjectId(newVehicle.getObjectId());
+		vehicle.setPeopleNumber(newVehicle.getPeopleNumber());
+		vehicle.setPrice(newVehicle.getPrice());
+		vehicle.setStickType(newVehicle.getStickType());
+		vehicle.setType(newVehicle.getType());
+		vehicle.setCarStatus(CarStatus.Available);
+		vehicles.add(vehicle);
+		writeToFile();
+		System.out.println("Id novog vozila je: "+ vehicle.getId());
+		return vehicle.getId();
 	}
 
 }

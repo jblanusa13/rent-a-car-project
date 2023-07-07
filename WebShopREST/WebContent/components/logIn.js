@@ -13,38 +13,25 @@ Vue.component("logIn", {
     };
   },
   template: `
-    <form>
-      <table>
-        <tr>
-          <td>
-            <label for="username">Username</label>
-          </td>
-          <td>
-            <input type="text" v-model="userCredentials.username" name="username" id="username">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label for="password">Password</label>
-          </td>
-          <td>
-            <input type="password" v-model="userCredentials.password" name="password" id="password">
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td align="center">
-            <input type="submit" v-on:click="loginUser" value="Login">
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td align="center">
-            <input type="submit" v-on:click="registerUser" value="Register">
-          </td>
-        </tr>
-      </table>
+    <form class="formStyle" style="margin-top:5%;">
+	<fieldset>
+		<legend>Log in</legend>
+		<div>
+            <label for="username" class="formInputs">Username</label><br>
+            <input type="text" v-model="userCredentials.username" name="username" id="username" class="formInputs">
+        </div>
+        <div>
+            <label for="password" class="formInputs">Password</label><br>
+            <input type="password" v-model="userCredentials.password" name="password" id="password" class="formInputs">
+        </div><br>
+        <div>
+            <input type="submit" v-on:click="loginUser" value="Login" class="formInputs">
+        </div>
       <p>{{errortext}}</p>
+	</fieldset><br>
+	<div>
+    	<input type="submit" v-on:click="registerUser" value="Register" class="formInputs">
+    </div>
     </form>
   `,
   mounted() {},
