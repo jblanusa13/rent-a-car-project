@@ -231,6 +231,7 @@ Vue.component("customerRentalObjects", {
     filterOrdersClick: function () {
 		event.preventDefault();
 		console.log("Gathering filter orders.RESTART");
+	
 		let temp = [];
 		temp = this.objects;
 		this.objects= [];
