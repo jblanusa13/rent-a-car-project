@@ -16,39 +16,38 @@ Vue.component("objectForManager", {
   },
   template: `
     <div>
-      <h1 style="display: flex; flex-direction: column; align-items: center;">{{ objectName }}</h1>
-      <div style="display: flex; justify-content: center; align-items: center;">
-        <img :src="image" style="width: 75%; height: auto;">
-      </div>
+      <h1>{{ objectName }}</h1>
+      <div class="center-position">
+		  <img :src="image" class="rental_img">
+	  </div>
       <div>
-        <br><br>     
-        <label style="margin-left: 50px;"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
-        <label style="margin-left: 50px;"><strong>Status: {{ objectStatus }}</strong></label><br><br>          
-        <label style="margin-left: 50px;"><strong> Location:</strong></label>
-        <table>
+      	<br><br>     
+        <label class="standard-left-margin"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
+        <label class="standard-left-margin"><strong>Status: {{objectStatus}}</strong></label><br><br>          
+  		<label class="standard-left-margin"><strong> Location:</strong></label>
+      <table>
           <tr>          
-            <table style="margin-left: 60px;">
-              <tr>
-                <td>Longitude: </td>
-                <td>{{object.location.longitude}}</td>
-              </tr>
-              <tr>
-                <td>Latitude: </td>
-                <td>{{object.location.latitude}}</td>
-              </tr>
-              <tr>
-                <td>Address: </td>
-                <td>{{object.location.address}}</td>
-              </tr>
-            </table>
+            <table class="standard-left-margin">
+            <tr>
+              <td>Longitude: </td>
+              <td><input type="text" name="longitude" v-model="object.location.longitude" disabled></td>
+            </tr>
+            <tr>
+              <td>Latitude: </td>
+              <td><input type="text" name="latitude" v-model="object.location.latitude" disabled></td>
+            </tr>
+            <tr>
+              <td>Address: </td>
+              <td><input type="text" name="address" v-model="object.location.address" disabled></td>
+            </tr>
+          </table>
           </tr>
         </table>
         <br><br>
       </div>
-
       <div >
         <h2>Available vehicles</h2>
-        <table border='1' class="center-tables">
+        <table border='1' class="rental-object-table">
           <tr>
             <th>Picture</th>
             <th>Brand</th>
@@ -81,44 +80,40 @@ Vue.component("objectForManager", {
           </tr>
         </table>
       </div>
-	
-	  <div v-if="this.hisObject">
+	  <br><br>
+	  <div class="center-position" v-if="hisObject"><br><br>
 			<button type="submit" v-on:click="addVehicle()">Add new vehicle</button>
 	  </div>
-      
-      <div style="display: flex; justify-content: center; align-items: center; margin-top: 40px;">
+      <br><br>
+      <div class="center-position">
         <br><h2> Comments of the renting object </h2><br>
       </div>
-      <div v-for="c in comments" class="rectangle" style="margin-bottom: 20px;">
-       <table style="border: 1px solid black; margin: 0 auto; width: 75%; position: relative;">
+      <div v-for="c in comments" class="rectangle" >
+       <table class="table-shopping-cart">
 		  <tr>
-		    <td style="padding-left: 20px;">
-		      <div style="display: inline-block; vertical-align: middle;">
-		        <div>
-		          <br>Customer: {{c.customer.name}}<br>
-		        </div>
-		        <div>
-		          Grade: {{c.grade}}
-		        </div>
-		        <div>
-		          Comment: <br>{{c.comment}}<br><br>
-		        </div>
-		        <div>
-		          Status: {{c.status}}<br><br>
-		        </div>
-		        <br>
-		      </div>
-		    </td>
-		    <td style="position: absolute; bottom: 15px; right: 15px;" v-if="c.status === 'Pending' && commentsChange==='True'">
-		      <div>
-		        <button v-on:click="approve(c)">Approve</button>
-		        <button style="margin-left: 20px;" v-on:click="reject(c)">Reject</button>
-		      </div>
-		    </td>
+		    <td>
+		      <div class="comment-showing">
+                <div>
+                  Customer: {{c.customer.name}}<br><br>
+                </div>
+                <div>
+                  Grade: {{c.grade}}<br><br>
+                </div>
+                <div>
+                  Comment: <br><br>{{c.comment}}<br><br>
+                </div>
+              </div>
+		   </td>
+		    <td v-if="c.status === 'Pending' && commentsChange==='True'" class="td-bottom-right-for-comments">
+			  <div class="button-container-for-comments">
+			    <button  v-on:click="approve(c)">Approve</button>
+			    <button  v-on:click="reject(c)">Reject</button>
+			  </div>
+			</td>
 		  </tr>
 		</table>
       </div>
-      <div style="display: flex; justify-content: center; align-items: center;">        
+      <div class="center-position">        
         <br><br>
         <button type="submit" v-on:click="ShowAll">Go back</button>
       </div>

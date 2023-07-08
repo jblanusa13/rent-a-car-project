@@ -15,6 +15,9 @@ Vue.component("logInManager", {
   },
   template: `
     <div>
+    <div class="right-position">
+		<button class="top-right" type="submit" v-on:click="logOut">Log out</button>
+	</div>
 	<h1>Rent a car objects</h1>
 	<div>
 		<form>
@@ -101,6 +104,7 @@ Vue.component("logInManager", {
 			</table>
 		</form>
 	</div>
+	<br>
 	<table border="1">
 		<tr>
 			<th></th>
@@ -121,11 +125,10 @@ Vue.component("logInManager", {
 		</tr>
 	</table><br><br>
 	
-	<div>
-		<button type="submit" v-on:click="profile">Profile</button>
-		<button type="submit" v-on:click="showAllRentingOrders">Show all renting orders</button>
-		<button type="submit" v-on:click="allUsers">Show all users</button>
-		<button type="submit" v-on:click="logOut">Log out</button>
+	<div class="center-position">
+		<button class="top-right" type="submit" v-on:click="profile">Profile</button>
+		<button class="top-right" type="submit" v-on:click="showAllRentingOrders">Show all renting orders</button>
+		<button class="top-right" type="submit" v-on:click="allUsers">Show all users</button>
 	</div>
 </div>
   `,
