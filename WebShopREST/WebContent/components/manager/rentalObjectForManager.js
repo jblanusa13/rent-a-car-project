@@ -10,7 +10,8 @@ Vue.component("objectForManager", {
       userId:null,
 	  manager:null,
 	  hisObject:false,
-      commentsChange: null
+      commentsChange: null,
+	  deleted:false
     };
   },
   template: `
@@ -62,7 +63,7 @@ Vue.component("objectForManager", {
             <th>Description</th>
             <th>Official current vehicle status</th>
           </tr>
-          <tr v-for="v in allCars" :key="v.id">
+          <tr v-for="v in allCars" :key="v.id" v-if="!v.deleted">
             <td><img :src="v.imageURL" alt="Vehicle Image" style="width: 100%; height: auto;"></td>
             <td>{{ v.brand }}</td>
             <td>{{ v.model }}</td>
@@ -235,6 +236,20 @@ Vue.component("objectForManager", {
 	},
 	deleteVehicle: function(id){
 		event.preventDefault();
+		axios.put('rest/vehicles/delete/'+id)
+			.then(response=>{
+				this.deleted = response.data;
+				console.log("Vehicle obrisan");
+				
+				axios.put('rest/objects/deleteVehicle/'+this.objectId+'/'+id)
+					.then(response=>{
+						this.object = response.data;
+						this.allCars = this.object.availableCars;
+						alert("Vehicle succesfully deleted");
+					})
+					.catch(error=>console.log(error))
+			})
+			.catch(error=>console.log(error))
 	},
 	addVehicle: function(){
 		event.preventDefault();

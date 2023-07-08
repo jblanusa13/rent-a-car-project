@@ -141,7 +141,7 @@ public class VehicleDAO {
         return null;
 	}
 	
-	public String addVehicle(VehicleCreation newVehicle) {
+	public Vehicle addVehicle(VehicleCreation newVehicle) {
 		System.out.println("Treba da se doda vehicle u dao");
 		Integer maxId = -1;
 		for (Vehicle f : vehicles) {
@@ -167,10 +167,11 @@ public class VehicleDAO {
 		vehicle.setStickType(newVehicle.getStickType());
 		vehicle.setType(newVehicle.getType());
 		vehicle.setCarStatus(CarStatus.Available);
+		vehicle.setDeleted(false);
 		vehicles.add(vehicle);
 		writeToFile();
 		System.out.println("Id novog vozila je: "+ vehicle.getId());
-		return vehicle.getId();
+		return vehicle;
 	}
 	
 	public Vehicle updateVehicle(String id, VehicleCreation updatedVehicle) {
@@ -192,6 +193,13 @@ public class VehicleDAO {
             return vehicle;
         }
         return null;	
+	}
+	
+	public boolean deleteVehicle(String id) {
+		Vehicle vehicle = getById(id);
+		vehicle.setDeleted(true);
+		writeToFile();
+		return true;
 	}
 
 }

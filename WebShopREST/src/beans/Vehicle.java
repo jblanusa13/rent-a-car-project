@@ -21,13 +21,15 @@ public class Vehicle {
 	private String imageURL;
 	private CarStatus carStatus;
 	private String shoppingCartId;
+	private boolean deleted;
 	
 	public Vehicle() {
 		super();
 	}
+
 	public Vehicle(String id, String brand, String model, float price, VehicleType type, String objectId,
 			StickType stickType, FuelType fuelType, float consumption, int doorNumber, int peopleNumber,
-			String description, String imageURL, CarStatus carStatus, String shoppingCartId) {
+			String description, String imageURL, CarStatus carStatus, String shoppingCartId, boolean deleted) {
 		super();
 		this.id = id;
 		this.brand = brand;
@@ -44,6 +46,7 @@ public class Vehicle {
 		this.imageURL = imageURL;
 		this.carStatus = carStatus;
 		this.shoppingCartId = shoppingCartId;
+		this.deleted = deleted;
 	}
 
 	public String getImageURL() {
@@ -162,6 +165,14 @@ public class Vehicle {
 	}
 	public void setShoppingCartId(String shoppingCartId) {
 		this.shoppingCartId = shoppingCartId;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	

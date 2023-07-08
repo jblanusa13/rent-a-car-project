@@ -13,6 +13,7 @@ import beans.ShoppingCart;
 import beans.User;
 import beans.UserCredentials;
 import beans.UserRegistration;
+import dao.RentACarObjectDAO;
 import dao.UserDAO;
 
 @Path("/user")
@@ -264,4 +265,139 @@ public class UserService {
             return null;
         }
     }
+	
+	@PUT
+	@Path("/usersNameSortingAscending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<User> sortByNameAscending(ArrayList<User> usersToSort) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Sorting users by name (ascending)");
+	    if(usersToSort.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.sortUsersByName(false, usersToSort);
+	}
+	
+	@PUT
+	@Path("/usersNameSortingDescending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<User> sortByNameDescending(ArrayList<User> usersToSort) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Sorting users by name (descending)");
+	    if(usersToSort.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.sortUsersByName(true, usersToSort);
+	}
+	
+	@PUT
+	@Path("/usersSurnameSortingAscending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<User> sortBySurnameAscending(ArrayList<User> usersToSort) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Sorting users by surname (ascending)");
+	    if(usersToSort.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.sortUsersBySurname(false, usersToSort);
+	}
+	
+	@PUT
+	@Path("/usersSurnameSortingDescending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<User> sortBySurnameDescending(ArrayList<User> usersToSort) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Sorting users by surname (descending)");
+	    if(usersToSort.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.sortUsersBySurname(true, usersToSort);
+	}
+	
+	@PUT
+	@Path("/usersUsernameSortingAscending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<User> sortByUsernameAscending(ArrayList<User> usersToSort) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Sorting users by username (ascending)");
+	    if(usersToSort.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.sortUsersByUsername(false, usersToSort);
+	}
+	
+	@PUT
+	@Path("/usersUsernameSortingDescending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<User> sortByUsernameDescending(ArrayList<User> usersToSort) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Sorting users by username (descending)");
+	    if(usersToSort.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.sortUsersByUsername(true, usersToSort);
+	}
+	
+	@PUT
+	@Path("/usersPointsSortingAscending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<User> sortByPointsAscending(ArrayList<User> usersToSort) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Sorting users by points (ascending)");
+	    if(usersToSort.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.sortUsersByPoints(false, usersToSort);
+	}
+	
+	@PUT
+	@Path("/usersPointsSortingDescending")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<User> sortByPointsDescending(ArrayList<User> usersToSort) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Sorting users by points (descending)");
+	    if(usersToSort.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.sortUsersByPoints(true, usersToSort);
+	}
+	
+	@PUT
+	@Path("/filterUsers/{userRole}/{customerType}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<User> filterUsers(@PathParam("userRole") String userRole,
+									 	@PathParam("customerType") String customerType,
+									 		ArrayList<User> usersToFilter) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Filter users in service");
+	    if(usersToFilter.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	    return dao.filterUsers(userRole, customerType, usersToFilter);
+	}
+	
+	@PUT
+	@Path("/searchUsers/{name}/{surname}/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<User> searchUsers(@PathParam("name") String name,
+									 	@PathParam("surname") String surname,
+									 	@PathParam("username") String username,
+									 		ArrayList<User> usersToSearch) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+	    System.out.println("Search users in service");
+	    if(usersToSearch.isEmpty()) {
+	    	System.out.println("LIST IS NULL");
+	    }
+	   return dao.searchUsers(name, surname, username, usersToSearch);
+	}
 }

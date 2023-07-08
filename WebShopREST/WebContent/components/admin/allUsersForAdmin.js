@@ -2,12 +2,96 @@ Vue.component("allUsersForAdmin", {
   data: function () {
     return {
       users: null,
-      userId:null
+      userId:null,
+	  name:null,
+	  surname:null,
+	  username:null,
+	  userRole:null,
+	  customerType:null,
+	  selectedSortOption:null
     };
   },
   template: `
     <div>
       <h1 style="text-align: center;"> List of all users in the system </h1>
+	<div>	
+		<form>
+			<table>
+				<tr>
+					<td>
+						Name:<br>
+						<input type="text" v-model="name" id="name" name="name" >
+					</td>
+					<td>
+						Surname:<br>
+						<input type="text" v-model="surname" id="surname" name="surname" >
+					</td>
+					<td>
+						Username:<br>
+						<input type="text" v-model="username" id="username" name="username" >
+					</td>
+					<td>
+						<br>
+						<button type="button" v-on:click="searchUsers">Search</button>
+					</td>
+				</tr>
+			</table>
+		</form><br>
+	</div>
+	<div>
+		<form>
+			<table>
+				<tr>
+				<td for="userRoleFilter">User role:<br>
+			 	<select id="userRoleFilter" v-model="userRole">
+					<option value="Customer">Customer</option>
+					<option value="Manager">Manager</option>
+					<option value="Administrator">Administrator</option>
+				</select>	
+				</td>   	
+		    	
+		  		<td for="customerTypeFilter">Customer type:</label><br>
+			 	<select id="customerTypeFilter" v-model="customerType" v-if="userRole === 'Customer'">
+					<option value="Golden">Golden</option>
+					<option value="Silver">Silver</option>
+					<option value="Bronze">Bronze</option>
+				</select>
+				</td>
+				<td>
+				<br><br>
+				<button type="submit" v-on:click="filterUsers">Filter</button><br><br>
+				</td>
+				</tr>
+		  	</table>
+		</form>
+	</div>
+	<div>
+		<form>
+			<table>
+			<tr>
+			<td>
+		    <label for="sortOption">Sort by:</label><br>
+		    <select id="sortOption" v-model="selectedSortOption">
+		        <option value="nameAscending">Name (Ascending)</option>
+		        <option value="nameDescending">Name (Descending)</option>
+		        <option value="surnameAscending">Surname (Ascending)</option>
+		        <option value="surnameDescending">Surname (Descending)</option>
+		        <option value="usernameAscending">Username (Ascending)</option>
+		    	<option value="usernameDescending">Username (Descending)</option>
+				<option value="pointsAscending">Collected points (Ascending)</option>
+		    	<option value="pointsDescending">Collected points (Descending)</option>
+		    </select>
+			</td>
+			<td><br><br>
+				<button type="button" v-on:click="sortUsers">Sort</button><br><br>
+			</td>
+			</tr>
+			<tr>
+				<td><button type="submit" v-on:click="searchUsersUndo">Undo search</button></td>
+			</tr>
+			</table>
+		</form>
+	</div>
       <table border='1' style="margin: 0 auto; width: 85%;">
         <tr>
           <th>Name</th>
@@ -64,6 +148,126 @@ Vue.component("allUsersForAdmin", {
         user.userStatus="Deactivated"
       })
       .catch((error) => console.log(error));
+	},
+	sortUsers: function() {
+		event.preventDefault();
+		
+	    if (this.selectedSortOption === 'nameAscending') {
+	      axios
+		      .put("rest/users/usersNameSortingAscending/", this.users)
+		      .then((response) => {
+		        this.users = response.data;
+		      })
+		      .catch((error) => console.log(error));
+	      
+	    } else if (this.selectedSortOption === 'nameDescending') {
+	      axios
+		      .put("rest/users/usersNameSortingDescending/", this.users)
+		      .then((response) => {
+		        this.users = response.data;
+		      })
+		      .catch((error) => console.log(error));
+	    } else if (this.selectedSortOption === 'surnameAscending') {
+	      axios
+		      .put("rest/users/usersSurnameSortingAscending/", this.users)
+		      .then((response) => {
+		        this.users = response.data;
+		      })
+		      .catch((error) => console.log(error));
+	    } else if (this.selectedSortOption === 'surnameDescending') {
+	      axios
+		      .put("rest/users/usersSurnameSortingDescending/", this.users)
+		      .then((response) => {
+		        this.users = response.data;
+		      })
+		      .catch((error) => console.log(error));
+	    }else if (this.selectedSortOption === 'usernameAscending') {
+			axios
+		      .put("rest/users/usersUsernameSortingAscending/", this.users)
+		      .then((response) => {
+		        this.users = response.data;
+		      })
+		      .catch((error) => console.log(error));
+			
+		}else if (this.selectedSortOption === 'usernameDescending') {
+			axios
+		      .put("rest/users/usersUsernameSortingDescending/", this.users)
+		      .then((response) => {
+		        this.users = response.data;
+		      })
+		      .catch((error) => console.log(error));
+			
+		}
+		else if (this.selectedSortOption === 'pointsAscending') {
+			axios
+		      .put("rest/users/usersPointsSortingAscending/", this.users)
+		      .then((response) => {
+		        this.users = response.data;
+		      })
+		      .catch((error) => console.log(error));
+			
+		}else if (this.selectedSortOption === 'pointsDescending') {
+			axios
+		      .put("rest/users/usersPointsSortingDescending/", this.users)
+		      .then((response) => {
+		        this.users = response.data;
+		      })
+		      .catch((error) => console.log(error));
+			
+		}
+	},
+	searchUsersUndo: function () {
+		event.preventDefault();
+		
+		this.name=null;
+		this.surname=null;
+		this.username=null;
+		this.selectedSortOption=null;
+		this.userRole=null;
+		this.customerType=null;
+		
+		axios
+	      .get("rest/users/allUsers")
+	      .then((response) => {
+	        this.users = response.data;
+	      })
+	      .catch((error) => console.log(error));
+    },
+	filterUsers: function(){
+		event.preventDefault();
+		console.log(this.userRole);
+		console.log(this.customerType);
+		
+		axios
+	      .put("rest/users/filterUsers/"+this.userRole+"/"+this.customerType+"/", this.users)
+	      .then((response) => {
+	        this.users = response.data;
+			console.log("zavrsio filter");
+	      })
+	      .catch((error) => console.log(error));
+	},
+	searchUsers: function(){
+		console.log(this.name);
+		console.log(this.surname);
+		console.log(this.username);
+		
+		if(!this.name){
+			this.name = null;
+		}
+		else if(!this.surname){
+			this.surname = null;
+		}
+		else if(!this.username){
+			this.username = null;
+		}
+		
+		axios
+	      .put("rest/users/searchUsers/"+this.name+"/"+this.surname+"/"+this.username, this.users)
+	      .then((response) => {
+	        this.users = response.data;
+			console.log("zavrsio pretragu");
+	      })
+	      .catch((error) => console.log(error));
 	}
   }
 });

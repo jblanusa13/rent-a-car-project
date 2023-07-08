@@ -97,7 +97,7 @@ public class VehicleService {
 	@Path("/addVehicle")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String addVehicle(VehicleCreation newVehicle) {
+	public Vehicle addVehicle(VehicleCreation newVehicle) {
 		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
 		System.out.println("Dodaje vehicle u servisu");
 		return dao.addVehicle(newVehicle);
@@ -107,10 +107,20 @@ public class VehicleService {
     @Path("/update/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Vehicle updateUser(@PathParam("id") String id, VehicleCreation updatedVehicle) {
+    public Vehicle updateVehicle(@PathParam("id") String id, VehicleCreation updatedVehicle) {
 		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
         System.out.println("Vehicle se updejtuje");
         return dao.updateVehicle(id,updatedVehicle); 
+	}
+	
+	@PUT
+    @Path("/delete/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean deleteVehicle(@PathParam("id") String id) {
+		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
+        System.out.println("Vehicle se brise u servisu");
+        return dao.deleteVehicle(id); 
 	}
 
 }

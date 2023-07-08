@@ -289,4 +289,25 @@ public class RentACarObjectDAO {
 		writeToFile();
 		return object;
 	}
+	
+	public RentACarObject deleteVehicleForObject(String objectId, String vehicleId) {
+		RentACarObject object = getById(objectId);
+		System.out.println("Brisanje vehicle u object dao");
+		for(Vehicle v : object.getAvailableCars()) {
+			if(v.getId().equals(vehicleId)){
+				v.setDeleted(true);
+				break;
+			}
+		}
+		writeToFile();
+		return object;
+	}
+	
+	public RentACarObject addVehicleForObject(String objectId, Vehicle vehicle) {
+		RentACarObject object = getById(objectId);
+		System.out.println("Dodavanje vehicle u object dao");
+		object.getAvailableCars().add(vehicle);
+		writeToFile();
+		return object;
+	}
 }

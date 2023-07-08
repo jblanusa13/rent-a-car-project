@@ -109,36 +109,119 @@ Vue.component("editVehicle", {
 	editVehicle: function(){
 		this.image = this.$refs.file.files[0]
 		event.preventDefault();
-		console.log(this.vehicle)
-		this.creation.brand=this.vehicle.brand;
-		this.creation.model=this.vehicle.model;
-		this.creation.price=this.vehicle.price;
-		this.creation.type=this.vehicle.type;
-		this.creation.stickType=this.vehicle.stickType;
-		this.creation.fuelType=this.vehicle.fuelType;
-		this.creation.consumption=this.vehicle.consumption;
-		this.creation.doorNumber=this.vehicle.doorNumber;
-		this.creation.peopleNumber=this.vehicle.peopleNumber;
-		this.creation.description=this.vehicle.description;
-		this.creation.imageURL="images/vehicles/"+this.image.name 
+		console.log(this.vehicle);
+		
+		if(!this.vehicle.brand){
+			this.brandValid=false;
+			this.errortext = 'Required fields must be filled correctly';
+		}
+		else{
+			this.brandValid=true;
+			this.errortext = '';
+		}
+		if(!this.vehicle.model){
+			this.modelValid=false;
+			this.errortext = 'Required fields must be filled correctly';
+		}
+		else{
+			this.modelValid=true;
+			this.errortext = '';
+		}
+		if(!this.vehicle.price){
+			this.priceValid=false;
+			this.errortext = 'Required fields must be filled correctly';
+		}
+		else{
+			this.priceValid=true;
+			this.errortext = '';
+		}
+		if(!this.vehicle.type){
+			this.typeValid=false;
+			this.errortext = 'Required fields must be filled correctly';
+		}
+		else{
+			this.typeValid=true;
+			this.errortext = '';
+		}
+		if(!this.vehicle.stickType){
+			this.stickTypeValid=false;
+			this.errortext = 'Required fields must be filled correctly';
+		}
+		else{
+			this.stickTypeValid=true;
+			this.errortext = '';
+		}
+		if(!this.vehicle.fuelType){
+			this.fuelTypeValid=false;
+			this.errortext = 'Required fields must be filled correctly';
+		}
+		else{
+			this.fuelTypeValid=true;
+			this.errortext = '';
+		}
+		if(!this.vehicle.consumption){
+			this.consumptionValid=false;
+			this.errortext = 'Required fields must be filled correctly';
+		}
+		else{
+			this.consumptionValid=true;
+			this.errortext = '';
+		}
+		if(!this.vehicle.doorNumber){
+			this.doorNumberValid=false;
+			this.errortext = 'Required fields must be filled correctly';
+		}
+		else{
+			this.doorNumberValid=true;
+			this.errortext = '';
+		}
+		if(!this.vehicle.peopleNumber){
+			this.peopleNumberValid=false;
+			this.errortext = 'Required fields must be filled correctly';
+		}
+		else{
+			this.peopleNumberValid=true;
+			this.errortext = '';
+		}
+		if(!this.image){
+			this.creation.imageURL = this.vehicle.imageURL;
+		}
+		else{
+			this.creation.imageURL="images/vehicles/"+this.image.name;
+		}
 		
 		
-		axios.put('rest/vehicles/update/'+this.vehicleId, this.creation)
-			.then(response=>{
-				this.updatedVehicle = response.data;
-				console.log("Apdejtovan vehicle: "+this.updatedVehicle);
+		if(this.vehicle.brand && this.vehicle.model && this.vehicle.price && this.vehicle.type && this.vehicle.stickType &&
+			this.vehicle.fuelType && this.vehicle.consumption && this.vehicle.doorNumber && this.vehicle.peopleNumber){
+			this.creation.brand=this.vehicle.brand;
+			this.creation.model=this.vehicle.model;
+			this.creation.price=this.vehicle.price;
+			this.creation.type=this.vehicle.type;
+			this.creation.stickType=this.vehicle.stickType;
+			this.creation.fuelType=this.vehicle.fuelType;
+			this.creation.consumption=this.vehicle.consumption;
+			this.creation.doorNumber=this.vehicle.doorNumber;
+			this.creation.peopleNumber=this.vehicle.peopleNumber;
+			this.creation.description=this.vehicle.description;
+		
+		
+			axios.put('rest/vehicles/update/'+this.vehicleId, this.creation)
+				.then(response=>{
+					this.updatedVehicle = response.data;
+					console.log("Apdejtovan vehicle: "+this.updatedVehicle);
 				
-				axios.put('rest/objects/updateVehicle/'+this.updatedVehicle.objectId, this.updatedVehicle)
-					.then(response=>{
-						this.object = response.data;
-						console.log("Apdejtovan vehicle u objektu: "+this.object);
-					})
-					.catch(error=>console.log(error))
-					
-				const combinedParam = this.updatedVehicle.objectId+"_"+this.managerId;
-				router.push(`/rentalObjectForManager/${combinedParam}`);
-			})
-			.catch(error=>console.log(error))
+					axios.put('rest/objects/updateVehicle/'+this.updatedVehicle.objectId, this.updatedVehicle)
+						.then(response=>{
+							this.object = response.data;
+							console.log("Apdejtovan vehicle u objektu: "+this.object);
+						})
+						.catch(error=>console.log(error))
+						
+					const combinedParam = this.updatedVehicle.objectId+"_"+this.managerId;
+					router.push(`/rentalObjectForManager/${combinedParam}`);
+				})
+				.catch(error=>console.log(error))
+		}
 	}
 }
 });

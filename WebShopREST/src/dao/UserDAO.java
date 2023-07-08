@@ -1,6 +1,9 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import beans.CustomerType;
 import beans.Location;
 import beans.Manager;
@@ -85,11 +88,11 @@ public class UserDAO {
 	private void addrentacar() {
 		RentACarObject object1 = new RentACarObject("1", "Kod Milana", new ArrayList<Vehicle>(),"08:30","19:00", RentACarStatus.Open, new Location("1", "22", "23", "Super"),"images/objects/1.jpg", 5, false);
 
-		Vehicle vehicle1 = new Vehicle("1", "Honda", "ne znam sad", 10000, VehicleType.Car, "1", StickType.Automatic, FuelType.Diesel, 15, 5, 5, "lepa kola", "images/vehicles/1.jpg", CarStatus.Available,"");
-		Vehicle vehicle2 = new Vehicle("2", "Golfic", "ne znam sad", 2002, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 11, 5, 4, "lepa kola", "images/vehicles/2.jpg", CarStatus.Available,"");
-		Vehicle vehicle3 = new Vehicle("3", "Audi", "ne znam sad", 12000, VehicleType.Car, "1", StickType.Manual, FuelType.Diesel, 12, 4, 5, "lepa kola", "images/vehicles/3.jpg", CarStatus.Available,"");
-		Vehicle vehicle4 = new Vehicle("4", "BrzaKola", "ne znam sad", 20000, VehicleType.Van, "1", StickType.Automatic, FuelType.Diesel, 13, 4, 5, "lepa kola", "images/vehicles/4.jpg", CarStatus.Available,"");
-		Vehicle vehicle5 = new Vehicle("5", "Tojota", "ne znam sad", 50000, VehicleType.MobileHome, "1", StickType.Manual, FuelType.Diesel, 15, 5, 16, "lepa kola", "images/vehicles/5.jpg", CarStatus.Available,"");
+		Vehicle vehicle1 = new Vehicle("1", "Honda", "ne znam sad", 10000, VehicleType.Car, "1", StickType.Automatic, FuelType.Diesel, 15, 5, 5, "lepa kola", "images/vehicles/1.jpg", CarStatus.Available,"", false);
+		Vehicle vehicle2 = new Vehicle("2", "Golfic", "ne znam sad", 2002, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 11, 5, 4, "lepa kola", "images/vehicles/2.jpg", CarStatus.Available,"", false);
+		Vehicle vehicle3 = new Vehicle("3", "Audi", "ne znam sad", 12000, VehicleType.Car, "1", StickType.Manual, FuelType.Diesel, 12, 4, 5, "lepa kola", "images/vehicles/3.jpg", CarStatus.Available,"", false);
+		Vehicle vehicle4 = new Vehicle("4", "BrzaKola", "ne znam sad", 20000, VehicleType.Van, "1", StickType.Automatic, FuelType.Diesel, 13, 4, 5, "lepa kola", "images/vehicles/4.jpg", CarStatus.Available,"", false);
+		Vehicle vehicle5 = new Vehicle("5", "Tojota", "ne znam sad", 50000, VehicleType.MobileHome, "1", StickType.Manual, FuelType.Diesel, 15, 5, 16, "lepa kola", "images/vehicles/5.jpg", CarStatus.Available,"", false);
 		
 		ArrayList<Vehicle> cars = new ArrayList<Vehicle>();
 		cars.add(vehicle1);
@@ -266,7 +269,7 @@ public class UserDAO {
 	public ArrayList<Manager> getAvailableManagers(){
 		ArrayList<Manager> managers = new ArrayList<Manager>();
 		for(User user : users) {
-			if(user.getRole().equals(UserRole.Manager) && user.getRentACar() == null) {
+			if(user.getRole().equals(UserRole.Manager) && (user.getRentACar() == null || user.getRentACar().getDeleted() == true)) {
 				
 				managers.add(new Manager(user.getId(), 
 										user.getUsername(),
@@ -362,5 +365,87 @@ public class UserDAO {
         System.out.println("Nije updejtovan korisnik");
         return null;
 	}
+	
+	// Sort users by name
+    public ArrayList<User> sortUsersByName(boolean descending, ArrayList<User> usersToSort) {
+        Comparator<User> comparator = Comparator.comparing(user -> user.getName());
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(usersToSort, comparator);
+        return usersToSort;
+    }
+    
+    // Sort users by surname
+    public ArrayList<User> sortUsersBySurname(boolean descending, ArrayList<User> usersToSort) {
+        Comparator<User> comparator = Comparator.comparing(user -> user.getSurname());
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(usersToSort, comparator);
+        return usersToSort;
+    }
+    
+    // Sort users by username
+    public ArrayList<User> sortUsersByUsername(boolean descending, ArrayList<User> usersToSort) {
+        Comparator<User> comparator = Comparator.comparing(user -> user.getUsername());
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(usersToSort, comparator);
+        return usersToSort;
+    }
+    // Sort users by points
+    public ArrayList<User> sortUsersByPoints(boolean descending, ArrayList<User> usersToSort) {
+        Comparator<User> comparator = Comparator.comparing(user -> user.getCollectedPoints());
+        if (descending) {
+            comparator = comparator.reversed();
+        }
+        Collections.sort(usersToSort, comparator);
+        return usersToSort;
+    }
+    
+    public ArrayList<User> filterUsers(String userRole, String customerType, ArrayList<User> usersToFilter){
+    	System.out.println(userRole);
+    	System.out.println(customerType);
+    	ArrayList<User> filteredUsers = new ArrayList<User>();
+    	for(User u : usersToFilter) {
+    		boolean firstTrue = userRole.equals(u.getRole().name()) || userRole.equals("null");
+    		boolean secondTrue = customerType.equals(u.getCustomerType().toString()) || customerType.equals("null");
+    		boolean isTrue = firstTrue && secondTrue;
+    		System.out.println("First true: "+firstTrue);
+    		System.out.println("Second true: "+secondTrue);
+    		System.out.println("Is true: "+isTrue);
+    		
+    		if(isTrue) {
+    			filteredUsers.add(u);
+    			System.out.println("Filtrirani user: "+u);
+    		}
+     	}
+    	
+    	return filteredUsers;
+    }
+    
+    public ArrayList<User> searchUsers(String name, String surname, String username, ArrayList<User> usersToSearch){
+    	ArrayList<User> searchedUsers = new ArrayList<User>();
+    	
+    	for(User u : usersToSearch) {
+    		boolean nameTrue = u.getName().toLowerCase().contains(name.toLowerCase()) || name.equals("null");
+    		boolean surnameTrue = u.getSurname().toLowerCase().contains(surname.toLowerCase()) || surname.equals("null");
+    		boolean usernameTrue = u.getUsername().toLowerCase().contains(username.toLowerCase()) || username.equals("null");
+    		
+    		System.out.println("nameTrue: " +nameTrue);
+    		System.out.println("surnameTrue: "+surnameTrue);
+    		System.out.println("usernameTrue: "+usernameTrue);
+    		boolean isTrue = nameTrue && surnameTrue && usernameTrue;
+    		
+    		if(isTrue) {
+    			searchedUsers.add(u);
+    			System.out.println("Pretrazeni user: "+u);
+    		}
+    	}
+    	
+    	return searchedUsers;
+    }
 }
 

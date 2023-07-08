@@ -2,7 +2,9 @@ Vue.component("newVehicle", {
   data: function () {
     return {
 		vehicle:{brand:'', model:'', price:null, type:null, objectId:null, stickType:null, fuelType:null, consumption:null, doorNumber:null, peopleNumber:null, description:'', imageURL:''},
+		addedVehicle:null,
 		vehicleId:null,
+		object:null,
 		vbrand:null,
 		vmodel:null,
 		vprice:null,
@@ -217,8 +219,14 @@ Vue.component("newVehicle", {
 			
 			axios.post('rest/vehicles/addVehicle/', this.vehicle)
 				.then((response)=>{
-					this.vehicleId = response.data;
-					console.log("DODATO");					
+					this.addedVehicle = response.data;
+					console.log("Dodat vehicle");
+					
+					axios.put('rest/objects/addVehicle/'+this.addedVehicle.objectId, this.addedVehicle)
+						.then(response=>{
+							this.object = response.data;
+							alert("Vehicle succesfully added");
+						})					
 				})
 				.catch((error)=>console.log(error))
 				

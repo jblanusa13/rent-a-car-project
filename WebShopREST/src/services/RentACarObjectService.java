@@ -216,6 +216,16 @@ public class RentACarObjectService {
 	}
 	
 	@PUT
+	@Path("/addVehicle/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public RentACarObject addVehicleForObject(@PathParam("id") String id, Vehicle vehicle) {
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Add object in service");
+	    return dao.addVehicleForObject(id, vehicle);
+	}
+	
+	@PUT
 	@Path("/updateVehicle/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -223,5 +233,15 @@ public class RentACarObjectService {
 	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
 	    System.out.println("Update object in service");
 	    return dao.updateVehicleForObject(id,vehicle);
+	}
+	
+	@PUT
+	@Path("/deleteVehicle/{objectId}/{vehicleId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public RentACarObject deleteVehicleForObject(@PathParam("objectId") String objectId, @PathParam("vehicleId") String vehicleId) {
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Update object in service");
+	    return dao.deleteVehicleForObject(objectId,vehicleId);
 	}
 }
