@@ -290,6 +290,7 @@ public class RentACarObjectDAO {
 		return object;
 	}
 	
+
 	public RentACarObject deleteVehicleForObject(String objectId, String vehicleId) {
 		RentACarObject object = getById(objectId);
 		System.out.println("Brisanje vehicle u object dao");
@@ -309,5 +310,13 @@ public class RentACarObjectDAO {
 		object.getAvailableCars().add(vehicle);
 		writeToFile();
 		return object;
+	}
+	
+	public boolean changeObjectRate(String objectId,String avg) {
+		RentACarObject object = getById(objectId);
+		System.out.println("Brisanje objekta u dao");
+		object.setRate(Float.parseFloat(avg));
+		writeToFile();
+		return true;
 	}
 }

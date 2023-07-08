@@ -47,10 +47,10 @@ public class CustomerCommentService {
 	@Path("/newComment")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CustomerComment addNewComment(CustomerCommentCreation comment) {
+	public String addNewComment(CustomerCommentCreation comment) {
 		System.out.println("Dodavanje komentara u servisu");
 		CustomerCommentDAO dao = (CustomerCommentDAO) ctx.getAttribute("CustomerCommentDAO");
-		CustomerComment c=dao.createComment(comment);
+		String c=dao.createComment(comment);
 		if(c!=null) {
 			System.out.println("Komentar je napravljen");
 			return c;

@@ -32,6 +32,9 @@ Vue.component("logIn", {
 	</fieldset><br>
 	<div>
     	<input type="submit" v-on:click="registerUser" value="Register" class="formInputs">
+    </div><br>
+    <div>
+    	<input type="submit" v-on:click="goBack" value="Return" class="formInputs">
     </div>
     </form>
     </div>
@@ -97,5 +100,9 @@ Vue.component("logIn", {
       event.preventDefault();
       router.push(`/register`);
     },
+    goBack: function () {
+      	event.preventDefault();
+		router.push(`/`);
+    }
   }
 });

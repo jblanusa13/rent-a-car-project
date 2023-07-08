@@ -40,6 +40,8 @@ nav {
 	display: flex; 
 	justify-content: center; 
 	align-items: center;
+	margin-left: 10px;
+    margin-right: 10px;
 }
 
 .invalid {
@@ -55,3 +57,162 @@ nav {
 	width:45%;
 	text-align:center;
 }
+
+.right-position {
+  display: flex;
+  justify-content: flex-end;
+}
+
+button {
+  font-family: 'Gill Sans MT', sans-serif;
+}
+
+.top-right{
+	font-family: 'Gill Sans MT', sans-serif;
+    height: 30px;
+    width: 150px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.table-renting-orders{
+	border: 1px solid black;
+	margin: 0 auto; 
+	width: 75%;
+}
+.table-renting-orders-td{
+	width: 50%;
+}
+
+.table-renting-orders-first-column{
+	margin-left: 30px;
+    margin-right: 10px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.rectangle{
+	margin-bottom: 20px;
+}
+
+.column-width-50 {
+  width: 50%;
+}
+.table-renting-orders-first-column ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.order-rejection {
+  margin-top: 10px;
+}
+
+.cancel-button {
+  margin-top: 10px;
+}
+
+.order-cancelled {
+  margin-top: 10px;
+}
+
+.comment-section textarea {
+  width: 300px;
+  height: 45px;
+}
+
+.date-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.input-group {
+  margin-right: 20px;
+}
+
+.label-input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.label-input label {
+  margin-right: 5px;
+}
+
+.standard-left-margin {
+  margin-left: 50px;
+}
+
+.standard-left-margin-input {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 50px;
+}
+
+.standard-left-margin-input .input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.standard-left-margin-input .input-group label {
+  margin-bottom: 5px;
+}
+
+.standard-left-margin-input-closer {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 50px;
+}
+
+.standard-left-margin-input-closer .input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.shopping-cart-table{
+	margin: 0 auto; 
+	width: 85%;
+}
+
+.table-shopping-cart{
+	border: 1px solid black;
+	margin: 0 auto; 
+	width: 75%;
+}
+.table-shopping-cart-td{
+	width: 30%;
+	margin-left: 20px;
+	position: relative;
+}
+.table-shopping-cart-first-column{
+	margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.table-shopping-cart-second-colum{
+	display: inline-block; 
+	vertical-align: middle;
+}
+.button-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.rental_img{
+	width: 75%; 
+	height: auto;
+}
+
+.comment-showing{
+	display: inline-block; 
+	vertical-align: middle;
+	margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+

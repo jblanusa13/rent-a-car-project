@@ -9,6 +9,7 @@ Vue.component("customer-profile", {
   template: `
     <div>
 		<h2>Profile ({{user.role}})</h2>
+		<div class="center-position">
 		<form class="formStyle">
 		<fieldset>
 				<div>
@@ -56,11 +57,13 @@ Vue.component("customer-profile", {
 				<label class="formInputs">Required points:</label><br>
            		<input type="text" name="points" v-model="user.customerType.requiredPoints" disabled class="formInputs">
 			</div><br>
-			<button id="deactivateBtn" type="submit" v-on:click="deactivateAccount">Deactivate Account</button><br>
-			<label id="statusLabel" style="display: none;"></label><br>
+		    <button type="submit" v-on:click="showAllRentingOrders">All my renting orders</button><br><br>
 		</fieldset>	<br>
-		<button type="submit" v-on:click="goBack">Home page</button>
+		<button type="submit" v-on:click="goBack">Home page</button><br><br><br><br>
+		<button id="deactivateBtn" type="submit" v-on:click="deactivateAccount">Deactivate Account</button><br>
+		<br><br><label id="statusLabel" ></label><br>
 		</form>
+		</div>
     </div>
   `,
   mounted() {
@@ -88,6 +91,10 @@ Vue.component("customer-profile", {
       event.preventDefault();
       router.push(`/loggedInCustomer/${this.userId}`);
     },
+    showAllRentingOrders: function () {
+      	event.preventDefault();
+		router.push(`/customerRentalObjects/${this.userId}`);
+    },
     deactivateAccount: function() {
 	  event.preventDefault();
 	  
@@ -103,9 +110,8 @@ Vue.component("customer-profile", {
 	      })
 	      .catch((error) => console.log(error));
 	  } else {
-	    var statusLabel = document.createElement("label");
+	    var statusLabel = document.getElementById("statusLabel");
 	    statusLabel.textContent = "Account is still active";
-	    document.body.appendChild(statusLabel);
 	  }
 	}
   }

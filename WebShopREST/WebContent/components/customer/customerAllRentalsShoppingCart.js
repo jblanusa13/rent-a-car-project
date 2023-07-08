@@ -28,24 +28,21 @@ Vue.component("customerAllRentalsShoppingCart", {
   },
   template: `
     <div>
-		<h2 style="display: flex; justify-content: center; align-items: center;">Shopping cart</h2>
-		<h3 style="display: flex; justify-content: center; align-items: center;">Vehicles:</h3>
-		<div style="display: flex; justify-content: center; align-items: center;">        
+		<h2>Shopping cart</h2>
+		<h3>Vehicles:</h3>
+		<div class="center-position">        
          <label style="color: red;">{{ errortext }}</label><br><br>
         </div>
-		<div v-for="c in vehicles" class="rectangle" style="margin-bottom: 20px;">
-		      <table style="border: 1px solid black; margin: 0 auto; width: 75%;">
-		        <colgroup>
-		          <col style="width: 20%;">
-		          <col style="width: 15%;">
-		          <col style="width: 15%;">
-		        </colgroup>
+		<div v-for="c in vehicles" class="rectangle">
+		      <table class="table-shopping-cart">
 		        <tr>
-		          <td style="padding: 20px;">
-		          	  <img :src="c.imageURL" alt="Vehicle Image" style="width: 100%; height: auto;">
+		          <td class="table-shopping-cart-td">
+		              <div class="table-shopping-cart-first-column">
+		          	  	<img :src="c.imageURL" alt="Vehicle Image" style="width: 100%; height: auto;">
+		          	  </div>
 		          </td>
-		          <td>
-				      <div style="display: inline-block; vertical-align: middle;">
+		          <td class="table-shopping-cart-td">
+				      <div class="table-shopping-cart-second-colum">
 				        <div>
 				          Brand: {{c.brand}}
 				        </div>
@@ -58,37 +55,37 @@ Vue.component("customerAllRentalsShoppingCart", {
 				        </div>
 				      </div>
 				   </td>
-		          <td style="position: relative;">
-				      <div style="position: absolute; bottom: 0; right: 0; margin: 15px;">
-				       	<button type="submit" v-on:click="removeCar(c)">Remove</button>
-				      </div>
-			      </td>
+		          <td class="table-shopping-cart-td">
+					  <div class="button-container">
+					    <button type="submit" v-on:click="removeCar(c)">Remove</button>
+					  </div>
+				  </td>
 		        </tr>
 		      </table>
 		</div>
-		<div style="display: flex; justify-content: center; align-items: center;">		
+		<div class="center-position">		
 		<label>{{ textPrice }}</label>
 		</div><br>
-		<div style="display: flex; justify-content: center; align-items: center;">		
+		<div class="center-position">		
 		<label>{{ textOriginalPrice }}</label>
 		</div><br>
-		<div style="display: flex; justify-content: center; align-items: center;">		
+		<div class="center-position">		
 		<h3>Total price: {{price}}</h3>
 		</div><br>
-		<div style="display: flex; justify-content: center; align-items: center;">        
+		<div class="center-position">        
          <label style="color: red;">{{ errortextTime }}</label><br><br>
         </div>
-		<div style="display: flex; justify-content: center; align-items: center;">
+		<div class="center-position">
 			<label for="timeInput">Enter the vehicle pick-up time:</label>
 			<input style="margin-left: 10px;" type="time" id="timeInput" name="timeInput" v-model="time">
 		</div><br><br><br>
-		<div style="display: flex; justify-content: center; align-items: center;">        
+		<div class="center-position">        
          <label >{{ confirmationText }}</label><br><br>
         </div>
-		<div v-if="orderTaken === 'no'" style="display: flex; justify-content: center; align-items: center;">
+		<div v-if="orderTaken === 'no'" class="center-position">
 			<button type="submit" v-on:click="makeReservation"><strong>Make Reservation</strong></button>
 		</div>
-		<div style="display: flex; justify-content: center; align-items: center;">
+		<div class="center-position">
 		<br><br><br><br>
 			<button type="submit" v-on:click="goBack">Return to start page</button>
 		</div>				

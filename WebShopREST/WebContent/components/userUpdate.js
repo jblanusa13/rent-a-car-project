@@ -14,6 +14,7 @@ Vue.component("user-update", {
   template: `
     <div>
       <h2>Update User Info</h2>
+      <div class="center-position">
       <form v-if="user" class="formStyle">
 		<fieldset>
 				<div>
@@ -25,12 +26,16 @@ Vue.component("user-update", {
             		<input type="password" name="password" v-model="user.password" class="formInputs">
           		</div>
           		<div>
+            		<label class="formInputs">Confirm password:</label><br>
+            		<input type="password" name="confirmPassword" v-model="confirmPassword" class="formInputs">
+          		</div>
+          		<div>
             		<label class="formInputs">First Name:</label><br>
-           		 	<input type="text" name="firstName" v-model="user.name" class="formInputs">
+           		 	<input type="text" name="name" v-model="user.name" class="formInputs">
           		</div>
           		<div>
             		<label class="formInputs">Last Name:</label><br>
-            		<input type="text" name="lastName" v-model="user.surname" class="formInputs">
+            		<input type="text" name="surname" v-model="user.surname" class="formInputs">
           		</div>
           		<div>
             		<label class="formInputs">Gender:</label><br>
@@ -38,14 +43,18 @@ Vue.component("user-update", {
           		</div>
           		<div>
             		<label class="formInputs">Date of birth:</label><br>
-            		<input type="text" name="date" v-model="userDate" class="formInputs">
+            		<input type="text" name="birthDate" v-model="userDate" class="formInputs">
           		</div>
 			<br>
 			<button type="submit" v-on:click="updateUser">Save</button><br>
 		</fieldset>
+		<br><br>
         <button v-on:click="goToUserProfile">Cancel</button><br>
       </form>
+      </div>
+      <div class="center-position">
       <p v-if="errortext">{{ errortext }}</p>
+      </div>
     </div>
   `,
   mounted() {
