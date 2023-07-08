@@ -425,12 +425,12 @@ public class RentingOrderDAO {
 	        if (order.getRentingObject().getId().equals(id)) {
 	            User user = order.getCustomer();
 	            if (!users.contains(user)) {
-	                users.add(user);
+	                users.add(user);          
 	            }
 	        }
 	    }
 	    return users;
+	    
 	}
-
 		
 }
