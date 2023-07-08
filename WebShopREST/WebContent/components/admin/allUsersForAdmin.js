@@ -13,32 +13,25 @@ Vue.component("allUsersForAdmin", {
   },
   template: `
     <div>
-      <h1 style="text-align: center;"> List of all users in the system </h1>
-	<div>	
-		<form>
-			<table>
-				<tr>
-					<td>
-						Name:<br>
-						<input type="text" v-model="name" id="name" name="name" >
-					</td>
-					<td>
-						Surname:<br>
-						<input type="text" v-model="surname" id="surname" name="surname" >
-					</td>
-					<td>
-						Username:<br>
-						<input type="text" v-model="username" id="username" name="username" >
-					</td>
-					<td>
-						<br>
-						<button type="button" v-on:click="searchUsers">Search</button>
-					</td>
-				</tr>
-			</table>
-		</form><br>
+      <h1> List of all users in the system </h1>
+	<div  class="standard-left-margin-input">	
+			<div class="input-group">
+		    <label for="name">Name:</label>
+		    <input type="text" v-model="name" id="name" name="name">
+		    </div>
+		  	<div class="input-group">
+		    <label for="surname">Surname:</label>
+		    <input type="text" v-model="surname" id="surname" name="surname">
+		    </div>
+		    <div class="input-group">
+		    <label for="username">Username:</label>
+		    <input type="text" v-model="username" id="username" name="username">
+		    </div>
 	</div>
-	<div>
+	<div class="standard-left-margin">
+		<button type="button" v-on:click="searchUsers">Search</button>
+	</div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 				<tr>
@@ -66,7 +59,7 @@ Vue.component("allUsersForAdmin", {
 		</form>
 	</div>
 	<div>
-		<form>
+		<form class="standard-left-margin">
 			<table>
 			<tr>
 			<td>
@@ -92,7 +85,8 @@ Vue.component("allUsersForAdmin", {
 			</table>
 		</form>
 	</div>
-      <table border='1' style="margin: 0 auto; width: 85%;">
+	<br><br>
+      <table border='1' class="rental-object-table">
         <tr>
 		  <th>Username</th>
           <th>Name</th>
@@ -122,7 +116,8 @@ Vue.component("allUsersForAdmin", {
           </td>
         </tr>
       </table>
-      <div style="text-align: center; margin-top: 20px;">
+      <br><br>
+      <div class="center-position">
         <button type="submit" v-on:click="goBack">Go back</button>
       </div>
     </div>

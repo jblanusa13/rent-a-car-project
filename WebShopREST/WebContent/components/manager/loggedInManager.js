@@ -19,7 +19,7 @@ Vue.component("logInManager", {
 		<button class="top-right" type="submit" v-on:click="logOut">Log out</button>
 	</div>
 	<h1>Rent a car objects</h1>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 				<tr>
@@ -47,7 +47,7 @@ Vue.component("logInManager", {
 			</table>
 		</form><br>
 	</div>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 				<tr>
@@ -79,7 +79,7 @@ Vue.component("logInManager", {
 		  	</table>
 		</form>
 	</div>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 			<tr>
@@ -105,7 +105,7 @@ Vue.component("logInManager", {
 		</form>
 	</div>
 	<br>
-	<table border="1">
+	<table  border='1' class="rental-object-table">
 		<tr>
 			<th></th>
 			<th>Name</th>

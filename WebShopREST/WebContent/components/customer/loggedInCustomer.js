@@ -20,7 +20,7 @@ Vue.component("logInCustomer", {
 	</div>
 	<br><br>
 	<h1>Rent a car objects</h1><br>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 				<tr>
@@ -48,7 +48,7 @@ Vue.component("logInCustomer", {
 			</table>
 		</form><br>
 	</div>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 				<tr>
@@ -80,7 +80,7 @@ Vue.component("logInCustomer", {
 		  	</table>
 		</form>
 	</div>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 			<tr>
@@ -106,7 +106,7 @@ Vue.component("logInCustomer", {
 		</form>
 		<br>
 	</div>
-	<table border="1">
+	<table border='1' class="rental-object-table">
 		<tr>
 			<th></th>
 			<th>Name</th>

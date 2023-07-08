@@ -9,6 +9,7 @@ Vue.component("admin-profile", {
   template: `
     <div>
 		<h2>Profile ({{user.role}})</h2>
+		<div class="center-position">
 		<form class="formStyle">
 		<fieldset>
 				<div>
@@ -41,6 +42,7 @@ Vue.component("admin-profile", {
 		<br><br>
 		<button type="submit" v-on:click="goBack">Home page</button>
 		</form>
+		</div>
     </div>
   `,
   mounted() {
