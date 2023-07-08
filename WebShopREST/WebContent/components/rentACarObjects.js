@@ -14,7 +14,11 @@ Vue.component("rentACarr", {
   },
   template: `
     <div>
+	<div class="right-position">
+		<button class="top-right" type="submit" v-on:click="logIn">Log in (Register)</button>
+	</div>
 	<h1>Rent a car objects</h1>
+	<br><br>
 	<div>
 		<form>
 			<table>
@@ -98,6 +102,7 @@ Vue.component("rentACarr", {
 				<td><button type="submit" v-on:click="searchObjectsUndo">Undo search</button></td>
 			</tr>
 			</table>
+			<br>
 		</form>
 	</div>
 	<table border="1">
@@ -119,9 +124,7 @@ Vue.component("rentACarr", {
 		</tr>
 	</table><br><br>
 	
-	<div>
-		<button type="submit" v-on:click="logIn">Log in (Register)</button>
-	</div>
+	
 </div>
   `,
   mounted() {

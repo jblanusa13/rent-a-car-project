@@ -142,7 +142,7 @@ public class CustomerCommentDAO {
 		return comments;
 	}
 	
-	public CustomerComment createComment(CustomerCommentCreation c) {
+	public String createComment(CustomerCommentCreation c) {
 		CustomerComment comment= new CustomerComment();
 		Integer maxId = -1;
 		for (CustomerComment f : comments) {
@@ -158,11 +158,28 @@ public class CustomerCommentDAO {
 		comment.setGrade(c.getGrade());
 		comment.setObject(c.getObject());
 		comment.setStatus(CommentStatus.Pending);
+		String avg=calculateObjectAvg(comment);
 		comments.add(comment);
 		writeToFile();
-		return comment;
+		return avg;
 	}
 	
+	private String calculateObjectAvg(CustomerComment c) {
+		float sum=c.getGrade();
+		float br=1;
+		for(CustomerComment com: comments) {
+			if(c.getObject().getId().equals(com.getObject().getId())) {
+				sum+=com.getGrade();
+				br++;
+				System.out.println("sum" +sum+" br "+br);
+			}
+		}
+		float avg=sum/br;
+		String stringValue = Float.toString(avg);
+		System.out.println("New avg grade for object" +c.getObject().getId()+" is "+stringValue);
+		return stringValue;
+	}
+
 	public Boolean updateStatusToApproved(String id) {
 		CustomerComment o = getById(id);
         if (o != null) {

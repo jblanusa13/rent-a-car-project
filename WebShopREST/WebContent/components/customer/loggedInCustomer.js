@@ -15,7 +15,11 @@ Vue.component("logInCustomer", {
   },
   template: `
     <div>
-	<h1>Rent a car objects</h1>
+    <div class="right-position">
+		<button class="top-right" type="submit" v-on:click="logOut">Log out</button>
+	</div>
+	<br><br>
+	<h1>Rent a car objects</h1><br>
 	<div>
 		<form>
 			<table>
@@ -100,6 +104,7 @@ Vue.component("logInCustomer", {
 			</tr>
 			</table>
 		</form>
+		<br>
 	</div>
 	<table border="1">
 		<tr>
@@ -120,14 +125,10 @@ Vue.component("logInCustomer", {
 			<td><button type="submit" v-on:click="showObject(o.id)">Show</button></td>
 		</tr>
 	</table><br><br>
-
-	<div>
-		<button type="submit" v-on:click="profile">Profile</button>
-		<button type="submit" v-on:click="showAllRentingOrders">All my renting orders</button>
-		<button type="submit" v-on:click="rentVehicles">Rent vehicles</button>
-		<button type="submit" v-on:click="logOut">Log out</button>
+	<div class="center-position">
+        <button class="top-right" type="submit" v-on:click="rentVehicles">Rent vehicles</button>
+		<button class="top-right" type="submit" v-on:click="profile">Profile</button>
 	</div>
-	
 </div>
   `,
   mounted() {
@@ -154,10 +155,7 @@ Vue.component("logInCustomer", {
       	event.preventDefault();
 	    router.push(`/rentalObjectForCustomer/${combinedParam}`);
     },
-    showAllRentingOrders: function () {
-      	event.preventDefault();
-		router.push(`/customerRentalObjects/${this.userId}`);
-    },
+    
 sortObjects: function() {
 		event.preventDefault();
 		

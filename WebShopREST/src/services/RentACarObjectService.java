@@ -224,4 +224,17 @@ public class RentACarObjectService {
 	    System.out.println("Update object in service");
 	    return dao.updateVehicleForObject(id,vehicle);
 	}
+	
+	@PUT
+	@Path("/changeRate/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean changeObjectRate(@PathParam("id") String id) {
+		String[] idParts = id.split("_");
+	    String objectId = idParts[0];
+	    String avg = idParts[1];
+	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
+	    System.out.println("Rate object in service");
+	    return dao.changeObjectRate(objectId,avg);
+	}
 }

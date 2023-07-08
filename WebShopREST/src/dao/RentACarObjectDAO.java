@@ -289,4 +289,12 @@ public class RentACarObjectDAO {
 		writeToFile();
 		return object;
 	}
+	
+	public boolean changeObjectRate(String objectId,String avg) {
+		RentACarObject object = getById(objectId);
+		System.out.println("Brisanje objekta u dao");
+		object.setRate(Float.parseFloat(avg));
+		writeToFile();
+		return true;
+	}
 }

@@ -15,18 +15,18 @@ Vue.component("customerRentalObjects", {
       comment:null,
       commentCreation:{customer:null, object:null, grade:null, comment:null},
       createdComment:null,
-      errortext:''
+      errortext:'',
+      avgGrade:''
       
     };
   },
   template: `
 		<div>
-		  <h3>All reservations</h3>
-		  
-		  <div>
-		    <button type="submit" v-on:click="goBack">Return to home page</button><br><br>
+		  <div class="right-position">
+		    <button type="submit" v-on:click="goBack">Return to profile page</button><br><br>
 		  </div>
-		  <div>
+		  <h2>All reservations</h2><br>
+		  <div class="standard-left-margin">
 		    <form>
 		      <label for="sortOption">Sort by:</label>
 		      <select id="sortOption" v-model="selectedSortOption">
@@ -38,82 +38,91 @@ Vue.component("customerRentalObjects", {
 		        <option value="nameDescending">Name of rental (Descending)</option>
 		      </select>
 		      <br><br>
-		      <button type="button" v-on:click="sortOrders">Sort</button>
-		      <br><br>
+				<div>
+			      <button type="button" v-on:click="sortOrders">Sort</button>
+			    </div>
+		      <br>
 		    </form>
 		  </div>
+		 <div >
+	        <form>
+			  <div>
+			  	<div class="standard-left-margin-input-closer">
+			      <div class="input-group">
+				      <label for="startdate">Start date:</label>
+				      <input type="date" v-model="startDate" id="startdate" name="startdate">
+				    </div>
+				    <div class="input-group">
+				      <label for="enddate">End date:</label>
+				      <input type="date" v-model="endDate" id="enddate" name="enddate">
+				    </div>
+			    </div>
+			  	<div class="standard-left-margin-input">
+			  	    <div class="input-group">
+				    <label for="minprice">Minimal price:</label>
+				    <input type="number" v-model="minPrice" id="minprice" name="minprice" >
+				    </div>
+				  	<div class="input-group">
+				    <label for="maxprice">Maximal price:</label>
+				    <input type="number" v-model="maxPrice" id="maxprice" name="maxprice" >
+				    </div>
+				    <div class="input-group">
+				    <label for="objectName">Rent a car object name:</label>
+				    <input type="text" v-model="objectName" id="objectname" name="objectname" >
+				    </div>
+				</div>
+			  </div>
+			
+			  <div class="standard-left-margin">
+			  	<br>
+			    <button type="submit" v-on:click="filterOrdersClick" >Filter</button>
+ 				<button type="submit" v-on:click="filterOrdersUndo" >Undo filtering</button><br><br>
+			  </div>
+			</form>
+          </div><br>
 		  <div>
-        <form>
-		  <div >
-		    <label for="startdate">Start date:</label>
-		    <input type="date" v-model="startDate" id="startdate" name="startdate" >
-		  
-		    <label for="enddate">End date:</label>
-		    <input type="date" v-model="endDate" id="enddate" name="enddate" ><br><br>
-		  
-		    <label for="minprice">Minimal price:</label>
-		    <input type="number" v-model="minPrice" id="minprice" name="minprice" >
-		  
-		    <label for="maxprice">Maximal price:</label>
-		    <input type="number" v-model="maxPrice" id="maxprice" name="maxprice" >
-		    
-		    <label for="objectName">Rent a car object name:</label>
-		    <input type="text" v-model="objectName" id="objectname" name="objectname" >
-		  </div>
-		
-		  <div>
-		  	<br>
-		    <button type="submit" v-on:click="filterOrdersClick">Filter</button>
-		    <button type="submit" v-on:click="filterOrdersUndo">Undo filtering</button><br><br>
-		  </div>
-		</form>
-      </div>
-		  <div>
-		    <div v-for="order in objects" class="rectangle" style="margin-bottom: 20px;">
-		      <table class="order-table" style="border: 1px solid black;">
-		        <colgroup>
-		          <col style="width: 33.33%;">
-		          <col style="width: 33.33%;">
-		          <col style="width: 33.33%;">
-		        </colgroup>
-		        <tr>
-		          <td>
-		            Identificator: {{ order.identificator }}<br>
-		            Vehicles: <br>
-		            <ul>
-		              <li v-for="vehicle in order.vehicles">
-		                {{ vehicle.model }}, {{ vehicle.brand }}
-		              </li>
-		            </ul>
-		            Order status: {{ order.orderStatus }}<br>
-		            <div v-if="order.orderStatus === 'Rejected'">
-		          		<br><label>Reason for order rejection: {{order.managerComment}}</label><br><br>
-		          	</div>
-		            Order rent a car object: {{ order.rentingObject.name }}<br>
-		            Date and time of rental: {{ order.date }} {{ order.time }}<br>
-		            Duration: {{ order.duration }} days<br>
-		            Customer: {{ order.customer.name }} {{ order.customer.surname }}<br><br>
-		            <strong>Price: {{ order.price }}</strong><br><br>
-		            <div v-if="order.orderStatus === 'Processing'">
-		              <button v-on:click="cancelOrder(order)">Cancel order</button>
-		            </div>
-		            <div v-if="order.orderStatus === 'Cancelled'">
-		              <label>This order has been cancelled</label><br>
-		            </div>
-		          </td>
-		          <td>
-			    	<div v-if="order.orderStatus === 'Returned' && !order.customerComment">
-			        	<label>{{errortext}}</label><br>
-			        	<label>Please feel free to grade this renting object: </label><br>
-			        	<label>Insert grade: </label><br><br>
-			        	<input type="number" min="1" max="5" v-model="objectGrade"><br><br>
-			        	<label>Insert comment: </label><br>
-			        	<textarea v-model="comment" style="width: 300px; height: 45px;"></textarea><br><br>
-			        	<button type="submit" v-on:click="submitComment(order)">Submit</button><br><br>
-			        </div>
-			    </td>
-		        </tr>
-		      </table>
+		    <div v-for="order in objects" class="rectangle">
+		      <table class="table-renting-orders">
+				  <tr>
+				    <td class="table-renting-orders-td">
+				      <div class="table-renting-orders-first-column">
+				        Identificator: {{ order.identificator }}<br>
+				        Vehicles: <br>
+				        <ul>
+				          <li v-for="vehicle in order.vehicles">
+				            {{ vehicle.model }}, {{ vehicle.brand }}
+				          </li>
+				        </ul>
+				        Order status: {{ order.orderStatus }}<br>
+				        <div v-if="order.orderStatus === 'Rejected'" class="order-rejection">
+				          <br><label>Reason for order rejection: {{order.managerComment}}</label><br><br>
+				        </div>
+				        Order rent a car object: {{ order.rentingObject.name }}<br>
+				        Date and time of rental: {{ order.date }} {{ order.time }}<br>
+				        Duration: {{ order.duration }} days<br>
+				        Customer: {{ order.customer.name }} {{ order.customer.surname }}<br><br>
+				        <strong>Price: {{ order.price }}</strong><br><br>
+				        <div  v-if="order.orderStatus === 'Processing'" class="cancel-button">
+				          <button v-on:click="cancelOrder(order)">Cancel order</button>
+				        </div>
+				        <div v-if="order.orderStatus === 'Cancelled'" class="order-cancelled">
+				          <label>This order has been cancelled</label><br>
+				        </div>
+				      </div>
+				    </td>
+				    <td class="table-renting-orders-td">
+				      <div v-if="order.orderStatus === 'Returned' && !order.customerComment" class="comment-section">
+				        <label>{{errortext}}</label><br>
+				        <label>Please feel free to grade this renting object: </label><br>
+				        <label>Insert grade: </label><br><br>
+				        <input type="number" min="1" max="5" v-model="objectGrade"><br><br>
+				        <label>Insert comment: </label><br>
+				        <textarea v-model="comment"></textarea><br><br>
+				        <button type="submit" v-on:click="submitComment(order)">Submit</button><br><br>
+				      </div>
+				    </td>
+				  </tr>
+				</table>
 		    </div>
 		  </div>
 		</div>
@@ -142,12 +151,10 @@ Vue.component("customerRentalObjects", {
   },
   methods: {
     goBack: function () {
-      event.preventDefault();
-      router.push(`/loggedInCustomer/${this.userId}`);
+        event.preventDefault();
+		router.push(`/customerProfile/${this.userId}`);
     },
     submitComment: function (order){
-		//moram prvo da popunim komentar u orderu
-		//zatim da kreiram komentar
 		if (!this.comment) {
 	      this.errortext = 'Enter the comment before submitting.';
 	      return;
@@ -176,7 +183,15 @@ Vue.component("customerRentalObjects", {
 					axios
 				      .post("rest/comments/newComment",this.commentCreation)
 				      .then((response) => {
-				        this.createdComment = response.data;
+						  //kad mi se kreira komentar da se preracuna prosecna ocena objekta i da se updejtuje
+				        this.avgGrade = response.data;
+				        helpSent=order.rentingObject.id+"_"+this.avgGrade;
+				        axios
+						  .put("rest/objects/changeRate/" + helpSent)
+						  .then((response) => {
+						    console.log("Rate changed succesfully");
+						  })
+						  .catch((error) => console.log(error));
 				      })
 				      .catch((error) => console.log(error)); 					
 		
@@ -215,7 +230,7 @@ Vue.component("customerRentalObjects", {
     },
     filterOrdersClick: function () {
 		event.preventDefault();
-		console.log("Gathering filter orders");
+		console.log("Gathering filter orders.RESTART");
 		let temp = [];
 		temp = this.objects;
 		this.objects= [];
@@ -225,6 +240,7 @@ Vue.component("customerRentalObjects", {
 		}
 		for (let i = 0; i < count; i++){
 		    let item = temp[i];
+		    console.log(item)
 		    const orderStartDate = new Date(item.date);
 		    const orderEndDate = new Date(item.date);
 			orderEndDate.setDate(orderEndDate.getDate() + item.duration);
@@ -267,7 +283,7 @@ Vue.component("customerRentalObjects", {
 		
 		    if (isFiltered) {
 				console.log("item added. id:"+item.id);
-		      this.objects.push(item);
+		        this.objects.push(item);
 		    }
 		  }
     },
