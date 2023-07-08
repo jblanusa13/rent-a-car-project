@@ -20,34 +20,32 @@ Vue.component("allVehiclesForRenting", {
   },
   template: `
     <div>
-      <h1 style="display: flex; flex-direction: column; align-items: center;">Vehicles renting </h1>
+      <h1>Vehicles renting </h1>
       
-      <div style="display: flex; flex-direction: column; align-items: center;">
-		  <form style="display: flex; flex-direction: row; align-items: center;">
-		    <label for="startdate">Start date: </label>
-		    <input style="margin-left: 5px;" type="date" id="startdate" v-model="startDate" name="startdate">
-		
-		    <label for="enddate" style="margin-left: 20px;">End date:</label>
-		    <input style="margin-left: 5px;" type="date" id="enddate" v-model="endDate" name="enddate">
-		  </form>
-		
+          <div class="center-position">
+			  <form style="display: flex; flex-direction: row; align-items: center;">
+			    <label for="startdate">Start date: </label>
+			    <input style="margin-left: 5px;" type="date" id="startdate" v-model="startDate" name="startdate">
+			
+			    <label for="enddate" style="margin-left: 20px;">End date:</label>
+			    <input style="margin-left: 5px;" type="date" id="enddate" v-model="endDate" name="enddate">
+			  </form>
+	      </div>
 		  <br>
-		
-		  <div style="display: flex; justify-content: center;">
+		  <div class="center-position">
 		    <button type="submit" v-on:click.prevent="searchVehicles">Search</button>
 		  </div>
-		
 		  <br>
-		
-		  <label v-if="searched !== 'yes'" style="color: red;">{{ errorText }}</label>
-		</div>
+	      <div class="center-position">
+			  <label v-if="searched !== 'yes'" style="color: red;">{{ errorText }}</label>
+		  </div>	
       <div v-if="searched === 'yes'">
         <div v-if="empty === 'yes'">
-        	<br><label style="margin-left: 50px;">The shopping cart is empty. Add the vehicles you wish to order.</label><br>
+        	<br><label class="standard-left-margin">The shopping cart is empty. Add the vehicles you wish to order.</label><br>
         </div>
         
-        <h4 style="margin-left: 50px;">Available vehicles</h4>
-        <table border='1' style=" margin: 0 auto; width: 85%;">
+        <h4 class="standard-left-margin">Available vehicles</h4>
+        <table border='1' class="shopping-cart-table">
           <tr>
             <th>Picture</th>
             <th>Brand</th>
@@ -82,13 +80,13 @@ Vue.component("allVehiclesForRenting", {
           </tr>
         </table>
         <br><br>
-        <div style="display: flex; justify-content: center; align-items: center;">        
+        <div class="center-position">        
          <label v-if="empty === 'yes'" style="color: red;">{{ errorTextsc }}</label><br><br>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center;">        
+        <div class="center-position">        
           <button  v-on:click="ShowShoppingCart"><strong>Show shoppig cart and make reservation</strong></button><br><br>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center;">        
+        <div class="center-position">        
           <br><br>
           <button type="submit" v-on:click="lastPage">Return to previous page</button>
         </div>

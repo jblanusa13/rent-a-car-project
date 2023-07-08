@@ -171,3 +171,48 @@ button {
   margin-bottom: 20px;
 }
 
+.shopping-cart-table{
+	margin: 0 auto; 
+	width: 85%;
+}
+
+.table-shopping-cart{
+	border: 1px solid black;
+	margin: 0 auto; 
+	width: 75%;
+}
+.table-shopping-cart-td{
+	width: 30%;
+	margin-left: 20px;
+	position: relative;
+}
+.table-shopping-cart-first-column{
+	margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.table-shopping-cart-second-colum{
+	display: inline-block; 
+	vertical-align: middle;
+}
+.button-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.rental_img{
+	width: 75%; 
+	height: auto;
+}
+
+.comment-showing{
+	display: inline-block; 
+	vertical-align: middle;
+	margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+

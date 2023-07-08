@@ -26,17 +26,17 @@ Vue.component("objectForCustomer", {
   },
   template: `
     <div>
-      <h1 style="display: flex; flex-direction: column; align-items: center;">{{ objectName }}</h1>
-      <div style="display: flex; justify-content: center; align-items: center;">
-		  <img :src="image" style="width: 75%; height: auto;">
+      <h1>{{ objectName }}</h1>
+      <div class="center-position">
+		  <img :src="image" class="rental_img">
 	  </div>
 	  <div><br><br>     
-        <label style="margin-left: 50px;"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
-        <label style="margin-left: 50px;"><strong>Status: {{objectStatus}}</strong></label><br><br>          
-  		<label style="margin-left: 50px;"><strong> Location:</strong></label>
+        <label class="standard-left-margin"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
+        <label class="standard-left-margin"><strong>Status: {{objectStatus}}</strong></label><br><br>          
+  		<label class="standard-left-margin"><strong> Location:</strong></label>
       <table>
         <tr>          
-          <table style="margin-left: 60px;">
+          <table class="standard-left-margin">
             <tr>
               <td>Longitude: </td>
               <td><input type="text" name="longitude" v-model="object.location.longitude" disabled></td>
@@ -54,8 +54,8 @@ Vue.component("objectForCustomer", {
       </table><br><br>
       </div>
       
-      <div style="display: flex; flex-direction: column; align-items: center;">
-		  <form style="display: flex; flex-direction: row; align-items: center;">
+      <div>
+		  <form  class="center-position">
 		    <label for="startdate">Start date: </label>
 		    <input style="margin-left: 5px;" type="date" id="startdate" v-model="startDate" name="startdate">
 		
@@ -65,7 +65,7 @@ Vue.component("objectForCustomer", {
 		
 		  <br>
 		
-		  <div style="display: flex; justify-content: center;">
+		  <div  class="center-position">
 		    <button type="submit" v-on:click.prevent="searchVehicles">Search</button>
 		  </div>
 		
@@ -111,8 +111,8 @@ Vue.component("objectForCustomer", {
         	<br><label style="margin-left: 50px;">The shopping cart is empty. Add the vehicles you wish to order.</label><br>
         </div>
         
-        <h4 style="margin-left: 50px;">Available vehicles</h4>
-        <table border='1' style=" margin: 0 auto; width: 85%;">
+        <h4 class="standard-left-margin">Available vehicles</h4>
+        <table border='1' class="shopping-cart-table">
           <tr>
             <th>Picture</th>
             <th>Brand</th>
@@ -147,21 +147,22 @@ Vue.component("objectForCustomer", {
           </tr>
         </table>
         <br><br>
-        <div style="display: flex; justify-content: center; align-items: center;">        
+        <div class="center-position">        
          <label v-if="empty === 'yes'" style="color: red;">{{ errorTextsc }}</label><br><br>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center;">        
-          <button  v-on:click="ShowShoppingCart">Show shoppig cart and make reservation</button><br><br>
+        <div class="center-position">        
+          <button  v-on:click="ShowShoppingCart">Show shoppig cart and make reservation</button>
         </div>
       </div>
-      <div style="display: flex; justify-content: center; align-items: center; margin-top: 40px;">
+      <br><br>
+      <div class="center-position">
       <br><h2> Comments of the renting object: </h2><br>
       </div>
-      <div v-for="c in comments" class="rectangle" style="margin-bottom: 20px;">
-		      <table style="border: 1px solid black; margin: 0 auto; width: 75%;">
+      <div v-for="c in comments" class="rectangle">
+		      <table class="table-shopping-cart">
 		        <tr>
 		          <td>
-				      <div style="display: inline-block; vertical-align: middle;">
+				      <div class="comment-showing">
 		                <div>
 		                  Customer: {{c.customer.name}}<br><br>
 		                </div>
@@ -171,13 +172,12 @@ Vue.component("objectForCustomer", {
 		                <div>
 		                  Comment: <br><br>{{c.comment}}<br><br>
 		                </div>
-		                <br>
 		              </div>
 				   </td>
 		        </tr>
 		      </table>
 	  </div>
-	  <div style="display: flex; justify-content: center; align-items: center;">        
+	  <div class="center-position">        
           <br><br>
           <button type="submit" v-on:click="ShowAll">Go back</button>
       </div>
