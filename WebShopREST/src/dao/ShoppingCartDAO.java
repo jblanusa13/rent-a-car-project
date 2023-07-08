@@ -22,7 +22,7 @@ public class ShoppingCartDAO {
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 	public ShoppingCartDAO(String path) {
 		this.path = path;
-		//loadFromFile();
+		loadFromFile();
 		System.out.println("SVE POTROSACKE KORPE:");
 		for(ShoppingCart u: carts) {
 			System.out.println("IDENTIFIKATOR:"+u.getId());

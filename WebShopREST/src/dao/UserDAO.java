@@ -12,17 +12,22 @@ import beans.RentingOrder;
 import beans.ShoppingCart;
 import beans.User;
 import beans.UserRegistration;
+import beans.UserCancelation;
 import beans.Vehicle;
 import enums.UserRole;
 import enums.UserStatus;
 import enums.VehicleType;
 import enums.CarStatus;
+import enums.CustomerSuspiciousStatus;
 import enums.CustomerTypes;
 import enums.FuelType;
 import enums.RentACarStatus;
 import enums.StickType;
 import com.google.gson.*;
+
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.io.FileWriter;
 import java.io.*;
 import com.google.gson.reflect.TypeToken;
@@ -33,6 +38,7 @@ import java.lang.reflect.Type;
 
 public class UserDAO {
 	private ArrayList<User> users = new ArrayList<>();
+	ArrayList<UserCancelation> cancelations = new ArrayList<UserCancelation>();
 	private String path=null;
 	ArrayList<Vehicle> cars = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> cars1 = new ArrayList<Vehicle>();
@@ -42,46 +48,52 @@ public class UserDAO {
 		
 		path=contextPath;
 		
-		/*User user1 = new User("1", "user1", "password1", "John", "Doe", "Male", "2002-01-14",
+		User user1 = new User("1", "user1", "password1", "John", "Doe", "Male", "2002-01-14",
                 UserRole.Administrator , new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 100, new CustomerType(),UserStatus.Active);
+                new RentACarObject(), 100, new CustomerType(),UserStatus.Active,CustomerSuspiciousStatus.Okay);
         users.add(user1);
 
         User user2 = new User("2", "user2", "password2", "Jane", "Smith", "Female", "1995-05-22",
         		UserRole.Administrator, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 50, new CustomerType(),UserStatus.Active);
+                new RentACarObject(), 50, new CustomerType(),UserStatus.Active,CustomerSuspiciousStatus.Okay);
         users.add(user2);
 
         User user3 = new User("3", "user3", "password3", "Mike", "Johnson", "Male", "1988-12-10",
         		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 75, new CustomerType(),UserStatus.Active);
+                new RentACarObject(), 75, new CustomerType(),UserStatus.Active,CustomerSuspiciousStatus.Okay);
         users.add(user3);
         User user4 = new User("4", "user4", "password4", "Emily", "Anderson", "Female", "1990-07-18",
         		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 60, new CustomerType(),UserStatus.Active);
+                new RentACarObject(), 60, new CustomerType(),UserStatus.Active,CustomerSuspiciousStatus.Okay);
         users.add(user4);
 
         User user5 = new User("5", "user5", "password5", "Michael", "Brown", "Male", "1985-03-28",
         		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 90, new CustomerType(),UserStatus.Active);
+                new RentACarObject(), 90, new CustomerType(),UserStatus.Active,CustomerSuspiciousStatus.Okay);
         users.add(user5);
 
         User user6 = new User("6", "user6", "password6", "Sophia", "Taylor", "Female", "1998-09-06",
         		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 40, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
+                new RentACarObject(), 40, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active,CustomerSuspiciousStatus.Okay);
         users.add(user6);
 
         User user7 = new User("7", "user7", "password7", "Daniel", "Wilson", "Male", "1976-11-25",
         		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
+                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active,CustomerSuspiciousStatus.Okay);
         users.add(user7);
         addrentacar();
-		writeToFile();*/
+		writeToFile();
 		
 		loadFromFile();
+		loadFromFileCancelations();
 		System.out.println("SVI USERI:");
 		for(User u: users) {
 			System.out.println(u.getId());
+		}
+		
+		System.out.println("SVA OTKAZIVANJA:");
+		for(UserCancelation u: cancelations) {
+			System.out.println(u.getCustomerId());
 		}
 	}
 
@@ -107,6 +119,26 @@ public class UserDAO {
 		u.setRentACar(object1);
 		updateManagerRentACar(u);
 		
+		Vehicle vehicle6 = new Vehicle("6", "Ford", "Mustang", 15000, VehicleType.Car, "2", StickType.Automatic, FuelType.Diesel, 10, 2, 2, "Powerful sports car", "images/vehicles/6.jpg", CarStatus.Available,"", false);
+		Vehicle vehicle7 = new Vehicle("7", "BMW", "X5", 25000, VehicleType.Van, "2", StickType.Automatic, FuelType.Diesel, 12, 5, 5, "Luxury SUV", "images/vehicles/7.png", CarStatus.Available,"", false);
+		Vehicle vehicle8 = new Vehicle("8", "Mercedes-Benz", "C-Class", 18000, VehicleType.Car, "2", StickType.Automatic, FuelType.Diesel, 11, 4, 5, "good old car", "images/vehicles/8.jpg", CarStatus.Available,"", false);
+		Vehicle vehicle9 = new Vehicle("9", "Porsche", "911", 50000, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 15, 2, 2, "Iconic sports car", "images/vehicles/9.jpg", CarStatus.Available,"", false);
+		Vehicle vehicle10 = new Vehicle("10", "Tesla", "Model S", 60000, VehicleType.Car, "2", StickType.Automatic, FuelType.Electric, 0, 4, 5, "amazing", "images/vehicles/10.jpg", CarStatus.Available,"", false);
+
+		RentACarObject object2 = new RentACarObject("2", "Rent-A-Wheels", new ArrayList<Vehicle>(), "09:00", "18:00", RentACarStatus.Open, new Location("2", "25", "28", "Prime"), "images/objects/2.jpg", 8, false);
+		ArrayList<Vehicle> cars2 = new ArrayList<Vehicle>();
+
+		cars2.add(vehicle6);
+		cars2.add(vehicle7);
+		cars2.add(vehicle8);
+		cars2.add(vehicle9);
+		cars2.add(vehicle10);
+		object2.setAvailableCars(cars2);
+		
+		User u2=new User();
+		u2=getUserById("4");
+		u2.setRentACar(object2);
+		updateManagerRentACar(u2);
 		
 	}
 
@@ -197,6 +229,7 @@ public class UserDAO {
 			user.setUsername(userReg.getUsername());
 			user.setSurname(userReg.getSurname());
 			user.setUserStatus(UserStatus.Active);
+			user.setSusStatus(CustomerSuspiciousStatus.Okay);
 			if(type.equals("m")) {
 				System.out.println("Registruje menadzera");
 				user.setRole(UserRole.Manager);
@@ -299,6 +332,7 @@ public class UserDAO {
         	System.out.println("Korisnik naden koji  se updejtuje");
         	if(lost) {
         		newPoints=user.getCollectedPoints()-numberOfPoints;
+        		user=checkCustomerStatus(user);
         	}
         	else {
         		newPoints=user.getCollectedPoints()+numberOfPoints;
@@ -318,6 +352,60 @@ public class UserDAO {
         return null;
 	}
 
+	private User checkCustomerStatus(User user) {
+		int br=0;
+		int i=0;
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = LocalDate.now().format(dateFormatter);
+		UserCancelation uc=new UserCancelation(user.getId(),today);
+		cancelations.add(uc);
+		writeToFileCancelations();
+		for(UserCancelation c: cancelations) {
+			System.out.println(i++);
+			if(c.getCustomerId().equals(user.getId()) ){
+				System.out.println(i++);
+				LocalDate currentDate = LocalDate.now().plusDays(1);
+				LocalDate givenDate = LocalDate.parse(c.getDate(), dateFormatter);
+		        LocalDate oneMonthAgo = currentDate.minus(1, ChronoUnit.MONTHS);
+
+		        if (givenDate.isAfter(oneMonthAgo) && givenDate.isBefore(currentDate)) {
+		        	System.out.println(i++);
+		            System.out.println("Yay! The date is within the past month.");
+		            br++;
+		        } else {
+		            System.out.println("The date is not within the past month.");
+		        }
+			}
+		}
+		if(br>=5) {
+			System.out.println("USER IS SUS");
+            user.setSusStatus(CustomerSuspiciousStatus.Suspicious);
+		}
+		
+		return user;
+	}
+
+	public void writeToFileCancelations() {
+		Gson gs = new GsonBuilder().setPrettyPrinting().create(); 
+    	String jsonString = gs.toJson(cancelations);
+    	try (FileWriter writer = new FileWriter(path+"/cancelations.json")) {
+            writer.write(jsonString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public void loadFromFileCancelations() {
+		cancelations.clear();
+		Gson gson = new Gson();
+	    try (FileReader reader = new FileReader(path+"/cancelations.json")) {
+            Type userListType = new TypeToken<ArrayList<UserCancelation>>(){}.getType();
+            cancelations = gson.fromJson(reader, userListType);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
 	public Boolean updateUserShoppingCart(String id, ShoppingCart cart) {
 		User user = getUserById(id);
         if (user != null) {

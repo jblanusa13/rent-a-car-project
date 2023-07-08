@@ -213,10 +213,10 @@ public class UserService {
 		    
 		System.out.println("New number of points to be added: " + points);
 		System.out.println("Service recived id of user:"+userId);
-		System.out.println("New number of points to be added:"+points);
-		User user= dao.userPointsChange(userId, points, false);
+		System.out.println("New number of points to be taken:"+points);
+		User user= dao.userPointsChange(userId, points, true);
         if (user!=null) {
-        	System.out.println("Porudzbina updejtovana: dodati bodovi");
+        	System.out.println("Porudzbina updejtovana: oduzeti bodovi");
             return user;
         } else {
         	System.out.println("Porudzbina NIJE updejtovana: rejected");
