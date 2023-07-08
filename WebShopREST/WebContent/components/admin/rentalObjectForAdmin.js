@@ -13,18 +13,18 @@ Vue.component("objectForAdmin", {
   },
   template: `
     <div>
-      <h1 style="display: flex; flex-direction: column; align-items: center;">{{ objectName }}</h1>
-      <div style="display: flex; justify-content: center; align-items: center;">
-        <img :src="image" style="width: 75%; height: auto;">
-      </div>
+      <h1>{{ objectName }}</h1>
+      <div class="center-position">
+		  <img :src="image" class="rental_img">
+	  </div>
       <div>
         <br><br>     
-        <label style="margin-left: 50px;"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
-        <label style="margin-left: 50px;"><strong>Status: {{ objectStatus }}</strong></label><br><br>          
-        <label style="margin-left: 50px;"><strong> Location:</strong></label>
+        <label class="standard-left-margin"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
+        <label class="standard-left-margin"><strong>Status: {{ objectStatus }}</strong></label><br><br>          
+        <label class="standard-left-margin"><strong> Location:</strong></label>
         <table>
           <tr>          
-            <table style="margin-left: 60px;">
+            <table class="standard-left-margin">
               <tr>
                 <td>Longitude: </td>
                 <td><input type="text" name="longitude" v-model="object.location.longitude" disabled></td>
@@ -40,13 +40,15 @@ Vue.component("objectForAdmin", {
             </table>
           </tr>
         </table>
-		<button type="submit" v-on:click="deleteObject">Delete object</button>
         <br><br>
+        <div class="standard-left-margin">
+		<button type="submit" v-on:click="deleteObject">Delete object</button>
+		</div>
       </div>
 
       <div >
-        <h2 style="display: flex; justify-content: center; align-items: center;">Available vehicles</h2>
-        <table border='1' style=" margin: 0 auto; width: 85%;">
+        <h2>Available vehicles</h2>
+        <table border='1' class="rental-object-table">
           <tr>
             <th>Picture</th>
             <th>Brand</th>
@@ -77,15 +79,15 @@ Vue.component("objectForAdmin", {
           </tr>
         </table>
       </div>
-      
-      <div style="display: flex; justify-content: center; align-items: center; margin-top: 40px;">
+      <br><br>
+      <div class="center-position">
         <br><h2> Comments of the renting object </h2><br>
       </div>
-      <div v-for="c in comments" class="rectangle" style="margin-bottom: 20px;">
-       <table style="border: 1px solid black; margin: 0 auto; width: 75%; position: relative;">
+      <div v-for="c in comments" class="rectangle">
+       <table class="table-shopping-cart">
 		  <tr>
 		    <td style="padding-left: 20px;">
-		      <div style="display: inline-block; vertical-align: middle;">
+		      <div class="comment-showing">
 		        <div>
 		          <br>Customer: {{c.customer.name}}<br>
 		        </div>
@@ -104,7 +106,7 @@ Vue.component("objectForAdmin", {
 		  </tr>
 		</table>
       </div>
-      <div style="display: flex; justify-content: center; align-items: center;">        
+      <div class="center-position">        
         <br><br>
         <button type="submit" v-on:click="ShowAll">Go back</button>
       </div>

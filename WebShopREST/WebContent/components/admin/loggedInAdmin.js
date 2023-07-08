@@ -15,8 +15,11 @@ Vue.component("logInAdmin", {
   },
   template: `
     <div>
+    <div class="right-position">
+		<button class="top-right" type="submit" v-on:click="logOut">Log out</button>
+	</div>
 	<h3>Rent a car objects</h3>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 				<tr>
@@ -44,7 +47,7 @@ Vue.component("logInAdmin", {
 			</table>
 		</form><br>
 	</div>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 				<tr>
@@ -76,7 +79,7 @@ Vue.component("logInAdmin", {
 		  	</table>
 		</form>
 	</div>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 			<tr>
@@ -100,8 +103,8 @@ Vue.component("logInAdmin", {
 			</tr>
 			</table>
 		</form>
-	</div>
-	<table border="1">
+	</div><br>
+	<table border='1' class="rental-object-table">
 		<tr>
 			<th></th>
 			<th>Name</th>
@@ -121,11 +124,10 @@ Vue.component("logInAdmin", {
 		</tr>
 	</table><br><br>
 	
-	<div>
-		<button type="submit" v-on:click="profile">Profile</button>
-		<button type="submit" v-on:click="addNew">Add new object</button>
-		<button type="submit" v-on:click="allUsers">Show all users</button>
-		<button type="submit" v-on:click="logOut">Log out</button>
+	<div class="center-position">
+		<button class="top-right" type="submit" v-on:click="profile">Profile</button>
+		<button class="top-right" type="submit" v-on:click="addNew">Add new object</button>
+		<button class="top-right" type="submit" v-on:click="allUsers">Show all users</button>
 	</div>
 </div>
   `,
