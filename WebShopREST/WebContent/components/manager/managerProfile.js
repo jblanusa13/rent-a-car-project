@@ -60,10 +60,10 @@ Vue.component("manager-profile", {
             		<label class="formInputs">Rate:</label><br>
             		<input type="text" name="date" v-model="object.rate" disabled class="formInputs">
           		</div><br>
-		<button id="deactivateBtn" type="submit" v-on:click="deactivateAccount">Deactivate Account</button><br>
-		<label id="statusLabel" style="display: none;"></label><br>
 		</fieldset><br>
-		<button type="submit" v-on:click="goBack">Home page</button>
+		<button type="submit" v-on:click="goBack">Home page</button><br><br><br><br>
+		<button id="deactivateBtn" type="submit" v-on:click="deactivateAccount">Deactivate Account</button><br>
+		<br><br><label id="statusLabel" ></label><br>
 		</form>
 		</div>
     </div>
@@ -112,8 +112,8 @@ Vue.component("manager-profile", {
 	      .catch((error) => console.log(error));
 	  } else {
 	    var statusLabel = document.createElement("label");
+	    var statusLabel = document.getElementById("statusLabel");
 	    statusLabel.textContent = "Account is still active";
-	    document.body.appendChild(statusLabel);
 	  }
 	}
   }

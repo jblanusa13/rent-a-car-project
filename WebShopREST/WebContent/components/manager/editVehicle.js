@@ -24,6 +24,7 @@ Vue.component("editVehicle", {
   template: `
     <div>
 		<h1>Edit vehicle</h1>
+		<div class="right-position">
 		<form class="formStyle">
 		<fieldset>
 				<div>
@@ -88,6 +89,7 @@ Vue.component("editVehicle", {
 		<p style="color:red;">{{ errorText }}</p>
 		</fieldset>
 		</form>
+		</div>
 	</div>
   `,
   mounted() {

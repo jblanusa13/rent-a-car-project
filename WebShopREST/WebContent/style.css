@@ -216,3 +216,27 @@ button {
     margin-bottom: 20px;
 }
 
+.rental-object-table{
+	margin: 0 auto; 
+	width: 85%;	
+}
+.manager-comment-approve{
+	position: absolute; 
+	bottom: 20px; 
+	right: 20px;
+}
+
+.td-bottom-right-for-comments {
+  position: relative;
+}
+
+.button-container-for-comments {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+}
+
+.button-container-for-comments button {
+  margin-left: 20px;
+}

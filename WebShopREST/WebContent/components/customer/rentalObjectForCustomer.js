@@ -74,8 +74,8 @@ Vue.component("objectForCustomer", {
 		  <label v-if="searched !== 'yes'" style="color: red;">{{ errorText }}</label>
 		</div>
 	  <div v-if="searched !== 'yes'">
-	  	<h4 style="margin-left: 50px;">Available vehicles</h4>
-        <table border='1' style=" margin: 0 auto; width: 85%;">
+	  	<h4 class="standard-left-margin">Available vehicles</h4>
+        <table border='1' class="rental-object-table">
           <tr>
             <th>Picture</th>
             <th>Brand</th>
@@ -108,7 +108,7 @@ Vue.component("objectForCustomer", {
 	  </div>
       <div v-if="searched === 'yes'">
         <div v-if="empty === 'yes'">
-        	<br><label style="margin-left: 50px;">The shopping cart is empty. Add the vehicles you wish to order.</label><br>
+        	<br><label class="standard-left-margin">The shopping cart is empty. Add the vehicles you wish to order.</label><br>
         </div>
         
         <h4 class="standard-left-margin">Available vehicles</h4>

@@ -17,12 +17,11 @@ Vue.component("managerRentalObjects", {
   },
   template: `
     <div>
-      <h3>All reservations in your object</h3>
-      
-      <div>
-        <button type="submit" v-on:click="goBack">Return to home page</button><br><br>
-      </div>
-      <div>
+      <div class="right-position">
+		  <button type="submit" v-on:click="goBack">Return to profile page</button><br><br>
+	  </div>
+      <h2>All reservations in your object</h2>    
+      <div class="standard-left-margin">
       	<form>
 		  <label for="sortOption">Sort by:</label>
 		  <select id="sortOption" v-model="selectedSortOption">
@@ -38,21 +37,33 @@ Vue.component("managerRentalObjects", {
       </div>
 	  <div>
         <form>
-		  <div style="display: flex; justify-content: space-between; align-items: center;">
-		    <label for="startdate">Start date:</label>
-		    <input type="date" v-model="startDate" id="startdate" name="startdate" >
-		  
-		    <label for="enddate">End date:</label>
-		    <input type="date" v-model="endDate" id="enddate" name="enddate" >
-		  
-		    <label for="minprice">Minimal price:</label>
-		    <input type="number" v-model="minPrice" id="minprice" name="minprice" >
-		  
-		    <label for="maxprice">Maximal price:</label>
-		    <input type="number" v-model="maxPrice" id="maxprice" name="maxprice" >
-		  </div>
-		
 		  <div>
+		    <div class="standard-left-margin-input-closer">
+		      <div class="input-group">
+			      <label for="startdate">Start date:</label>
+			      <input type="date" v-model="startDate" id="startdate" name="startdate">
+			    </div>
+			    <div class="input-group">
+			      <label for="enddate">End date:</label>
+			      <input type="date" v-model="endDate" id="enddate" name="enddate">
+			    </div>
+		    </div>
+		    <div class="standard-left-margin-input">
+		  	    <div class="input-group">
+			    <label for="minprice">Minimal price:</label>
+			    <input type="number" v-model="minPrice" id="minprice" name="minprice" >
+			    </div>
+			  	<div class="input-group">
+			    <label for="maxprice">Maximal price:</label>
+			    <input type="number" v-model="maxPrice" id="maxprice" name="maxprice" >
+			    </div>
+			    <div class="input-group">
+			    <label for="objectName">Rent a car object name:</label>
+			    <input type="text" v-model="objectName" id="objectname" name="objectname" >
+			    </div>
+			</div>
+		  </div>		
+		  <div class="standard-left-margin">
 		  	<br>
 		    <button type="submit" v-on:click="filterOrdersClick">Filter</button>
 		    <button type="submit" v-on:click="filterOrdersUndo">Undo filtering</button><br><br>
@@ -60,15 +71,11 @@ Vue.component("managerRentalObjects", {
 		</form>
       </div>
       <div>
-		  <div v-for="order in objects" class="rectangle" style="margin-bottom: 20px;">
-		    <table class="order-table" style="border: 1px solid black;">
-			  <colgroup>
-			    <col style="width: 33.33%;">
-			    <col style="width: 33.33%;">
-			    <col style="width: 33.33%;">
-			  </colgroup>
+		  <div v-for="order in objects" class="rectangle">
+		    <table class="table-renting-orders">
 			  <tr>
-			    <td>
+			    <td class="table-renting-orders-td">
+			    <div class="table-renting-orders-first-column">
 			      Identificator: {{ order.identificator }}<br>
 			      Vehicles: <br>
 			      <ul>
@@ -87,8 +94,9 @@ Vue.component("managerRentalObjects", {
 			      <button v-if="order.orderStatus === 'Taken' && order.orderStatus !== 'Returned'" v-on:click="orderReturned(order)">Set order status to RETURNED</button>			      
 			      <label v-if="order.orderStatus === 'Rejected'">Rejected order.</label>
 			      <label v-if="order.orderStatus === 'Returned'">Passed order, vehicle is returned.</label>
+			    </div>
 			    </td>
-			    <td>
+			    <td class="table-renting-orders-td">
 			    	<div v-if="order.orderStatus === 'Processing rejection' || order.orderStatus === 'Processing rejection...'">
 			        	<label>Reason for rejection: </label><br>
 			        	<textarea v-model="order.managerComment" style="width: 300px; height: 45px;"></textarea><br><br>
@@ -180,10 +188,6 @@ Vue.component("managerRentalObjects", {
 			      order.orderStatus = 'Error state';
 			      return;
 			    } else {
-			      
-			      //ovde moram jos da promenim status svih vozila u poruzbini na rented u vozilima, poruybini,rentacaru
-			      
-				  //status svakog u rentacaru
 			      for (const vehicle of order.vehicles) {
 				      console.log("I'm here:", vehicle);
 				      var help=this.managerObjectId+"_"+vehicle.id;
@@ -227,7 +231,6 @@ Vue.component("managerRentalObjects", {
 			      .then((response) => {
 			        console.log("Successfuly returned order.Vehiacles updated.");
 			        order.orderStatus = 'Returned';
-			        //ovde moram jos da promenim status svih vozila u poruzbini na rented u vozilima, poruybini,rentacaru
 			        for (const vehicle of order.vehicles) {
 				          console.log("I'm here:", vehicle);
 					      var help=this.managerObjectId+"_"+vehicle.id;
@@ -248,10 +251,6 @@ Vue.component("managerRentalObjects", {
 									  .catch((error) => console.log(error));
 							      })
 						  .catch((error) => console.log(error));
-				    
-				    
-				    
-				    
 				    }
 			      })
 			      .catch((error) => console.log(error));

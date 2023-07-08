@@ -7,8 +7,8 @@ Vue.component("allUsersForManager", {
   },
   template: `
     <div>
-      <h1 style="text-align: center;"> List of all customers of this renting object </h1>
-      <table border='1' style="margin: 0 auto; width: 85%;">
+      <h1> List of all customers of this renting object </h1>
+      <table border='1' class="rental-object-table">
         <tr>
           <th>Name</th>
           <th>Surname</th>
@@ -24,7 +24,8 @@ Vue.component("allUsersForManager", {
           <td>{{ user.role }}</td>
         </tr>
       </table>
-      <div style="text-align: center; margin-top: 20px;">
+      <br><br>
+      <div class="center-position">
         <button type="submit" v-on:click="goBack">Go back</button>
       </div>
     </div>
