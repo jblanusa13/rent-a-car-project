@@ -208,13 +208,16 @@ public class RentACarObjectDAO {
     
     public ArrayList<RentACarObject> searchObjects(String name, String vehicleType, String location, String rate, ArrayList<RentACarObject> objectsToSearch){
     	ArrayList<RentACarObject> searchedObjects= new ArrayList<RentACarObject>();
+    	System.out.println("Ime lokacije: "+location);
     	
     	for(RentACarObject object : objectsToSearch) {
     		for(Vehicle vehicle : object.getAvailableCars()) {
     			System.out.println("DA LI JE TACAN USLOV?");
+    			System.out.println("Ime lokacije: "+location);
+    			System.out.println("Ime lokacije u fajlu: "+object.getLocation().getAddress());
     			boolean nameTrue = object.getName().toLowerCase().contains(name.toLowerCase()) || name.equals("null");
     			boolean typeTrue = vehicle.getType().name().toLowerCase().contains(vehicleType.toLowerCase()) || vehicleType.equals("null");
-    			boolean locationTrue = object.getLocation().getAddress().split(",")[1].toLowerCase().contains(location.toLowerCase()) || location.equals("null");
+    			boolean locationTrue = object.getLocation().getAddress().toLowerCase().contains(location.toLowerCase()) || location.equals("null");
     			//boolean rateTrue = rate.equals(String.valueOf(object.getRate())) || rate.equals("null");
     			boolean rateTrue = false;
     			if(rate.equals("null")) {

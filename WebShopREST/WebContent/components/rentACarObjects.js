@@ -8,8 +8,8 @@ Vue.component("rentACarr", {
 		openObjects:false,
 		name:null,
 		vehicleType:null,
-		city:null,
-		averageRate:null
+		averageRate:null,
+		livingPlace:null
     }
   },
   template: `
@@ -32,13 +32,12 @@ Vue.component("rentACarr", {
 						<input type="text" v-model="vehicleType" id="type" name="type" >
 					</td>
 					<td>
-						City:<br>
-						<input type="text" v-model="city" id="city" name="city" >
-					</td>
-					<td>
 						Average rate:<br>
 						<input type="text" v-model="averageRate" id="averageRate" name="averageRate" >
 					</td>
+				</tr>
+				<tr>
+					<td><div id="map"></div></td>
 					<td>
 						<br>
 						<button type="button" v-on:click="searchObjects">Search</button>
@@ -133,6 +132,61 @@ Vue.component("rentACarr", {
 			this.objects = response.data
 		})
 		.catch(error => console.log(error))
+		
+	//adding Map	
+	const map = new ol.Map({
+		  target: 'map',
+		  layers: [
+		    new ol.layer.Tile({
+		      source: new ol.source.OSM(),
+		    })
+		  ],
+		  view: new ol.View({
+		    center: ol.proj.fromLonLat([0, 0]),
+		    zoom: 2,
+		  })
+		});
+		
+		const marker = new ol.layer.Vector({
+			source: new ol.source.Vector({
+				features: [
+					new ol.Feature({
+						geometry: new ol.geom.Point(
+							ol.proj.fromLonLat([0, 0])
+						)
+					})
+				]
+			}),
+			style: new ol.style.Style({
+				image: new ol.style.Icon({
+					src: 'https://docs.maptiler.com/openlayers/default-marker/marker-icon.png',
+					anchor: [0.5,1]
+				})
+			})
+		})
+		
+		map.addLayer(marker);
+  		
+  		this.mapObject = map;
+  		this.markerObject = marker;
+  		
+  		const vec = new ol.layer.Vector({
+		  source: new ol.source.Vector(),
+		});
+		  		
+  		map.on('click', (event) => {
+			  var cor = ol.proj.toLonLat(event.coordinate);
+			  this.convertToMyCoordinates(cor);
+			  vec.getSource().clear();
+			  
+			  var mapMarker = new ol.Feature({
+				  geometry: new ol.geom.Point(event.coordinate),
+			  });
+			  
+			  vec.getSource().addFeature(mapMarker);
+			  
+			  this.moveMarker(event.coordinate);
+		  });
   },
   methods: {
     logIn: function () {
@@ -229,7 +283,7 @@ Vue.component("rentACarr", {
 	searchObjects: function(){
 		console.log(this.name);
 		console.log(this.vehicleType);
-		console.log(this.city);
+		console.log("Grad u search-u: "+this.livingPlace);
 		console.log(this.averageRate);
 		
 		if(!this.name){
@@ -238,20 +292,41 @@ Vue.component("rentACarr", {
 		else if(!this.vehicleType){
 			this.vehicleType = null;
 		}
-		else if(!this.city){
-			this.city = null;
+		else if(!this.livingPlace){
+			this.livingPlace = null;
 		}
 		else if(!this.averageRate){
 			this.averageRate = null;
 		}
 		
 		axios
-	      .put("rest/objects/searchObjects/"+this.name+"/"+this.vehicleType+"/"+this.city+"/"+this.averageRate, this.objects)
+	      .put("rest/objects/searchObjects/"+this.name+"/"+this.vehicleType+"/"+this.livingPlace+"/"+this.averageRate, this.objects)
 	      .then((response) => {
 	        this.objects = response.data;
 			console.log("zavrsio pretragu");
 	      })
 	      .catch((error) => console.log(error));
-	}
+	},
+	moveMarker: function (lonLatCoordinates) {
+    const markerSource = this.markerObject.getSource();
+    markerSource.clear();
+
+    const mapMarker = new ol.Feature({
+      geometry: new ol.geom.Point(lonLatCoordinates)
+    });
+
+    markerSource.addFeature(mapMarker);
+  },
+
+  convertToMyCoordinates : function(lonLatCoordinates){
+		fetch(
+			"http://nominatim.openstreetmap.org/reverse?format=json&lon=" + lonLatCoordinates[0] + "&lat=" + lonLatCoordinates[1]
+	  		).then(response => { return response.json(); }).then(json => 
+		  	{
+				let address = json.address;
+			  this.livingPlace = address.town || address.village || address.city;
+				console.log("Grad kad se klikne na mapu: "+this.livingPlace);
+		  	})
+	}	
   }
 });
