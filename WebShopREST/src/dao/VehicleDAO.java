@@ -103,7 +103,13 @@ public class VehicleDAO {
     }
 	
 	public ArrayList<Vehicle> findAll() {
-		return vehicles;
+		ArrayList<Vehicle> v = new ArrayList<Vehicle>();
+		for(Vehicle vh : vehicles) {
+			if(vh.isDeleted() == false) {
+				v.add(vh);
+			}
+		}
+		return v;
 	}
 	
 	public Vehicle findVehicle(String id) {

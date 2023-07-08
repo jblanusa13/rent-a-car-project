@@ -50,7 +50,7 @@ Vue.component("allUsersForAdmin", {
 				</select>	
 				</td>   	
 		    	
-		  		<td for="customerTypeFilter">Customer type:</label><br>
+		  		<td for="customerTypeFilter" v-if="userRole === 'Customer'">Customer type:<br>
 			 	<select id="customerTypeFilter" v-model="customerType" v-if="userRole === 'Customer'">
 					<option value="Golden">Golden</option>
 					<option value="Silver">Silver</option>
@@ -94,19 +94,23 @@ Vue.component("allUsersForAdmin", {
 	</div>
       <table border='1' style="margin: 0 auto; width: 85%;">
         <tr>
+		  <th>Username</th>
           <th>Name</th>
           <th>Surname</th>
           <th>Gender</th>
           <th>Date of birth</th>
           <th>Role</th>
+		  <th>Collected point</th>
           <th>User account status</th>
         </tr>
         <tr v-for="user in users" :key="user.id">
+		  <td>{{ user.username }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.surname }}</td>          
           <td>{{ user.gender }}</td>
           <td>{{ user.birthDate }}</td>
           <td>{{ user.role }}</td>
+		  <td>{{ user.collectedPoints }}</td>
           <td>{{ user.userStatus }}</td>
           <td>
 	          <div v-if="user.userStatus === 'Active' && user.role !== 'Administrator'">
@@ -154,7 +158,7 @@ Vue.component("allUsersForAdmin", {
 		
 	    if (this.selectedSortOption === 'nameAscending') {
 	      axios
-		      .put("rest/users/usersNameSortingAscending/", this.users)
+		      .put("rest/user/usersNameSortingAscending/", this.users)
 		      .then((response) => {
 		        this.users = response.data;
 		      })
@@ -162,28 +166,28 @@ Vue.component("allUsersForAdmin", {
 	      
 	    } else if (this.selectedSortOption === 'nameDescending') {
 	      axios
-		      .put("rest/users/usersNameSortingDescending/", this.users)
+		      .put("rest/user/usersNameSortingDescending/", this.users)
 		      .then((response) => {
 		        this.users = response.data;
 		      })
 		      .catch((error) => console.log(error));
 	    } else if (this.selectedSortOption === 'surnameAscending') {
 	      axios
-		      .put("rest/users/usersSurnameSortingAscending/", this.users)
+		      .put("rest/user/usersSurnameSortingAscending/", this.users)
 		      .then((response) => {
 		        this.users = response.data;
 		      })
 		      .catch((error) => console.log(error));
 	    } else if (this.selectedSortOption === 'surnameDescending') {
 	      axios
-		      .put("rest/users/usersSurnameSortingDescending/", this.users)
+		      .put("rest/user/usersSurnameSortingDescending/", this.users)
 		      .then((response) => {
 		        this.users = response.data;
 		      })
 		      .catch((error) => console.log(error));
 	    }else if (this.selectedSortOption === 'usernameAscending') {
 			axios
-		      .put("rest/users/usersUsernameSortingAscending/", this.users)
+		      .put("rest/user/usersUsernameSortingAscending/", this.users)
 		      .then((response) => {
 		        this.users = response.data;
 		      })
@@ -191,7 +195,7 @@ Vue.component("allUsersForAdmin", {
 			
 		}else if (this.selectedSortOption === 'usernameDescending') {
 			axios
-		      .put("rest/users/usersUsernameSortingDescending/", this.users)
+		      .put("rest/user/usersUsernameSortingDescending/", this.users)
 		      .then((response) => {
 		        this.users = response.data;
 		      })
@@ -200,7 +204,7 @@ Vue.component("allUsersForAdmin", {
 		}
 		else if (this.selectedSortOption === 'pointsAscending') {
 			axios
-		      .put("rest/users/usersPointsSortingAscending/", this.users)
+		      .put("rest/user/usersPointsSortingAscending/", this.users)
 		      .then((response) => {
 		        this.users = response.data;
 		      })
@@ -208,7 +212,7 @@ Vue.component("allUsersForAdmin", {
 			
 		}else if (this.selectedSortOption === 'pointsDescending') {
 			axios
-		      .put("rest/users/usersPointsSortingDescending/", this.users)
+		      .put("rest/user/usersPointsSortingDescending/", this.users)
 		      .then((response) => {
 		        this.users = response.data;
 		      })
@@ -227,7 +231,7 @@ Vue.component("allUsersForAdmin", {
 		this.customerType=null;
 		
 		axios
-	      .get("rest/users/allUsers")
+	      .get("rest/user/allUsers")
 	      .then((response) => {
 	        this.users = response.data;
 	      })
@@ -239,7 +243,7 @@ Vue.component("allUsersForAdmin", {
 		console.log(this.customerType);
 		
 		axios
-	      .put("rest/users/filterUsers/"+this.userRole+"/"+this.customerType+"/", this.users)
+	      .put("rest/user/filterUsers/"+this.userRole+"/"+this.customerType+"/", this.users)
 	      .then((response) => {
 	        this.users = response.data;
 			console.log("zavrsio filter");
@@ -262,7 +266,7 @@ Vue.component("allUsersForAdmin", {
 		}
 		
 		axios
-	      .put("rest/users/searchUsers/"+this.name+"/"+this.surname+"/"+this.username, this.users)
+	      .put("rest/user/searchUsers/"+this.name+"/"+this.surname+"/"+this.username, this.users)
 	      .then((response) => {
 	        this.users = response.data;
 			console.log("zavrsio pretragu");

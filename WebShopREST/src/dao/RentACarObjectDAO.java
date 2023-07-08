@@ -163,7 +163,7 @@ public class RentACarObjectDAO {
     
     // Sort objects by city
     public ArrayList<RentACarObject> sortObjectsByCity(boolean descending, ArrayList<RentACarObject> objectsToSort) {
-        Comparator<RentACarObject> comparator = Comparator.comparing(rentACarObject -> rentACarObject.getLocation().getAddress().split(",")[1]);
+        Comparator<RentACarObject> comparator = Comparator.comparing(rentACarObject -> rentACarObject.getLocation().getAddress());
         if (descending) {
             comparator = comparator.reversed();
         }

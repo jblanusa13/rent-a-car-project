@@ -408,10 +408,19 @@ public class UserDAO {
     public ArrayList<User> filterUsers(String userRole, String customerType, ArrayList<User> usersToFilter){
     	System.out.println(userRole);
     	System.out.println(customerType);
+    	boolean firstTrue;
+    	boolean secondTrue;
     	ArrayList<User> filteredUsers = new ArrayList<User>();
     	for(User u : usersToFilter) {
-    		boolean firstTrue = userRole.equals(u.getRole().name()) || userRole.equals("null");
-    		boolean secondTrue = customerType.equals(u.getCustomerType().toString()) || customerType.equals("null");
+    		firstTrue = userRole.equals(u.getRole().name()) || userRole.equals("null");
+    		if(userRole.equals("Customer") && u.getRole().name().equals("Customer")) {
+    			System.out.println("customerType string: "+ customerType);
+    			System.out.println("cutomerType file: "+ u.getCustomerType().getTypeName().name());
+    			secondTrue = customerType.equals(u.getCustomerType().getTypeName().name()) || customerType.equals("null");
+    		}
+    		else {
+    			secondTrue = true;
+    		}
     		boolean isTrue = firstTrue && secondTrue;
     		System.out.println("First true: "+firstTrue);
     		System.out.println("Second true: "+secondTrue);
