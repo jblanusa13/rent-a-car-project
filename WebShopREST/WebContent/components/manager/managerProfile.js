@@ -73,12 +73,21 @@ Vue.component("manager-profile", {
 	console.log("id usera u profilu je:"+this.userId)
 	
 	axios.get('rest/user/profile/'+this.userId)
-		.then(response => {
-			this.user = response.data
-			this.object = this.user.rentACar;
-			console.log(this.object);
-		})
-		.catch(error => console.log(error))
+	.then(response => {
+		this.user = response.data;
+		console.log(this.user.rentACar.id);
+		axios
+	      .get("rest/objects/" + this.user.rentACar.id)
+	      .then((response) => {
+	        this.object = response.data; 
+	        console.log("JEJ"); 
+	      })
+	      .catch((error) => console.log(error));
+			})
+	.catch(error => console.log(error))
+		
+		
+		
 		
 	axios.get('rest/user/birthDate/'+this.userId)
 		.then(response => {

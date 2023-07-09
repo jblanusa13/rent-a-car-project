@@ -7,21 +7,12 @@ import java.lang.reflect.Type;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import org.eclipse.jdt.internal.compiler.env.IUpdatableModule.UpdateKind;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
-import beans.RentACarObject;
-import beans.User;
-import beans.UserRegistration;
 import beans.Vehicle;
 import beans.VehicleCreation;
 import enums.CarStatus;
-import enums.FuelType;
-import enums.StickType;
-import enums.VehicleType;
 
 public class VehicleDAO {
 

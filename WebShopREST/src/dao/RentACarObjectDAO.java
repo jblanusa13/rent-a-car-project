@@ -12,7 +12,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-
 import beans.RentACarObject;
 import beans.Vehicle;
 import enums.CarStatus;
@@ -24,9 +23,7 @@ public class RentACarObjectDAO {
 
 	public RentACarObjectDAO(String contextPath) {
 		path = contextPath;
-		
-		loadFromFile();
-		
+		loadFromFile();		
 		System.out.println("SVI Objecti:");
 		for(RentACarObject o: objects) {
 			System.out.println(o.getId());
