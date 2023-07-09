@@ -97,24 +97,24 @@ Vue.component("allUsersForAdmin", {
 		  <th>Collected point</th>
           <th>User account status</th>
         </tr>
-        <tr v-for="user in users" :key="user.id">
-		  <td>{{ user.username }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.surname }}</td>          
-          <td>{{ user.gender }}</td>
-          <td>{{ user.birthDate }}</td>
-          <td>{{ user.role }}</td>
-		  <td>{{ user.collectedPoints }}</td>
-          <td>{{ user.userStatus }}</td>
-          <td>
-	          <div v-if="user.userStatus === 'Active' && user.role !== 'Administrator'">
-	          	<button type="submit" v-on:click="deactivate(user)">Deactivate</button>
-	          </div>
-	          <div v-if="user.userStatus === 'Deactivated' || user.role === 'Administrator'">
-	          	<button type="submit" v-on:click="deactivate(user)" disabled>Deactivate</button>
-	          </div>
-          </td>
-        </tr>
+        <tr v-for="user in users" :key="user.id" :class="{'suspicious-row': user.susStatus === 'Suspicious'}">
+	        <td>{{ user.username }}</td>
+	        <td>{{ user.name }}</td>
+	        <td>{{ user.surname }}</td>          
+	        <td>{{ user.gender }}</td>
+	        <td>{{ user.birthDate }}</td>
+	        <td>{{ user.role }}</td>
+	        <td>{{ user.collectedPoints }}</td>
+	        <td>{{ user.userStatus }}</td>
+	        <td>
+	            <div v-if="user.userStatus === 'Active' && user.role !== 'Administrator'">
+	                <button type="submit" v-on:click="deactivate(user)">Deactivate</button>
+	            </div>
+	            <div v-if="user.userStatus === 'Deactivated' || user.role === 'Administrator'">
+	                <button type="submit" v-on:click="deactivate(user)" disabled>Deactivate</button>
+	            </div>
+	        </td>
+	    </tr>
       </table>
       <br><br>
       <div class="center-position">

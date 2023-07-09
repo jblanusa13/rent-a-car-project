@@ -20,6 +20,7 @@ import beans.Vehicle;
 import beans.User;
 import enums.CarStatus;
 import enums.CommentStatus;
+import enums.CustomerSuspiciousStatus;
 import enums.CustomerTypes;
 import enums.FuelType;
 import enums.RentACarStatus;
@@ -68,11 +69,11 @@ public class CustomerCommentDAO {
 		
 		User user6 = new User("6", "user6", "password6", "Sophia", "Taylor", "Female", "1998-09-06",
         		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 40, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
+                new RentACarObject(), 40, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active,CustomerSuspiciousStatus.Okay);
 
         User user7 = new User("7", "user7", "password7", "Daniel", "Wilson", "Male", "1976-11-25",
         		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
+                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active,CustomerSuspiciousStatus.Okay);
         
         CustomerComment comment1 = new CustomerComment("1", user6, object1, 4, CommentStatus.Pending,"Great place");
         CustomerComment comment2 = new CustomerComment("2", user7, object1, 5, CommentStatus.Pending,"Awesome");
@@ -86,8 +87,8 @@ public class CustomerCommentDAO {
         
         CustomerComment comment5 = new CustomerComment("5", user6, object2, 3, CommentStatus.Pending,"Decent experience");
         CustomerComment comment6 = new CustomerComment("6", user7, object2, 4, CommentStatus.Pending,"Good service");
-        CustomerComment comment7 = new CustomerComment("7", user6, object2, 2, CommentStatus.Rejected,"Not worth the money");
-        CustomerComment comment8 = new CustomerComment("8", user7, object2, 5, CommentStatus.Approved,"Highly recommended");
+        CustomerComment comment7 = new CustomerComment("7", user7, object2, 2, CommentStatus.Rejected,"Not worth the money");
+        CustomerComment comment8 = new CustomerComment("8", user6, object2, 5, CommentStatus.Approved,"Highly recommended");
 
         comments.add(comment5);
         comments.add(comment6);

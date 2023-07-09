@@ -245,3 +245,6 @@ button {
 .button-container-for-comments button {
   margin-left: 20px;
 }
+.suspicious-row {
+    background-color: red;
+}

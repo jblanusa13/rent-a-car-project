@@ -2,6 +2,7 @@ package beans;
 
 import java.util.ArrayList;
 
+import enums.CustomerSuspiciousStatus;
 import enums.UserRole;
 import enums.UserStatus;
 
@@ -20,6 +21,7 @@ public class User {
     private int collectedPoints;
     private CustomerType customerType;
     private UserStatus userStatus;
+    private CustomerSuspiciousStatus susStatus;
     
 	public User() {
 		super();
@@ -27,7 +29,7 @@ public class User {
 	
 	public User(String id, String username, String password, String name, String surname, String gender,
 			String birthDate, UserRole role, ArrayList<RentingOrder> orders, ShoppingCart shoppingCart,
-			RentACarObject rentACar, int collectedPoints, CustomerType customerType, UserStatus userStatus) {
+			RentACarObject rentACar, int collectedPoints, CustomerType customerType, UserStatus userStatus,CustomerSuspiciousStatus susStatus) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -43,6 +45,7 @@ public class User {
 		this.collectedPoints = collectedPoints;
 		this.customerType = customerType;
 		this.userStatus = userStatus;
+		this.susStatus = susStatus;
 	}
 
 
@@ -136,6 +139,14 @@ public class User {
 
 	public void setUserStatus(UserStatus userStatus) {
 		this.userStatus = userStatus;
+	}
+
+	public CustomerSuspiciousStatus getSusStatus() {
+		return susStatus;
+	}
+
+	public void setSusStatus(CustomerSuspiciousStatus susStatus) {
+		this.susStatus = susStatus;
 	}
 	
 }

@@ -27,6 +27,7 @@ import beans.ShoppingCart;
 import beans.User;
 import beans.Vehicle;
 import enums.CarStatus;
+import enums.CustomerSuspiciousStatus;
 import enums.CustomerTypes;
 import enums.FuelType;
 import enums.RentACarStatus;
@@ -48,7 +49,7 @@ public class RentingOrderDAO {
 		path = contextPath;
 		User user1 = new User("7", "user7", "password7", "Daniel", "Wilson", "Male", "1976-11-25",
         		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active);
+                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active,CustomerSuspiciousStatus.Okay);
 		
 		RentACarObject object1 = new RentACarObject("1", "Kod Milana", new ArrayList<Vehicle>(),"08:30","19:00", RentACarStatus.Open, new Location("1", "22", "23", "Super"),"images/objects/1.jpg", 5, false);
 		ArrayList<Vehicle> cars = new ArrayList<Vehicle>();
@@ -66,9 +67,9 @@ public class RentingOrderDAO {
 		// Create seven instances of RentingOrder
 		RentingOrder order1 = new RentingOrder("1", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle1)), "2023-06-27", "10:00", 3, user1, RentingOrderStatus.Processing, 300,"","");
 		RentingOrder order2 = new RentingOrder("2", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle2)), "2023-06-28", "11:00", 2, user1, RentingOrderStatus.Processing, 400,"","");
-		RentingOrder order3 = new RentingOrder("3", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle3)), "2023-06-29", "09:00", 1, user1, RentingOrderStatus.Returned, 200,"","");
-		RentingOrder order4 = new RentingOrder("4", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle4)), "2023-06-30", "10:00", 5, user1, RentingOrderStatus.Returned, 600,"","");
-		RentingOrder order5 = new RentingOrder("5", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle5)), "2023-07-01", "13:00", 2, user1, RentingOrderStatus.Returned, 500,"","");
+		RentingOrder order3 = new RentingOrder("3", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle3)), "2023-06-29", "09:00", 1, user1, RentingOrderStatus.Processing, 200,"","");
+		RentingOrder order4 = new RentingOrder("4", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle4)), "2023-06-30", "10:00", 5, user1, RentingOrderStatus.Processing, 600,"","");
+		RentingOrder order5 = new RentingOrder("5", generateRandomId(), object1, new ArrayList<>(Collections.singletonList(vehicle5)), "2023-07-01", "13:00", 2, user1, RentingOrderStatus.Processing, 500,"","");
 		RentingOrder order6 = new RentingOrder("6", generateRandomId(), object1, cars , "2023-06-26", "15:00", 4, user1, RentingOrderStatus.Rejected, 800,"","");
 		
 		orders.add(order1);
