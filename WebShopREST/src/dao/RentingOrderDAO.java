@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.HashSet;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.time.LocalTime;
@@ -421,16 +422,19 @@ public class RentingOrderDAO {
 
 	public ArrayList<User> findUsers(String id) {
 	    ArrayList<User> users = new ArrayList<>();
+	    HashSet<String> userIds = new HashSet<>();
+
 	    for (RentingOrder order : orders) {
 	        if (order.getRentingObject().getId().equals(id)) {
 	            User user = order.getCustomer();
-	            if (!users.contains(user)) {
-	                users.add(user);          
+	            if (!userIds.contains(user.getId())) {
+	                users.add(user);
+	                userIds.add(user.getId());
 	            }
 	        }
 	    }
-	    return users;
 	    
+	    return users;
 	}
 		
 }
