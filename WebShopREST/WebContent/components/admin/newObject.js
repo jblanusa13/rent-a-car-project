@@ -129,6 +129,10 @@ Vue.component("addNewObject", {
 			<p> {{ errortextobject }}</p>
 			</div>
 			</fieldset>
+			<div class="center-position">        
+        	<br><br>
+        	<button type="submit" v-on:click="ShowAll">Go back</button>
+      		</div>
 		</form>
 	</div>
   `,
