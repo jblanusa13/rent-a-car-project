@@ -245,6 +245,7 @@ public class RentACarObjectService {
 	    return dao.deleteVehicleForObject(objectId,vehicleId);
 	}
 
+	@PUT
 	@Path("/changeRate/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
