@@ -208,8 +208,12 @@ button {
 }
 
 .rental_img{
-	width: 75%; 
-	height: auto;
+	width: auto; 
+	height: 20%;
+}
+
+.location-view{
+	border:1px solid black;
 }
 
 .comment-showing{

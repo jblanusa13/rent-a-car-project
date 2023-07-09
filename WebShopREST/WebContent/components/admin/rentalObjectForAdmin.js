@@ -8,7 +8,10 @@ Vue.component("objectForAdmin", {
       image: null,
       comments: null,
       userId:null,
-	  deleted:false
+	  deleted:false,
+	  street:null,
+	  city:null,
+	  postalNumber:null
     };
   },
   template: `
@@ -19,29 +22,23 @@ Vue.component("objectForAdmin", {
 	  </div>
       <div>
         <br><br>     
-        <label class="standard-left-margin"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
-        <label class="standard-left-margin"><strong>Status: {{ objectStatus }}</strong></label><br><br>          
-        <label class="standard-left-margin"><strong> Location:</strong></label>
-        <table>
-          <tr>          
-            <table class="standard-left-margin">
+        <label class="center-position"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
+        <label class="center-position"><strong>Status: {{ objectStatus }}</strong></label><br><br>          
+        <label class="center-position"><strong> Location:</strong></label>       
+            <table class="center-position location-view standard-left-margin standard-right-margin">
               <tr>
-                <td>Longitude: </td>
-                <td><input type="text" name="longitude" v-model="object.location.longitude" disabled></td>
-              </tr>
-              <tr>
-                <td>Latitude: </td>
-                <td><input type="text" name="latitude" v-model="object.location.latitude" disabled></td>
-              </tr>
-              <tr>
-                <td>Address: </td>
-                <td><input type="text" name="address" v-model="object.location.address" disabled></td>
-              </tr>
+                <td>
+					<div id="map"></div>
+				</td>
+   				<td>
+					<b>{{street}}</b><br>
+					{{city}} {{postalNumber}}<br>
+					{{object.location.longitude}}, {{object.location.latitude}}
+				</td>
+				</tr>
             </table>
-          </tr>
-        </table>
         <br><br>
-        <div class="standard-left-margin">
+        <div class="center-position">
 		<button type="submit" v-on:click="deleteObject">Delete object</button>
 		</div>
       </div>
@@ -157,6 +154,14 @@ Vue.component("objectForAdmin", {
         }
         
         this.allCars = this.object.availableCars;
+		this.street = this.object.location.address.split(',')[0];
+		this.city = this.object.location.address.split(',')[1];
+		this.postalNumber = this.object.location.address.split(',')[2];
+	
+		console.log("Adresa: "+this.object.location.address);
+		console.log("Ulica: "+this.street);
+		console.log("Grad: "+this.city);
+		console.log("Post br: "+this.postalNumber);
       })
       .catch((error) => console.log(error));
       
@@ -167,6 +172,61 @@ Vue.component("objectForAdmin", {
         this.comments = response.data;
       })
       .catch((error) => console.log(error));
+
+//adding Map	
+	const map = new ol.Map({
+		  target: 'map',
+		  layers: [
+		    new ol.layer.Tile({
+		      source: new ol.source.OSM(),
+		    })
+		  ],
+		  view: new ol.View({
+		    center: ol.proj.fromLonLat([0, 0]),
+		    zoom: 2,
+		  })
+		});
+		
+		const marker = new ol.layer.Vector({
+			source: new ol.source.Vector({
+				features: [
+					new ol.Feature({
+						geometry: new ol.geom.Point(
+							ol.proj.fromLonLat([0, 0])
+						)
+					})
+				]
+			}),
+			style: new ol.style.Style({
+				image: new ol.style.Icon({
+					src: 'https://docs.maptiler.com/openlayers/default-marker/marker-icon.png',
+					anchor: [0.5,1]
+				})
+			})
+		})
+		
+		map.addLayer(marker);
+  		
+  		this.mapObject = map;
+  		this.markerObject = marker;
+  		
+  		const vec = new ol.layer.Vector({
+		  source: new ol.source.Vector(),
+		});
+		  		
+  		map.on('click', (event) => {
+			  var cor = ol.proj.toLonLat(event.coordinate);
+			  this.convertToMyCoordinates(cor);
+			  vec.getSource().clear();
+			  
+			  var mapMarker = new ol.Feature({
+				  geometry: new ol.geom.Point(event.coordinate),
+			  });
+			  
+			  vec.getSource().addFeature(mapMarker);
+			  
+			  this.moveMarker(event.coordinate);
+		  });
   },
   methods: {
     ShowAll: function () {
@@ -182,6 +242,27 @@ Vue.component("objectForAdmin", {
 				router.push(`/loggedInAdmin/${this.userId}`);
 			})
 			.catch(error=>console.log(error))
+	},
+	moveMarker: function (lonLatCoordinates) {
+    const markerSource = this.markerObject.getSource();
+    markerSource.clear();
+
+    const mapMarker = new ol.Feature({
+      geometry: new ol.geom.Point(lonLatCoordinates)
+    });
+
+    markerSource.addFeature(mapMarker);
+  },
+
+  convertToMyCoordinates : function(lonLatCoordinates){
+		fetch(
+			"http://nominatim.openstreetmap.org/reverse?format=json&lon=" + lonLatCoordinates[0] + "&lat=" + lonLatCoordinates[1]
+	  		).then(response => { return response.json(); }).then(json => 
+		  	{
+				let address = json.address;
+			  this.livingPlace = address.town || address.village || address.city;
+				console.log("Grad kad se klikne na mapu: "+this.livingPlace);
+		  	})
 	}
     
   }
