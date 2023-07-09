@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import beans.CustomerType;
-import beans.Location;
 import beans.Manager;
 import beans.RentACarObject;
 import beans.RentingOrder;
@@ -16,13 +15,8 @@ import beans.UserCancelation;
 import beans.Vehicle;
 import enums.UserRole;
 import enums.UserStatus;
-import enums.VehicleType;
-import enums.CarStatus;
 import enums.CustomerSuspiciousStatus;
 import enums.CustomerTypes;
-import enums.FuelType;
-import enums.RentACarStatus;
-import enums.StickType;
 import com.google.gson.*;
 
 import java.time.LocalDate;
@@ -51,15 +45,10 @@ public class UserDAO {
 		loadFromFile();
 		loadFromFileCancelations();
 		System.out.println("SVI USERI:");
-		for(User u: users) {
-			System.out.println(u.getId());
-		}
 		
-		System.out.println("SVA OTKAZIVANJA:");
-		for(UserCancelation u: cancelations) {
-			System.out.println(u.getCustomerId());
-		}
 	}
+
+
 
 	public void writeToFile() {
 		Gson gs = new GsonBuilder().setPrettyPrinting().create(); 

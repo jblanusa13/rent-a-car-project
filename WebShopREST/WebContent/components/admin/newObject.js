@@ -33,7 +33,8 @@ Vue.component("addNewObject", {
   template: `
 	<div>
 		<h1 class="center-position">Add new rent a car object</h1>
-		<form class="formStyle" style="margin-left:30%;">
+		<div class="center-position">
+		<form class="formStyle">
 			<fieldset>
 				<div>
             		<label class="formInputs">Name:</label><br>
@@ -69,8 +70,8 @@ Vue.component("addNewObject", {
             		<label class="formInputs">Logo:</label><br>
             		<input type="file" id="file" ref="file" v-bind:class="{invalid: logoValid === false}"/>
           		</div><br>
-			
-			<form class="formStyle center-position" style="margin-left:-10%;">
+			<div class="center-position-newManager">
+			<form class="formStyle" style="margin-right: 115px">
 				<fieldset>
 				<legend>Add manager for object</legend>
 				<div v-if="!managers">
@@ -106,7 +107,7 @@ Vue.component("addNewObject", {
           				<div>
             				<label class="formInputs">Date of Birth:</label><br>
             				<input type="date" v-model="managerRegistration.birthDate" name="dateOfBirth" class="formInputs" v-bind:class="{invalid: birthValid === false}">
-          				</div>
+          				</div><br><br>
 						<button type="submit" v-on:click="registerManager">Register</button>
 					</tr>
 					<p>{{ errortextRegistration }}</p>
@@ -123,17 +124,17 @@ Vue.component("addNewObject", {
 					</select>
 				</div>
 				</fieldset>
-			</form><br>
-			<div>
+			</form></div>
+			<div><br><br>
 			<button type="submit" v-on:click="confirm">Confirm</button>
 			<p> {{ errortextobject }}</p>
 			</div>
-			</fieldset>
-			<div class="center-position">        
-        	<br><br>
-        		<button type="submit" v-on:click="ShowAll">Go back</button>
+			</fieldset><br><br><br><br>
+			<div class="center-position">      
+          		<button type="submit" v-on:click="ShowAll">Go back</button>
       		</div>
 		</form>
+		</div>
 	</div>
   `,
   mounted() {

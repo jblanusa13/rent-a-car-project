@@ -252,3 +252,8 @@ button {
 .suspicious-row {
     background-color: red;
 }
+.center-position-newManager{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
