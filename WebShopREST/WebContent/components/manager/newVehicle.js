@@ -34,7 +34,7 @@ Vue.component("newVehicle", {
   template: `
     <div>
 		<h1>New vehicle</h1>
-		<div class="right-position">
+		<div class="center-position">
 		<form class="formStyle">
 		<fieldset>
 				<div>

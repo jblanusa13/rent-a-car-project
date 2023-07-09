@@ -34,9 +34,9 @@ Vue.component("objectForCustomer", {
 		  <img :src="image" class="rental_img">
 	  </div>
 	  <div><br><br>     
-        <label class="standard-left-margin"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
-        <label class="standard-left-margin"><strong>Status: {{objectStatus}}</strong></label><br><br>          
-  		<label class="standard-left-margin"><strong> Location:</strong></label>
+        <label class="center-position"> <strong>Working time: {{object.openingTime}} - {{object.closingTime}}</strong></label><br><br>
+        <label class="center-position"><strong>Status: {{objectStatus}}</strong></label><br><br>          
+  		<label class="center-position"><strong> Location:</strong></label>
      <table class="center-position location-view standard-left-margin standard-right-margin">
               <tr>
                 <td>
@@ -249,6 +249,14 @@ Vue.component("objectForCustomer", {
 
 	    
 	    this.allCars= this.object.availableCars;
+		this.street = this.object.location.address.split(',')[0];
+		this.city = this.object.location.address.split(',')[1];
+		this.postalNumber = this.object.location.address.split(',')[2];
+	
+		console.log("Adresa: "+this.object.location.address);
+		console.log("Ulica: "+this.street);
+		console.log("Grad: "+this.city);
+		console.log("Post br: "+this.postalNumber);
 	  })
 	  .catch((error) => console.log(error));
 	//finding all orders
@@ -530,7 +538,7 @@ Vue.component("objectForCustomer", {
 			    	});
 					
 				}		     
-	    });
+	    })
     },
 moveMarker: function (lonLatCoordinates) {
     const markerSource = this.markerObject.getSource();

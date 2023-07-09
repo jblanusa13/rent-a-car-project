@@ -130,7 +130,7 @@ public class RentACarObjectService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<RentACarObject> sortObjectByCityAscending(ArrayList<RentACarObject> objectsToSort) {
 	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
-	    System.out.println("Sorting objects by name (ascending)");
+	    System.out.println("Sorting objects by location (ascending)");
 	    return dao.sortObjectsByRate(false, objectsToSort);
 	}
 	
@@ -140,7 +140,7 @@ public class RentACarObjectService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<RentACarObject> sortObjectByCityDescending(ArrayList<RentACarObject> objectsToSort) {
 	    RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("ObjectDAO");
-	    System.out.println("Sorting objects by name (descending)");
+	    System.out.println("Sorting objects by location (descending)");
 	    return dao.sortObjectsByRate(true, objectsToSort);
 	}
 	
