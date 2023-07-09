@@ -122,5 +122,14 @@ public class VehicleService {
         System.out.println("Vehicle se brise u servisu");
         return dao.deleteVehicle(id); 
 	}
+	
+	@PUT
+	@Path("/deleteVehiclesForObject/")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+	public boolean deleteVehicleForObject(ArrayList<Vehicle> vehicles) {
+		VehicleDAO dao = (VehicleDAO) ctx.getAttribute("VehicleDAO");
+		return dao.deleteVehicles(vehicles);
+	}
 
 }

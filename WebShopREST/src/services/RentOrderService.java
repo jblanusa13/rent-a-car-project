@@ -368,4 +368,12 @@ public class RentOrderService {
 	    return users;
 	}
 	
+	@PUT
+	@Path("/deleteOrderByObject/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean deleteOrder(@PathParam("id") String id) {
+		 RentingOrderDAO dao = (RentingOrderDAO) ctx.getAttribute("RentingOrderDAO");
+		 return dao.deleteOrder(id);
+	}
+	
 }

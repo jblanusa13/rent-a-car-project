@@ -11,7 +11,9 @@ Vue.component("objectForAdmin", {
 	  deleted:false,
 	  street:null,
 	  city:null,
-	  postalNumber:null
+	  postalNumber:null,
+	  managerId:null,
+	  manager:null
     };
   },
   template: `
@@ -116,6 +118,61 @@ Vue.component("objectForAdmin", {
     this.objectId = objectId;
     this.userId = userId;
     console.log(userId,objectId)
+	//adding Map	
+	const map = new ol.Map({
+		  target: 'map',
+		  layers: [
+		    new ol.layer.Tile({
+		      source: new ol.source.OSM(),
+		    })
+		  ],
+		  view: new ol.View({
+		    center: ol.proj.fromLonLat([0, 0]),
+		    zoom: 2,
+		  })
+		});
+		
+		const marker = new ol.layer.Vector({
+			source: new ol.source.Vector({
+				features: [
+					new ol.Feature({
+						geometry: new ol.geom.Point(
+							ol.proj.fromLonLat([0, 0])
+						)
+					})
+				]
+			}),
+			style: new ol.style.Style({
+				image: new ol.style.Icon({
+					src: 'https://docs.maptiler.com/openlayers/default-marker/marker-icon.png',
+					anchor: [0.5,1]
+				})
+			})
+		})
+		
+		map.addLayer(marker);
+  		
+  		this.mapObject = map;
+  		this.markerObject = marker;
+  		
+  		const vec = new ol.layer.Vector({
+		  source: new ol.source.Vector(),
+		});
+		  		
+  		map.on('click', (event) => {
+			  var cor = ol.proj.toLonLat(event.coordinate);
+			  this.convertToMyCoordinates(cor);
+			  vec.getSource().clear();
+			  
+			  var mapMarker = new ol.Feature({
+				  geometry: new ol.geom.Point(event.coordinate),
+			  });
+			  
+			  vec.getSource().addFeature(mapMarker);
+			  
+			  this.moveMarker(event.coordinate);
+		  });
+
     // Finding the renting object
     axios
       .get("rest/objects/" + this.objectId)
@@ -173,60 +230,12 @@ Vue.component("objectForAdmin", {
       })
       .catch((error) => console.log(error));
 
-//adding Map	
-	const map = new ol.Map({
-		  target: 'map',
-		  layers: [
-		    new ol.layer.Tile({
-		      source: new ol.source.OSM(),
-		    })
-		  ],
-		  view: new ol.View({
-		    center: ol.proj.fromLonLat([0, 0]),
-		    zoom: 2,
-		  })
-		});
-		
-		const marker = new ol.layer.Vector({
-			source: new ol.source.Vector({
-				features: [
-					new ol.Feature({
-						geometry: new ol.geom.Point(
-							ol.proj.fromLonLat([0, 0])
-						)
-					})
-				]
-			}),
-			style: new ol.style.Style({
-				image: new ol.style.Icon({
-					src: 'https://docs.maptiler.com/openlayers/default-marker/marker-icon.png',
-					anchor: [0.5,1]
-				})
-			})
+	axios.get('rest/user/findManager/'+this.objectId)
+		.then(response=>{
+			this.managerId = response.data.id;
+			console.log("nasao menadzera: "+this.managerId);
 		})
-		
-		map.addLayer(marker);
-  		
-  		this.mapObject = map;
-  		this.markerObject = marker;
-  		
-  		const vec = new ol.layer.Vector({
-		  source: new ol.source.Vector(),
-		});
-		  		
-  		map.on('click', (event) => {
-			  var cor = ol.proj.toLonLat(event.coordinate);
-			  this.convertToMyCoordinates(cor);
-			  vec.getSource().clear();
-			  
-			  var mapMarker = new ol.Feature({
-				  geometry: new ol.geom.Point(event.coordinate),
-			  });
-			  
-			  vec.getSource().addFeature(mapMarker);
-			  
-			  this.moveMarker(event.coordinate);
-		  });
+		.catch(error=>console.log(error))
   },
   methods: {
     ShowAll: function () {
@@ -238,6 +247,25 @@ Vue.component("objectForAdmin", {
 		axios.put('rest/objects/delete/'+this.objectId)
 			.then(response=>{
 				this.deleted = response.data;
+				
+				axios.put('rest/user/deleteObject/'+this.managerId)
+					.then(response=>{
+						this.manager = response.data;
+						console.log("obrisao objekat u menadzeru: "+this.manager.id)
+					})
+					.catch(error=>console.log(error))
+					
+				axios.put('rest/vehicles/deleteVehiclesForObject/', this.object.availableCars)
+					.then(response=>{
+						console.log('obrisana sva vozila od objekta');
+					})
+					.catch(error=>console.log(error))
+					
+				axios.put('rest/rentingOrders/deleteOrderByObject/'+this.objectId)
+					.then(response=>{
+						console.log("rejected orders when object is deleted");
+					})
+					.catch(error=>console.log(error))
 				alert("Object deleted succesfully");
 				router.push(`/loggedInAdmin/${this.userId}`);
 			})

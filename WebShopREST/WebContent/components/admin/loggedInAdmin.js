@@ -40,6 +40,7 @@ Vue.component("logInAdmin", {
 			<label>City:</label>
 			<div id="map" style="width:100%; height:300px;"></div>
 			<br>
+			<input type="text" v-model="livingPlace" id="location" name="location" class="formInputs" disabled>
 			<button type="button" v-on:click="searchObjects">Search</button>
 		</form><br>
 	</div>

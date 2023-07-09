@@ -16,6 +16,7 @@ Vue.component("newVehicle", {
 		vpeople:null,
 		vdesc:null,
 		managerId:null,
+		manager:null,
 		image:null,
 		brandValid:true,
 		modelValid:true,
@@ -227,8 +228,17 @@ Vue.component("newVehicle", {
 					axios.put('rest/objects/addVehicle/'+this.addedVehicle.objectId, this.addedVehicle)
 						.then(response=>{
 							this.object = response.data;
+						})
+						.catch(error=>console.log(error))
+								
+					axios.put('rest/user/updateObjectForManager/'+this.managerId, this.object)
+						.then(response=>{
+							this.manager = response.data;
+							console.log('Updated object fot manager');
 							alert("Vehicle succesfully added");
-						})					
+						})			
+						.catch(error=>console.log(error))
+					
 				})
 				.catch((error)=>console.log(error))
 				

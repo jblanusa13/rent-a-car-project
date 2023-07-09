@@ -21,7 +21,10 @@ Vue.component("objectForCustomer", {
       objectStatus: null,
       objectName:null,
       image:null,
-      comments:null
+      comments:null,
+		street:null,
+	  city:null,
+	  postalNumber:null
     };
   },
   template: `

@@ -400,4 +400,32 @@ public class UserService {
 	    }
 	   return dao.searchUsers(name, surname, username, usersToSearch);
 	}
+	
+	@PUT
+	@Path("/deleteObject/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public User deleteObjectForManager(@PathParam("id") String id) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		System.out.println("Brise objekat u servisu kod menadzera");
+		return dao.deleteObjectForManager(id);
+	}
+	
+	@GET
+	@Path("/findManager/{objectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public User findManagerByObjectId(@PathParam("objectId") String objectId) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		return dao.findManagerByObjectId(objectId);
+	}
+	
+	@PUT
+	@Path("/updateObjectForManager/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public User findManagerByObjectId(@PathParam("id") String id, RentACarObject object) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+		return dao.updateObjectForManager(id, object);
+	}
 }

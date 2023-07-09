@@ -48,42 +48,6 @@ public class UserDAO {
 		
 		path=contextPath;
 		
-		User user1 = new User("1", "user1", "password1", "John", "Doe", "Male", "2002-01-14",
-                UserRole.Administrator , new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 100, new CustomerType(),UserStatus.Active,CustomerSuspiciousStatus.Okay);
-        users.add(user1);
-
-        User user2 = new User("2", "user2", "password2", "Jane", "Smith", "Female", "1995-05-22",
-        		UserRole.Administrator, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 50, new CustomerType(),UserStatus.Active,CustomerSuspiciousStatus.Okay);
-        users.add(user2);
-
-        User user3 = new User("3", "user3", "password3", "Mike", "Johnson", "Male", "1988-12-10",
-        		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 75, new CustomerType(),UserStatus.Active,CustomerSuspiciousStatus.Okay);
-        users.add(user3);
-        User user4 = new User("4", "user4", "password4", "Emily", "Anderson", "Female", "1990-07-18",
-        		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 60, new CustomerType(),UserStatus.Active,CustomerSuspiciousStatus.Okay);
-        users.add(user4);
-
-        User user5 = new User("5", "user5", "password5", "Michael", "Brown", "Male", "1985-03-28",
-        		UserRole.Manager, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 90, new CustomerType(),UserStatus.Active,CustomerSuspiciousStatus.Okay);
-        users.add(user5);
-
-        User user6 = new User("6", "user6", "password6", "Sophia", "Taylor", "Female", "1998-09-06",
-        		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 40, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active,CustomerSuspiciousStatus.Okay);
-        users.add(user6);
-
-        User user7 = new User("7", "user7", "password7", "Daniel", "Wilson", "Male", "1976-11-25",
-        		UserRole.Customer, new ArrayList<>(), new ShoppingCart(),
-                new RentACarObject(), 80, new CustomerType(CustomerTypes.Bronze, 0, 0),UserStatus.Active,CustomerSuspiciousStatus.Okay);
-        users.add(user7);
-        addrentacar();
-		writeToFile();
-		
 		loadFromFile();
 		loadFromFileCancelations();
 		System.out.println("SVI USERI:");
@@ -95,51 +59,6 @@ public class UserDAO {
 		for(UserCancelation u: cancelations) {
 			System.out.println(u.getCustomerId());
 		}
-	}
-
-	private void addrentacar() {
-		RentACarObject object1 = new RentACarObject("1", "Kod Milana", new ArrayList<Vehicle>(),"08:30","19:00", RentACarStatus.Open, new Location("1", "22", "23", "Super"),"images/objects/1.jpg", 5, false);
-
-		Vehicle vehicle1 = new Vehicle("1", "Honda", "ne znam sad", 10000, VehicleType.Car, "1", StickType.Automatic, FuelType.Diesel, 15, 5, 5, "lepa kola", "images/vehicles/1.jpg", CarStatus.Available,"", false);
-		Vehicle vehicle2 = new Vehicle("2", "Golfic", "ne znam sad", 2002, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 11, 5, 4, "lepa kola", "images/vehicles/2.jpg", CarStatus.Available,"", false);
-		Vehicle vehicle3 = new Vehicle("3", "Audi", "ne znam sad", 12000, VehicleType.Car, "1", StickType.Manual, FuelType.Diesel, 12, 4, 5, "lepa kola", "images/vehicles/3.jpg", CarStatus.Available,"", false);
-		Vehicle vehicle4 = new Vehicle("4", "BrzaKola", "ne znam sad", 20000, VehicleType.Van, "1", StickType.Automatic, FuelType.Diesel, 13, 4, 5, "lepa kola", "images/vehicles/4.jpg", CarStatus.Available,"", false);
-		Vehicle vehicle5 = new Vehicle("5", "Tojota", "ne znam sad", 50000, VehicleType.MobileHome, "1", StickType.Manual, FuelType.Diesel, 15, 5, 16, "lepa kola", "images/vehicles/5.jpg", CarStatus.Available,"", false);
-		
-		ArrayList<Vehicle> cars = new ArrayList<Vehicle>();
-		cars.add(vehicle1);
-		cars.add(vehicle2);
-		cars.add(vehicle3);
-		cars.add(vehicle4);
-		cars.add(vehicle5);
-		object1.setAvailableCars(cars);
-		
-		User u=new User();
-		u=getUserById("3");
-		u.setRentACar(object1);
-		updateManagerRentACar(u);
-		
-		Vehicle vehicle6 = new Vehicle("6", "Ford", "Mustang", 15000, VehicleType.Car, "2", StickType.Automatic, FuelType.Diesel, 10, 2, 2, "Powerful sports car", "images/vehicles/6.jpg", CarStatus.Available,"", false);
-		Vehicle vehicle7 = new Vehicle("7", "BMW", "X5", 25000, VehicleType.Van, "2", StickType.Automatic, FuelType.Diesel, 12, 5, 5, "Luxury SUV", "images/vehicles/7.png", CarStatus.Available,"", false);
-		Vehicle vehicle8 = new Vehicle("8", "Mercedes-Benz", "C-Class", 18000, VehicleType.Car, "2", StickType.Automatic, FuelType.Diesel, 11, 4, 5, "good old car", "images/vehicles/8.jpg", CarStatus.Available,"", false);
-		Vehicle vehicle9 = new Vehicle("9", "Porsche", "911", 50000, VehicleType.Car, "2", StickType.Manual, FuelType.Diesel, 15, 2, 2, "Iconic sports car", "images/vehicles/9.jpg", CarStatus.Available,"", false);
-		Vehicle vehicle10 = new Vehicle("10", "Tesla", "Model S", 60000, VehicleType.Car, "2", StickType.Automatic, FuelType.Electric, 0, 4, 5, "amazing", "images/vehicles/10.jpg", CarStatus.Available,"", false);
-
-		RentACarObject object2 = new RentACarObject("2", "Rent-A-Wheels", new ArrayList<Vehicle>(), "09:00", "18:00", RentACarStatus.Open, new Location("2", "25", "28", "Prime"), "images/objects/2.jpg", 8, false);
-		ArrayList<Vehicle> cars2 = new ArrayList<Vehicle>();
-
-		cars2.add(vehicle6);
-		cars2.add(vehicle7);
-		cars2.add(vehicle8);
-		cars2.add(vehicle9);
-		cars2.add(vehicle10);
-		object2.setAvailableCars(cars2);
-		
-		User u2=new User();
-		u2=getUserById("4");
-		u2.setRentACar(object2);
-		updateManagerRentACar(u2);
-		
 	}
 
 	public void writeToFile() {
@@ -543,6 +462,39 @@ public class UserDAO {
     	}
     	
     	return searchedUsers;
+    }
+    
+    public User deleteObjectForManager(String id) {
+    	User manager = getUserById(id);
+    	manager.getRentACar().setDeleted(true);
+    	writeToFile();
+    	System.out.println("Obrisan objekat kod menadzera");
+    	return manager;
+    }
+    
+    public User findManagerByObjectId(String objectId) {
+    	for(User u : users) {
+    		if(u.getRentACar() == null) {
+    			continue;
+    		}
+    		else {
+    			if(u.getRentACar().getId().equals(objectId)) {
+    				System.out.println("USER: "+u.getId());
+    	    		System.out.println("U FAJLU: "+u.getRentACar().getId());
+    	    		System.out.println("PROSLEDJEN: "+objectId);
+    				return u;
+    			}
+    		}
+    	}
+    	
+    	return null;
+    }
+    
+    public User updateObjectForManager(String id, RentACarObject object) {
+    	User manager = getUserById(id);
+    	manager.setRentACar(object);
+    	writeToFile();
+    	return manager;
     }
 }
 

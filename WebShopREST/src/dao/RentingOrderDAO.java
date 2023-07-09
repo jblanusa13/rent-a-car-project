@@ -432,5 +432,15 @@ public class RentingOrderDAO {
 	    return users;
 	    
 	}
+	
+	public boolean deleteOrder(String objectId) {
+		for (RentingOrder ro : orders) {
+			if(ro.getRentingObject().getId().equals(objectId)) {
+				ro.setOrderStatus(RentingOrderStatus.Rejected);
+				writeToFile();
+			}
+		}
 		
+		return true;
+	}
 }

@@ -32,7 +32,7 @@ Vue.component("addNewObject", {
   },
   template: `
 	<div>
-		<h1 style="margin-left:30%;">Add new rent a car object</h1>
+		<h1 class="center-position">Add new rent a car object</h1>
 		<form class="formStyle" style="margin-left:30%;">
 			<fieldset>
 				<div>
@@ -70,10 +70,10 @@ Vue.component("addNewObject", {
             		<input type="file" id="file" ref="file" v-bind:class="{invalid: logoValid === false}"/>
           		</div><br>
 			
-			<form class="formStyle" style="margin-left:-10%;">
+			<form class="formStyle center-position" style="margin-left:-10%;">
 				<fieldset>
 				<legend>Add manager for object</legend>
-				<div v-if="!managers" class="center-position">
+				<div v-if="!managers">
 					<div v-if="!managerRegistered">
 						<div>
             				<label class="formInputs">Username:</label><br>
@@ -131,7 +131,7 @@ Vue.component("addNewObject", {
 			</fieldset>
 			<div class="center-position">        
         	<br><br>
-        	<button type="submit" v-on:click="ShowAll">Go back</button>
+        		<button type="submit" v-on:click="ShowAll">Go back</button>
       		</div>
 		</form>
 	</div>
@@ -201,7 +201,10 @@ Vue.component("addNewObject", {
    
   },
   methods: {
-
+	ShowAll: function () {
+      event.preventDefault();
+      router.push(`/loggedInAdmin/${this.userId}`);
+    },
 	confirm: function(){
 		event.preventDefault();
 		if(!this.rentACarObject.name){
