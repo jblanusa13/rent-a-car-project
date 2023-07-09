@@ -50,7 +50,7 @@ Vue.component("objectForCustomer", {
 				</tr>
             </table>
       </div>
-      
+      <br><br>
       <div>
 		  <form  class="center-position">
 		    <label for="startdate">Start date: </label>

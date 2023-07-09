@@ -44,7 +44,7 @@ Vue.component("objectForAdmin", {
 		<button type="submit" v-on:click="deleteObject">Delete object</button>
 		</div>
       </div>
-
+		<br>
       <div >
         <h2>Available vehicles</h2>
         <table border='1' class="rental-object-table">

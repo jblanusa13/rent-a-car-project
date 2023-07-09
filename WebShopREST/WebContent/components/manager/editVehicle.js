@@ -83,6 +83,7 @@ Vue.component("editVehicle", {
             		<label>Description (optional):</label><br>
             		<input type="text" v-model="vehicle.description" name="description" class="formInputs">
           		</div>
+          		<br><br>
 		<div>
 			<button type="submit" v-on:click="editVehicle">Confirm</button>
 		</div>

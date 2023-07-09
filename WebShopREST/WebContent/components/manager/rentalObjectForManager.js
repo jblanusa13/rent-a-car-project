@@ -42,6 +42,7 @@ Vue.component("objectForManager", {
             </table>
         <br><br>
       </div>
+      <br>
       <div >
         <h2>Available vehicles</h2>
         <table border='1' class="rental-object-table">
