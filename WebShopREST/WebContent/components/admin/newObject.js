@@ -73,7 +73,7 @@ Vue.component("addNewObject", {
 			<form class="formStyle" style="margin-left:-10%;">
 				<fieldset>
 				<legend>Add manager for object</legend>
-				<div v-if="!managers">
+				<div v-if="!managers" class="center-position">
 					<div v-if="!managerRegistered">
 						<div>
             				<label class="formInputs">Username:</label><br>
@@ -414,7 +414,7 @@ Vue.component("addNewObject", {
 			  let livingPlace = address.town || address.village || address.city;
 			  let cityPostal = address.postcode;
 			  
-			  this.rentACarObject.location.address = String(street + " " + number + " " + livingPlace + " " + cityPostal);
+			  this.rentACarObject.location.address = String(street + " " + number + "," + livingPlace + "," + cityPostal);
 			  
 			  let boundingbox = json.boundingbox;
 			  let geoLength = Math.abs(parseFloat(boundingbox[3]) - parseFloat(boundingbox[1]));

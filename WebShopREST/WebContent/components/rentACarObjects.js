@@ -19,7 +19,7 @@ Vue.component("rentACarr", {
 	</div>
 	<h1>Rent a car objects</h1>
 	<br><br>
-	<div>
+	<div class="standard-left-margin standard-right-margin">
 		<form>
 			<table>
 				<tr>
@@ -36,17 +36,14 @@ Vue.component("rentACarr", {
 						<input type="text" v-model="averageRate" id="averageRate" name="averageRate" >
 					</td>
 				</tr>
-				<tr>
-					<td><div id="map"></div></td>
-					<td>
-						<br>
-						<button type="button" v-on:click="searchObjects">Search</button>
-					</td>
-				</tr>
 			</table>
+			<label>City:</label>
+			<div id="map" style="width:100%; height:300px;"></div>
+			<br>
+			<button type="button" v-on:click="searchObjects">Search</button>
 		</form><br>
 	</div>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 				<tr>
@@ -78,7 +75,7 @@ Vue.component("rentACarr", {
 		  	</table>
 		</form>
 	</div>
-	<div>
+	<div class="standard-left-margin">
 		<form>
 			<table>
 			<tr>
@@ -104,7 +101,7 @@ Vue.component("rentACarr", {
 			<br>
 		</form>
 	</div>
-	<table border="1">
+	<table border='1' class="rental-object-table">
 		<tr>
 			<th></th>
 			<th>Name</th>

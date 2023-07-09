@@ -24,7 +24,7 @@ Vue.component("editVehicle", {
   template: `
     <div>
 		<h1>Edit vehicle</h1>
-		<div class="right-position">
+		<div class="center-position">
 		<form class="formStyle">
 		<fieldset>
 				<div>
